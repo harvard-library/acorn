@@ -1,0 +1,6 @@
+.cache/
+.settings/
+application/bootstrap.php
+application/clibootstrap.php
+application/config.ini
+public/scripts/acorn.js
