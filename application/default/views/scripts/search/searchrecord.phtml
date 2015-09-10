@@ -1,0 +1,46 @@
+<?php 
+$this->headTitle('Record Search');
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/recordsearch.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/search.js');
+$savestatus = SearchNamespace::getSaveStatus();
+SearchNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_IDLE);
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="displaySaveStatus(\'' . $savestatus . '\'); initSearchButtons(); populateSearch(\'\')"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle">Record Search </h1>
+	<div id="statusdiv">Your search has been saved!</div>
+</div>
+
+<div id="searchcontent">
+
+<!-- Static markup required for the TabView widget. -->
+
+<div id="demo" class="yui-navset yui-navset-top">
+  <form id="recordsearchform" name="recordsearchform" method="get" action="<?php echo $this->baseUrl()?>/record">
+<div class="example">
+<div class="formerrors"><?php echo $this->placeholder("saveerrormessage")?></div>
+<div class="logininformation">
+	<div id="recordnumbersearcharea">
+		<div id="recsearch" class="together"><?php echo $this->form->recordnumberinput ?><input type="button" value="Find Record" id="searchrecordnumberbutton" ><input type="button" value="Find OSW" id="searchoswnumberbutton" ><input type="button" value="Show Record Status" id="recordstatusbutton" ></div>
+   	 	<div id="searcherrormessagesdiv"><?php echo $this->form->hiddenerrormessagesinput ?></div>
+    	<br><div id="orparagraphdiv"><p>OR</p><br></div>
+    </div>
+ </form>
+ 
+   <form id="advancedsearchform" name="advancedsearchform" method="get" action="<?php echo $this->baseUrl()?>/search/advancedsearch">
+  <?php echo $this->form->advancedsearchparameters?>
+  <?php echo $this->form->hiddenoverridesearchnameinput ?>
+    	<fieldset id="advancedsearch"><legend>Advanced Search</legend>
+    	<div id="loadsavedarea" class="together"><?php echo $this->form->loadsavedsearchselect ?></div>
+    	<div id="advancedsearchlist"></div>
+    	<div class="fullbuttonfooter"><input type="button" value="Search" id="searchadvancedbutton"><input type="button" value="Clear Search" id="clearadvancedbutton"></div>
+    	<div id="savesearcharea" class="together"><?php echo $this->form->savesearchinput ?><input type="button" value="Save" id="savesearchbutton"><input type="button" value="Overwrite" id="overwritesearchbutton"><?php echo $this->form->hiddensavemessagesinput ?></div>
+    	</fieldset>
+     </form> 
+</div>
+</div>
+
+

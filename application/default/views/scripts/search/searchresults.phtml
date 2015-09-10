@@ -1,0 +1,129 @@
+
+<?php 
+$this->headTitle('Search Results');
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/recordsearch.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/searchresults.js');
+$savestatus = SearchNamespace::getSaveStatus();
+$sort = 'RecordID';
+$dir = 'asc';
+$search = SearchNamespace::getCurrentSearch();
+if (isset($search))
+{
+	$order = $search->getOrderBy();
+	if (!empty($order))
+	{
+		$orderarray = explode(' ', current($order));
+		$sort = $orderarray[0];
+		if (isset($orderarray[1]))
+		{
+			$dir = $orderarray[1];
+		}
+	}
+}
+SearchNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_IDLE);
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="displaySaveStatus(\'' . $savestatus . '\'); initButtons(); loadSearchResults(\'' . $sort . '\', \'' . $dir . '\')"');
+
+ini_set('memory_limit', '3072M');
+ini_set('max_execution_time', 300);
+
+?>
+
+
+<style type="text/css">
+/* custom styles for this example */
+#dt-options {text-align:right;margin:1em 0;}
+#dt-dlg {visibility:hidden;border:1px solid #808080;background-color:#E3E3E3;z-index: 2}
+#dt-dlg .hd {font-weight:bold;padding:1em;background:none;background-color:#E3E3E3;border-bottom:0;}
+#dt-dlg .ft {text-align:right;padding:.5em;background-color:#E3E3E3;}
+#dt-dlg .bd {height:10em;margin:0 1em;overflow:auto;border:1px solid black;background-color:white;}
+#dt-dlg .dt-dlg-pickercol {clear:both;padding:.5em 1em 3em;border-bottom:1px solid gray;}
+#dt-dlg .dt-dlg-pickerkey {float:left;}
+#dt-dlg .dt-dlg-pickerbtns {float:right;}
+
+/* Container workarounds for Mac Gecko scrollbar issues */
+.yui-panel-container.hide-scrollbars #dt-dlg .bd {
+    /* Hide scrollbars by default for Gecko on OS X */
+    overflow: hidden;
+}
+.yui-panel-container.show-scrollbars #dt-dlg .bd {
+    /* Show scrollbars for Gecko on OS X when the Panel is visible  */
+    overflow: auto;
+}
+#dt-dlg_c .underlay {overflow:hidden;}
+
+
+/* rounded corners */
+#dt-dlg .corner_tr {
+    position: absolute;
+    background-repeat: no-repeat;
+    top: -1px;
+    right: -1px;
+    height: 4px;
+    width: 4px;
+}
+#dt-dlg .corner_tl {
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    height: 4px;
+    width: 4px;
+}
+#dt-dlg .corner_br {
+    position: absolute;
+    background-repeat: no-repeat;
+    bottom: -1px;
+    right: -1px;
+    height: 4px;
+    width: 4px;
+}
+#dt-dlg .corner_bl {
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    height: 4px;
+    width: 4px;
+}
+
+.inprogress {position:absolute;} /* transitional progressive enhancement state */
+
+.yui-dt-liner {white-space:nowrap;}
+
+</style>
+<div id="dt-dlg">
+    <span class="corner_tr"></span>
+    <span class="corner_tl"></span>
+    <span class="corner_br"></span>
+    <span class="corner_bl"></span>
+    <div class="hd">
+        Choose which columns you would like to see:
+    </div>
+    <div id="dt-dlg-picker" class="bd">
+    </div>
+</div>
+<div id="recordinfo">
+	<h1 class="recordtitle"><?php echo $this->placeholder("searchresultsname")?></h1>
+	<div id="recorddetails"><?php echo $this->placeholder("searchinfo")?></div>
+    <div id="statusdiv">Your columns have been saved!</div>
+</div>
+
+<div id="searchresultscontent">
+
+<!-- Static markup required for the TabView widget. -->
+
+<div id="demo" class="yui-navset yui-navset-top">
+  <form id="searchresultsform" name="searchresultsform" method="get" action="../record.php">
+<div class="example">
+<div class="formerrors"><?php echo $this->placeholder("saveerrormessage")?></div>
+<div id="searchresultsarea">
+    <div id="dt-options"><a id="dt-options-link" href="fallback">Table Options</a></div>
+    <div id="columnshowhide"></div>
+    <div id="totalrecordcount"></div><div id="searchresultsbuttons"><input type="button" value="Save Column Order" id="savecolumnsbutton"><input type="button" value="Export Page" id="exportbutton"><input type="button" value="Export All" id="exportallbutton"><input type="button" value="Refine Search" id="refinesearchbutton" ></div>
+</form>
+  </div>
+</div>
+

@@ -1,0 +1,49 @@
+@charset "utf-8";
+/* CSS Document */
+
+#statuscontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 0.25em;
+padding-right: 0.5em;
+padding-bottom: 0.25em;
+padding-left: 0.5em;
+height: 45em;}
+
+#commentstextarea {
+height: 40px;
+}
+
+#repositorymemotextarea {
+height: 25px;
+}
+
+
+.status{
+padding-left: 5px;
+font-weight: bold;
+font-size: 12px;
+}
+
+#currentstatus, #proposalapproval {
+padding: 0 0 5px 30px;
+font-size: 13px;
+font-weight: bold;
+font-style: italic;
+}
+
+fieldset {
+margin-bottom: 5px;
+}
+
+
+#activityfieldset {
+height: 150px;
+padding: 5px;
+}
+

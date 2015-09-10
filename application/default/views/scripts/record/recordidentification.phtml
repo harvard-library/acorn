@@ -1,0 +1,133 @@
+<div class="formerrors" id="iderrors"><?php echo $this->placeholder("identificationerrormessage")?></div>
+<div class="recordstart" id="recordcreation">Record Created <?php echo $this->placeholder('createdate') ?> by <?php echo $this->placeholder('createdby')?></div>
+
+
+<br style="clear: both">
+<form id="identificationform" name="identificationform" method="post" action="<?php echo $this->baseUrl()?>/recordidentification/saveidentification" onsubmit="catchSubmit(this)">
+<div class="example">
+<div class="disabledmessage"><?php echo $this->placeholder("identificationdisabledmessage")?></div>
+<?php echo $this->element->callnumbererrorhidden ?>
+<?php echo $this->element->hollisnumbererrorhidden ?>
+<?php echo $this->element->titleerrorhidden ?>
+<?php echo $this->element->hiddenitemid ?>
+
+<div class="left">
+	<div class="together"><?php echo $this->element->projectselectform ?></div>
+    <div class="together"><?php echo $this->element->groupselectform ?></div>
+    <div class="together"><?php echo $this->element->coordinatorselectform ?></div>
+    <?php include ("workassignedto.phtml"); ?>
+    <div class="together"><?php echo $this->element->workassignedtohidden?></div>
+    
+</div>
+
+<div class="right">
+	<div class="together"><?php echo $this->element->repositoryselectform ?></div>
+    <div class="together"><?php echo $this->element->chargetoselectform ?></div>
+    <div class="together"><?php echo $this->element->curatorselectform ?></div>
+    <div class="together"><?php echo $this->element->approvingcuratorselectform ?></div>
+    <div class="together"><?php echo $this->element->purposeselectform ?></div>
+    <div id="storageautocomplete" class="together">
+		<?php echo $this->element->storageinput ?>
+        <br>
+		<div id="storagecontainer"></div>
+	</div>
+</div>
+
+
+
+<br style="clear:both;">
+
+<fieldset id="recordtombstone"><legend></legend>
+	<div class="left">
+		<div class="together"><label class="inputlabel required">Call Number(s)*</label><div id="callnumbercells" class="datatable"></div></div>
+	    <div class="together" id="callnumberdiv"><?php echo $this->element->callnumberhidden?><div class="overridebuttondiv" id="idsavecallbuttondiv"><div id="callnumbermessage" class="errors"></div><input type="button" value="Override" id="savecallnumberbutton"></div></div>
+		<div id="hollisnumberdiv"><?php echo $this->element->hollisinputform ?><div class="overridebuttondiv" id="idsavehollisbuttondiv"><input type="button" value="Override" id="savehollisnumberbutton"></div></div>
+    </div>
+    <div class="right">
+	    <div class="together"><?php echo $this->element->collectionnameinput ?></div>
+		<div class="together"><?php echo $this->element->authorinput ?></div>
+		<div id="authorcontainer"></div>
+	    <div class="together" id="titlediv"><?php echo $this->element->titleinput ?><div class="overridebuttondiv" id="idsavetitlebuttondiv"><input type="button" value="Override" id="savetitlebutton"></div></div>
+	    <div class="together"><?php echo $this->element->dateofobjectinput ?></div>
+	    <div class="together"><?php echo $this->element->formatselectform ?></div>
+    </div>
+</fieldset>
+
+<div id="miscinfo">
+    <div id="countnoncollcontainer">
+    	<?php include ("initialcounts.phtml"); ?>
+        <div id="noncollectioncontainer">
+            <?php echo $this->element->noncollectioncheckbox ?>
+        </div>
+    </div>
+    
+    <div id="commentscontainer">
+        <fieldset id="commentsfieldset"><legend>Comments</legend><?php echo $this->element->commentstextarea ?></fieldset>
+    </div>
+    
+    <div id="repositorycontainer">
+        <fieldset id="repositoryfieldset"><legend>Repository Info</legend>
+            <div class="together"><?php echo $this->element->expecteddateofreturninput ?></div>
+            <div class="calendarChooser" id="returnCalendarChooserContainer"></div>
+    		<div class="together"><?php echo $this->element->insuranceinput ?></div>
+            <div class="together"><?php echo $this->element->repositorymemotextarea ?></div>
+        </fieldset>
+    </div>
+</div>
+
+	<br style="clear:both"/>
+	<div class="shortbuttonfooter" id="unlockrecordbuttons">
+		<div class="together">
+		<?php echo $this->element->unlockuntildateinput ?></div>
+    	<div class="calendarChooser" id="unlockCalendarChooserContainer"></div>
+    	<input type="button" value="Unlock Record" id="unlockrecordbutton">
+    </div>
+	
+	<div class="shortbuttonfooter" id="identificationbuttons">
+		<div class="buttondiv" id="idsavebuttondiv"><input type="button" value="Save" id="saveidentificationbutton"></div>
+	    <div class="buttondiv" id="idclearbuttondiv"><input type="button" value="Clear Changes" id="clearidentificationbutton"></div>
+	    <div class="buttondiv" id="idstatusbuttondiv"><input type="button" value="Go To Status" id="statusbutton"></div>
+	    <div class="buttondiv" id="iddonebuttondiv"><input type="button" value="Mark as Done" id="donebutton"></div>
+        <div class="buttondiv" id="iddeletebuttondiv"><input type="button" value="Delete Record" id="deletebutton"></div>
+    </div>
+</div>
+
+</form>
+
+<?php 
+$item = RecordNamespace::getCurrentItem();
+if (!isset($item) || is_null($item))
+{
+	echo "<script type=\"text/javascript\">document.getElementById('identificationbuttons').style.display = 'none'; document.getElementById('unlockrecordbuttons').style.display = 'none'</script>";
+}
+else 
+{
+	$disabledmessage = $item->getDisableIdentificationMessage();
+	if (empty($disabledmessage))
+	{
+		$identity = Zend_Auth::getInstance()->getIdentity();
+		if ($identity[PeopleDAO::ACCESS_LEVEL] != PeopleDAO::ACCESS_LEVEL_ADMIN)
+		{
+			echo "<script type=\"text/javascript\">document.getElementById('unlockrecordbuttons').style.display = 'none'; document.getElementById('iddonebuttondiv').style.display = 'none';</script>";
+		}
+		else
+		{
+			echo "<script type=\"text/javascript\">document.getElementById('identificationbuttons').style.display = 'block'; document.getElementById('unlockrecordbuttons').style.display = 'none';</script>";
+		}
+	}
+	else 
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('identificationbuttons').style.display = 'none'</script>";
+		$identity = Zend_Auth::getInstance()->getIdentity();
+		if ($identity[PeopleDAO::ACCESS_LEVEL] != PeopleDAO::ACCESS_LEVEL_ADMIN)
+		{
+			echo "<script type=\"text/javascript\">document.getElementById('unlockrecordbuttons').style.display = 'none'; document.getElementById('iddonebuttondiv').style.display = 'none';</script>";
+		}
+		elseif (!$item->isUnlocked())
+		{
+			echo "<script type=\"text/javascript\">document.getElementById('unlockrecordbuttons').style.display = 'block';</script>";
+		}
+	}	
+}
+
+?>

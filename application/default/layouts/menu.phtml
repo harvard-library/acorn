@@ -1,0 +1,194 @@
+<?php 
+$auth = Zend_Auth::getInstance();
+$identity = $auth->getIdentity();
+$accesslevel = $identity[PeopleDAO::ACCESS_LEVEL];
+
+$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
+$homeurl = $config->getACORNUrl();
+
+?>
+
+<div id="acornfunctions" class="yuimenubar yuimenubarnav">
+    <div class="bd">
+        <ul class="first-of-type">
+            <?php 
+            if ($accesslevel != PeopleDAO::ACCESS_LEVEL_CURATOR)
+            {
+	            if ($accesslevel != PeopleDAO::ACCESS_LEVEL_REPOSITORY)
+				{?>
+	            <li class="yuimenubaritem first-of-type">
+	                <a class="yuimenubaritemlabel" href="#new">New</a>
+	                <div id="new" class="yuimenu">
+						<div class="bd">
+	                    <ul>
+	                    	<li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl(); ?>/record/newitem">Record</a></li>
+			   				<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	                   		{
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl(). '/group/newgroup">Group</a></li>';
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl(). '/record/newosw">OSW</a></li>';
+	                   		}
+	                   		elseif ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN)
+	                   		{
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl(). '/people/newuser">Person/User</a></li>';
+	                   		} ?>
+	               		</ul>
+	                    </div>
+					</div>
+	            </li>
+	            <?php }
+	            if ($accesslevel != PeopleDAO::ACCESS_LEVEL_REPOSITORY)
+				{
+	            	echo '<li class="yuimenubaritem">';
+				}
+				else {
+					echo '<li class="yuimenubaritem first-of-type">'; 
+				}
+	            ?>
+	                <a class="yuimenubaritemlabel" href="#find">Find</a>
+	                <div id="find" class="yuimenu">
+						<div class="bd">
+	                    <ul>
+							<li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl(); ?>/search/searchrecord">Record/OSW/Status</a></li>
+			   				<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	                   		{
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl() . '/search/searchgroup">Group</a></li>';
+	                   		}
+	                   		?>
+			   			</ul>
+	                    </div>
+					</div>
+	            </li>
+	            <?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	             {
+	             ?>
+	            <li class="yuimenubaritem">
+	                <a class="yuimenubaritemlabel" href="#transfer">Transfer</a>
+	                <div id="transfer" class="yuimenu">
+						<div class="bd">
+	                    <ul>
+	                    	<li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl(); ?>/transfers/bulklogin">Bulk Login</a></li>
+	                   		<li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl(); ?>/transfers/bulklogout">Bulk Logout</a></li>
+	               		</ul>
+	                    </div>
+					</div>
+	            </li>
+	            <?php } ?>
+	            
+	            <li class="yuimenubaritem">
+	                <a class="yuimenubaritemlabel" href="#edit">Edit</a>
+	                <div id="edit" class="yuimenu">
+						<div class="bd">
+	                    <ul>
+							<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	                   		{
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl() . '/admin/customtext">Custom Text</a></li>';
+	                   		}
+							?>
+	                   		<li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl(); ?>/search/savedsearches">Saved Searches</a></li>
+			   				<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN)
+	                   		{
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl() . '/admin/editlists">Lists</a></li>';
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl() . '/people/newuser">Person/User</a></li>';
+	                   		}
+	                   		elseif ($accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	                   		{
+	                   			echo '<li class="yuimenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl() . '/admin/editlists">Projects</a></li>';
+	                   		}
+							?>
+	                   		<li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl(); ?>/user/changepassword">Password</a></li>
+	               		    
+	               		</ul>
+	                    </div>
+					</div>
+	            </li>
+	            <li class="yuimenubaritem">
+	                <a class="yuimenubaritemlabel" href="#">Reports</a>
+	                <div id="reports" class="yuimenu">
+						<div class="bd">
+	                    <ul>
+							<li class="yuimenuitem" id="arlforrepositorymenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl;?>/reports/arlforrepository">ARL for Repository</a></li>
+			   				<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	                   		{
+	                   			echo '<li class="yuimenuitem" id="arlforwpcmenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/arlforwpc">ARL for WPC</a></li>';
+	                   			echo '<li class="yuimenuitem" id="completedhoursbytubmenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedtubhours">All Completed Hours By TUB</a></li>';
+			   					echo '<li class="yuimenuitem" id="completedworkbytubmenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedtubwork">All Completed Work By TUB</a></li>';
+			   					echo '<li class="yuimenuitem" id="completedbypersonactivitymenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedperson">Completed Work for a Person</a></li>';
+			   					echo '<li class="yuimenuitem" id="completedbypersonwithhoursactivitymenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedpersonwithhours">Completed Work for a Person With Hours</a></li>';
+			   				}
+	                   		?>
+	                   		<li class="yuimenuitem" id="completedbyprojectactivitymenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl;?>/reports/completedproject">Completed Work for a Project</a></li>
+			   				<li class="yuimenuitem" id="combinedcompletedbyrepositoryactivitymenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl;?>/reports/combinedcompletedrepository">Completed Work for a Repository</a></li>
+			   				<li class="yuimenuitem" id="completedbyrepositoryactivitymenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl;?>/reports/completedrepository">Completed Work for a Repository, by Activity</a></li>
+			   				<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
+	                   		{
+	                   			echo '<li class="yuimenuitem" id="workdonebymenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/workdoneby">Work Done By</a></li>';
+			   				}
+	                   		?>
+	                   		<li class="yuimenuitem" id="transferformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="showTransferDialog();">Transfer Form</a></li>
+			   				<li class="yuimenuitem" id="proposalformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="createProposalReport();">Proposal Form</a></li>
+			   				<li class="yuimenuitem" id="reportformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="createReportForm();">Report Form</a></li>
+			   				<li class="yuimenuitem" id="statusformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="createStatusForm();">Status Form</a></li>
+			   				<li class="yuimenuitem" id="groupproposalformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="createGroupProposalReport();">Group Proposal Form</a></li>
+			   				<li class="yuimenuitem" id="groupreportformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="createGroupReportForm();">Group Report Form</a></li>
+			   				<li class="yuimenuitem" id="oswformmenuitem"><a class="yuimenuitemlabel" href="#" onclick="createOSWForm();">OSW Form</a></li>
+			   			</ul>
+	                    </div>
+					</div>
+	            </li>
+            <?php 
+            }
+            if ($accesslevel != PeopleDAO::ACCESS_LEVEL_CURATOR)
+			{
+            	echo '<li class="yuimenubaritem">';
+			}
+			else {
+				echo '<li class="yuimenubaritem first-of-type">';
+				echo '<a class="yuimenuitemlabel" href="' . $this->baseUrl() . '/user/changepassword">Change Password</a>';
+				echo '<li class="yuimenubaritem">'; 
+			}
+            ?>
+                <a class="yuimenubaritemlabel" href="<?php echo $homeurl ?>">Home</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+/*
+     Initialize and render the MenuBar when its elements are ready 
+     to be scripted.
+*/
+YAHOO.util.Event.onContentReady("acornfunctions", function () {
+
+    /*
+         Instantiate a MenuBar:  The first argument passed to the 
+         constructor is the id of the element in the page 
+         representing the MenuBar; the second is an object literal 
+         of configuration properties.
+    */
+    var oMenuBar = new YAHOO.widget.MenuBar("acornfunctions", { 
+                                                autosubmenudisplay: true, 
+                                                hidedelay: 750, 
+                                                lazyload: true
+												 });
+												
+	oMenuBar.render();    
+
+
+	if (document.getElementById('transferformmenuitem') != undefined)
+	{
+	//Hide the report menus - these can be displayed by the individual components
+	document.getElementById('transferformmenuitem').style.display = 'none';
+	document.getElementById('proposalformmenuitem').style.display = 'none';
+	document.getElementById('reportformmenuitem').style.display = 'none';
+	document.getElementById('statusformmenuitem').style.display = 'none';
+	document.getElementById('groupproposalformmenuitem').style.display = 'none';
+	document.getElementById('groupreportformmenuitem').style.display = 'none';
+	document.getElementById('oswformmenuitem').style.display = 'none';
+	}
+	
+});
+
+</script>
+

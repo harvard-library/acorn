@@ -1,0 +1,96 @@
+<div class="formerrors"><?php echo $this->placeholder("reporterrormessage")?></div>
+<h1 class="functiontitle" align="center">Report</h1>
+
+<form id="groupreportform" name="groupreportform" method="post" action="<?php echo $this->baseUrl() ?>/groupreport/updaterecords">
+<div class="example">
+<div class="disabledmessage"><?php echo $this->placeholder("reportdisabledmessage")?></div>
+<div id="reportinfo">
+<div class="reportcolumn1">
+    <div class="together"><?php echo $this->element->reportdateinput ?></div>
+    <div class="calendarChooser" id="reportCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->reportbyselectform ?></div>
+    <div class="together"><?php echo $this->element->worklocationselectform ?></div>
+    <div class="together"><?php include ("workdoneby.phtml"); ?></div>
+    <div class="together"><?php echo $this->element->formatselectform ?></div>
+     
+</div>
+
+<div class="reportcolumn2">
+	<fieldset id="reportdimensions"><legend>Dimensions</legend>
+    	<div id="reportdimsarea">
+        <div class="units"><?php echo $this->element->reportunitselect ?></div>
+        <div class="reportdimsdiv"><label for="reportheightinput" class="countlabel">Height </label><?php echo $this->element->reportheightinput ?></div>
+        <div class="reportdimsdiv"><label for="reportwidthinput" class="countlabel">Width </label><?php echo $this->element->reportwidthinput ?></div>
+         <div class="reportdimsdiv"><label for="reportthicknessinput" class="countlabel">Thickness </label><?php echo $this->element->reportthicknessinput ?></div>
+         </div>
+    </fieldset>
+    <div class="together"><?php include ("finalcounts.phtml"); ?></div>
+</div>
+
+<div class="reportcolumn3">
+	Comments<?php echo $this->element->reportcommentstextarea ?> 
+    <div id="reportchecksdiv">
+	<?php echo $this->element->adminonlycheckbox ?>
+    <br>
+    <?php echo $this->element->examonlycheckbox ?>
+    <br>
+    <?php echo $this->element->customhousingonlycheckbox ?>
+    <br>
+    <?php echo $this->element->additionalmaterialsonfilecheckbox ?>
+    </div>
+</div>
+</div>
+
+<br style="clear:both;">
+<br><br><br>
+
+<div class="reportcolumn1">
+	<?php echo $this->element->reporttreatmentselect ?>
+    <br>
+    <?php echo $this->element->reporttreatmenttextarea ?>
+    
+</div>
+
+<div class="reportcolumn2">
+	<fieldset><legend>Preservation Recommendations</legend>
+    <?php echo $this->element->presrec1select ?><?php echo $this->element->presrec2select ?>
+    <br>
+    <?php echo $this->element->presrectextarea ?>
+    </fieldset>
+</div>
+
+<div class="reportcolumn3">
+	<div class="together"><?php include ("importance.phtml"); ?></div>
+    Treatments of Note Summary:<?php echo $this->element->reporttreatmentsummarytextarea ?>
+</div>
+
+<br style="clear:both;">
+
+
+	<div class="shortbuttonfooter" id="reportbuttons">
+    <input type="button" value="Save to All Records" id="savereportbutton">
+    <input type="button" value="Clear Changes" id="clearreportbutton">
+    </div>
+
+</div>
+</form>
+
+<?php 
+$group = GroupNamespace::getCurrentGroup();
+if (!isset($group) || is_null($group))
+{
+	echo "<script type=\"text/javascript\">document.getElementById('reportbuttons').style.display = 'none';</script>";
+}
+else 
+{
+	$disabledmessage = $group->getDisableReportMessage();
+	if (empty($disabledmessage))
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('reportbuttons').style.display = 'block'</script>";
+	}
+	else 
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('reportbuttons').style.display = 'none'</script>";
+	}
+}
+?>

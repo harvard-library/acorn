@@ -1,0 +1,118 @@
+For Release 2.12.5 (09-02-2014) TE
+----------------------------------------------------
+* OSW forms use full names, not initials; remove footnote with names;
+  remove "Work Done By" at top. (bug 4185)
+* For emailed reports the mailTo is set to the approving curator. If the 
+  approving curator's email address is not available, the curator is used as 
+  the mailTo. The curator is added to the cc list unless she/he is already the 
+  mailTo. The "submitted by" email address is also on the cc list. (bug 4175)
+
+For Release 2.12.4 (04-08-2014) TE
+----------------------------------------------------
+* The 'Work Done By' now reports conservators in chronological order
+* The list conservators printed on reports is now deduped
+* A date must now be entered when adding a conservator and date in the 'Work Done By' box
+
+For Release 2.12.3 (02-27-2014) TE
+----------------------------------------------------
+* Users are now able to remove an OSW work end date
+
+For Release 2.12.2 (02-18-2014) TE/VC
+----------------------------------------------------
+* Corrected typo resulting in bug 4156 (http://devbugz.hul.harvard.edu/bugzilla/show_bug.cgi?id=4156)
+* Added a fix so that images get cleared out of the temporary directory if the ACORN record number changes.
+
+For Release 2.12.1 (11-19-2013) VC/TE
+----------------------------------------------------
+* New Image Uploader in place.
+* Curators and approving curators are emailed when items are logged in,
+	logged out, or transferred.
+* Files and directories set up more appropriately for the ability to 'start from scratch'.
+
+For Release 2.11 (08-07-2013) VC
+----------------------------------------------------
+* Export Admin lists to Excel
+* Limit Repositories to view only their items in reports and lists.
+* Charge To added to searches
+* WorkDoneBy allowed to have multiple instances of people to track different dates.
+* Added 'Expected Date of Return' to Item Identification and the Transfer Form.
+* Added 'date' to the work done by screens.
+* YUI JS libraries must be 2.8.2r1 or issues arise with the Cell Editors.
+* Increased default size of Work Description box on the OSW Screen
+* Added 'Boxes' to the Counts on the OSW, Identification, and Report screens
+* Removed the "Fund" field from the Identification screen
+* Added Call Number to OSW Screen
+
+For Release 2.10 (06-03-2013) VC
+----------------------------------------------------
+* Updated email logic for proposal approval to incorporate the multiple user proposal format.
+* Allow items to be marked as 'Done' manually.
+* Updated queries to reflect those items marked as 'Done' manually.
+
+For Release 2.9 (01-24-2012) VC
+----------------------------------------------------
+* Allow users to manually mark an item as 'Done' without logging out.
+* Test for duplicates on Call Numbers, Title, and HOLLIS Number
+* Multiple proposal author ability
+
+For Release 2.8 (01-24-2012) VC
+----------------------------------------------------
+* Modified the image layout from a list to a grid.
+* Allow for admin to edit image names on the ACORN end.
+
+For Release 2.7 (04-05-2011) VC
+----------------------------------------------------
+* Corrected more date formatting issues associated with the new Zend_Date functionality.
+
+For Release 2.6 (03-23-2011) VC
+----------------------------------------------------
+* Added the DateFormat class and adjusted the DateFilter to use it appropriately.
+* Migrated all date() fuctions to Zend_Date functions.
+
+For Release 2.5 (03-01-2011) VC
+----------------------------------------------------
+* Upgraded to PHP 5.3.5 and Zend 1.11
+* Added the DRSStagingCleanupScript.php to automate the staging directory cleaning.
+* Added HOLLISNumber to the group mode.
+
+For Release 2.4 (01-19-2011) VC
+----------------------------------------------------
+* Corrected Proposal Approval/Report view to go to the proper tab.
+* Made thumbnails on file lists larger.
+
+For Release 2.3 (11-29-2010) VC
+----------------------------------------------------
+* Corrected text wrap issues for Proposal Report "Author/Artist" and for long URLs.
+
+For Release 2.2 (10-26-2010) VC
+----------------------------------------------------
+* File upload functionality (images go to DRS, other files go to file system)
+
+For Release 2.1 (06-23-2010) VC
+----------------------------------------------------
+* Added hidden key when saving to verify that session record is the same as the one being saved.
+* Modified end of year reports.
+
+For Release 2.0 (02-08-2010) VC
+----------------------------------------------------
+* Pres Recommendations added to pdf report.
+* Removed Project access for all Repository users
+* Proposal approval functionality (first release of this screen).
+
+For Release 1.2 (09-14-2009) VC
+----------------------------------------------------
+* Work Assigned To can be assigned multiple people.
+* Added more columns to search by in Advanced Search
+* Added more columns to view in the search results.
+* Provided 9 canned reports.
+
+For Release 1.1.2 (06-29-2009) VC
+----------------------------------------------------
+* Courier can now be free text or from a list (Transfer Form)
+* Advanced Search corrected so that OSW/Item searches can be combined.
+* Sorted Login/Logout lists by Repository/Department/Curator
+
+For Release 1.1.1 (06-19-2009) VC
+----------------------------------------------------
+* First release.
+

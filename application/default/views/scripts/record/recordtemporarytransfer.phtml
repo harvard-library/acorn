@@ -1,0 +1,49 @@
+<div class="formerrors"><?php echo $this->placeholder("temptransfererrormessage")?></div>
+<form id="recordtemporarytransferform" name="recordtemporarytransferform" method="post" action="<?php echo $this->baseUrl()?>/record/addtotransferlist" onsubmit="catchSubmit(this)">
+<div class="example">
+<?php echo $this->element->transferlistname ?>
+<div class="disabledmessage"><?php echo $this->placeholder("temptransferdisabledmessage")?></div>
+<?php echo $this->element->hiddentemptransferitemid ?>
+<div class="logininformation">
+	<div class="together"><?php echo $this->element->transferdateinput ?></div>
+    <div class="calendarChooser" id="temptransferCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->transferfromselectform ?></div>
+    <div class="together"><?php echo $this->element->transfertoselectform ?></div>
+	<div class="together"><?php echo $this->element->temptransfercommentstextarea ?></div>
+</div>  
+
+<div class="transferbuttonfooter" id="transferbuttons">
+    <div class="buttondiv" id="temptransferbuttondiv"><input type="button" value="Add to Transfer List" id="addtotemptransferlistbutton"></div>
+    <div class="buttondiv" id="temptransferdeletebuttondiv"><input type="button" value="Delete Transfer" id="deletetransferbutton"></div>
+</div>
+
+</div>
+</form>
+<?php 
+//Save button is hidden if there is a disable logout message
+$hideSaveButton = FALSE;
+$hideDeleteButton = FALSE;
+$item = RecordNamespace::getCurrentItem();
+if (isset($item) && !is_null($item))
+{
+	$disabledmessage = $item->getDisableTempTransferMessage();
+	if (!empty($disabledmessage))
+	{
+		$hideSaveButton = TRUE;
+	}
+	//If the item is not transferred out in, also disable the delete
+	if (is_null($item->getFunctions()->getTemporaryTransfer()->getPrimaryKey()))
+	{
+		$hideDeleteButton = TRUE;
+	}
+}
+
+if ($hideSaveButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('temptransferbuttondiv').style.display = 'none';</script>";
+}
+if ($hideDeleteButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('temptransferdeletebuttondiv').style.display = 'none'</script>";
+}
+?>

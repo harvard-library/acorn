@@ -1,0 +1,117 @@
+<div class="formerrors"><?php echo $this->placeholder("identificationerrormessage")?></div>
+<div class="recordstart" id="recordcreation">Group Created <?php echo $this->placeholder('createdate') ?> by <?php echo $this->placeholder('createdby')?></div>
+
+<br style="clear: both">
+<form id="identificationform" name="identificationform" method="post" action="<?php echo $this->baseUrl() ?>/groupidentification/createnewrecords">
+<div class="example">
+<div class="disabledmessage"><?php echo $this->placeholder("identificationdisabledmessage")?></div>
+<div class="left">
+	<div class="together"><?php echo $this->element->projectselectform ?></div>
+    <div class="together"><?php echo $this->element->groupinput ?><input type="button" value="Save Name" id="savegroupbutton"/></div>
+    <div class="together"><?php echo $this->element->coordinatorselectform ?></div>
+    <?php include ("workassignedto.phtml"); ?>
+    <div class="together"><?php echo $this->element->workassignedtohidden?></div>
+</div>
+<div class="right">
+	<div class="together"><?php echo $this->element->repositoryselectform ?></div>
+    <div class="together"><?php echo $this->element->chargetoselectform ?></div>
+    <div class="together"><?php echo $this->element->curatorselectform ?></div>
+    <div class="together"><?php echo $this->element->approvingcuratorselectform ?></div>
+    <div class="together"><?php echo $this->element->purposeselectform ?></div> 
+     <div id="storageautocomplete" class="together">
+		<?php echo $this->element->storageinput ?>
+        <br>
+		<div id="storagecontainer"></div>
+	</div>
+</div>
+
+<br style="clear:both;">
+
+<fieldset id="grouptombstone"><legend></legend>
+	<div class="left">
+		<div class="together"><?php echo $this->element->callnumberbaseinput ?></div>
+	    <div class="together"><?php echo $this->element->callnumberfrominput ?> to <?php echo $this->element->callnumbertoinput ?></div>
+	    <div class="together"><?php echo $this->element->collectionnameinput ?></div>
+	    <div class="together"><?php echo $this->element->hollisinputform ?></div>
+    </div>
+    <div class="right">
+   		<div class="together"><?php echo $this->element->authorinput ?></div>
+   		<div id="authorcontainer"></div>
+	    <div class="together"><?php echo $this->element->titleinput ?></div>
+	    <div class="together"><?php echo $this->element->dateofobjectinput ?></div>
+	    <div class="together"><?php echo $this->element->formatselectform ?></div>
+    </div>
+</fieldset>
+
+<div id="countnoncollcontainer">
+<?php include ("initialcounts.phtml"); ?>
+<div id="noncollectioncontainer">
+	<?php echo $this->element->noncollectioncheckbox ?>
+</div>
+</div>
+
+<div id="commentscontainer">
+	<fieldset id="groupcommentsfieldset"><legend>Comments</legend><?php echo $this->element->commentstextarea ?></fieldset>
+</div>
+
+<div id="repositorycontainer">
+	<fieldset id="grouprepositoryfieldset"><legend>Repository Info</legend>
+            <div class="together"><?php echo $this->element->expecteddateofreturninput ?></div>
+            <div class="calendarChooser" id="returnCalendarChooserContainer"></div>
+    		<div class="together"><?php echo $this->element->insuranceinput ?></div>
+            <div class="together"><?php echo $this->element->repositorymemotextarea ?></div>
+        </fieldset>
+</div>
+
+<br style="clear: both">
+
+	<div class="shortbuttonfooter" id="unlockgroupbuttons">
+		<div class="together">
+		<?php echo $this->element->unlockuntildateinput ?></div>
+    	<div class="calendarChooser" id="unlockCalendarChooserContainer"></div>
+    	<input type="button" value="Unlock Group" id="unlockgroupbutton">
+    </div>
+    
+	<div class="fullbuttonfooter" id="groupidentificationbuttons">
+        <div id="numbertocreatediv">
+    	<?php echo $this->element->numbernewrecordsinput ?><input type="button" value="Create New Records" id="createnewrecordsbutton">
+    	</div>
+    	<div id ="otherbuttonsdiv">
+    	<input type="button" value="Update Records" id="updaterecordidsbutton">
+        <input type="button" value="Clear Changes" id="clearidentificationbutton">
+        <input type="button" value="Delete Group" id="deletebutton">
+        </div>
+    </div>
+
+   </div>
+ 
+</form>
+
+<?php 
+$group = GroupNamespace::getCurrentGroup();
+if (!isset($group) || is_null($group))
+{
+	echo "<script type=\"text/javascript\">document.getElementById('groupidentificationbuttons').style.display = 'none'; document.getElementById('unlockgroupbuttons').style.display = 'none'</script>";
+}
+else 
+{
+	$disabledmessage = $group->getDisableIdentificationMessage();
+	if (empty($disabledmessage))
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('groupidentificationbuttons').style.display = 'block'; document.getElementById('savegroupbutton').disabled = false; document.getElementById('unlockgroupbuttons').style.display = 'none'</script>";
+	}
+	else
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('groupidentificationbuttons').style.display = 'none'; document.getElementById('savegroupbutton').disabled = true; </script>";
+		$identity = Zend_Auth::getInstance()->getIdentity();
+		if ($identity[PeopleDAO::ACCESS_LEVEL] != PeopleDAO::ACCESS_LEVEL_ADMIN)
+		{
+			echo "<script type=\"text/javascript\">document.getElementById('unlockgroupbuttons').style.display = 'none'</script>";
+		}
+		elseif (!$group->isUnlocked())
+		{
+			echo "<script type=\"text/javascript\">document.getElementById('unlockgroupbuttons').style.display = 'block'</script>";
+		}
+	}
+}
+?>

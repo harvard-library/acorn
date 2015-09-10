@@ -1,0 +1,207 @@
+@charset "utf-8";
+/* CSS Document */
+
+thead {visibility:visible; display: table-header-group;}
+
+.filenamediv {
+text-align: center;
+margin-bottom: 10px;
+}
+
+.adminfilenamediv {
+text-align: center;
+margin-bottom: 10px;
+float: left;
+width: 70%;
+}
+
+.deletediv {
+margin-left: 5px;
+margin-top: 5px;
+float: left;
+width: 25%;
+}
+
+.drsimage {
+max-height: 200px;
+}
+
+#files .yui-dt-bd
+{
+overflow-x: auto;
+overflow-y: auto;
+}
+
+#dataTableContainer.yui-dt{
+height: 200px;
+overflow-y: auto;
+}
+
+article section {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  -webkit-transition: opacity 0.4s ease-in-out;
+  -moz-transition: opacity 0.4s ease-in-out;
+  -o-transition: opacity 0.4s ease-in-out;
+  -ms-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+}
+.wf-active article section,
+.wf-inactive article section {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+
+article,
+footer > div {
+  margin-left: auto;
+  margin-right: auto;
+}
+.dropzone,
+.dropzone *,
+.dropzone-previews,
+.dropzone-previews * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.dropzone {
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.02);
+  padding: 1em;
+}
+.dropzone.dz-clickable {
+  cursor: pointer;
+}
+
+.dropzone.dz-clickable * {
+  cursor: default;
+}
+.dropzone .dz-message {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+
+.dropzone .dz-default.dz-message {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  -o-transition: opacity 0.3s ease-in-out;
+  -ms-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+background-image: url("../images/spritemap.png");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  position: absolute;
+  width: 428px;
+  height: 123px;
+  margin-left: -214px;
+  margin-top: -61.5px;
+  top: 50%;
+  left: 50%;
+}
+.dropzone .dz-preview,
+.dropzone-previews .dz-preview {
+  background: rgba(255,255,255,0.8);
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+  vertical-align: top;
+  border: 1px solid #acacac;
+  padding: 6px 6px 6px 6px;
+}
+
+.dropzone .dz-preview .dz-error-mark,
+.dropzone-previews .dz-preview .dz-error-mark {
+  color: #ee162d;
+}
+
+.dropzone {
+  border: 1px solid rgba(0,0,0,0.03);
+min-height: 240px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.03);
+}
+
+.dropzone .dz-default.dz-message span {
+  display: none;
+}
+.dropzone.dz-square .dz-default.dz-message {
+  background-position: 0 -123px;
+  width: 268px;
+  margin-left: -134px;
+  height: 174px;
+  margin-top: -87px;
+}
+.dropzone.dz-drag-hover .dz-message {
+  opacity: 0.15;
+  filter: alpha(opacity=15);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
+}
+.dropzone.dz-started .dz-message {
+  display: block;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+.dropzone .dz-preview,
+.dropzone-previews .dz-preview {
+  -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.16);
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.16);
+  font-size: 14px;
+}
+.dropzone .dz-preview.dz-image-preview:hover .dz-details img,
+.dropzone-previews .dz-preview.dz-image-preview:hover .dz-details img {
+  display: block;
+  opacity: 0.1;
+  filter: alpha(opacity=10);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+}
+.dropzone .dz-preview.dz-success .dz-success-mark,
+.dropzone-previews .dz-preview.dz-success .dz-success-mark {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.dropzone .dz-preview.dz-error .dz-error-mark,
+.dropzone-previews .dz-preview.dz-error .dz-error-mark {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.dropzone .dz-preview.dz-error .dz-progress .dz-upload,
+.dropzone-previews .dz-preview.dz-error .dz-progress .dz-upload {
+  background: #ee1e2d;
+}
+.dropzone .dz-preview .dz-error-mark,
+.dropzone-previews .dz-preview .dz-error-mark,
+.dropzone .dz-preview .dz-success-mark,
+.dropzone-previews .dz-preview .dz-success-mark {
+  display: block;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  -webkit-transition: opacity 0.4s ease-in-out;
+  -moz-transition: opacity 0.4s ease-in-out;
+  -o-transition: opacity 0.4s ease-in-out;
+  -ms-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+}
+
+#dropzone {
+  -webkit-box-shadow: 0 0 50px rgba(0,0,0,0.13);
+  box-shadow: 0 0 50px rgba(0,0,0,0.13);
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+#dropzone .dropzone {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}

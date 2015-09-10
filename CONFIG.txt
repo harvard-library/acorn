@@ -1,0 +1,55 @@
+
+/home/acorn/<instance>/application/bootstrap.php - Zend's bootstrap file: Zend loader, 
+	path configurations (required by index.php)
+        To change the instances between dev, test, and prod, simply change the '$env' variable 
+        in this file to the correct instance. 
+        When you upload the file to the server, it will then run that instance. 
+        The two things that this variable affects are the type of logging that occurs and 
+        the database instance to use.
+
+/home/acorn/<instance>/application/clibootstrap.php - Zend's bootstrap file for the command-line routine: 
+    Zend loader, path configurations (required by index.php)
+        To change the instances between dev, test, and prod, simply change the '$env' variable 
+        in this file to the correct instance. When you upload the file to the server, 
+        it will then run that instance. 
+        The two things that this variable affects are the type of logging that occurs and 
+        the database instance to use.
+
+Create the /home/acorn/<instance>/application/config.ini - basic configuration file for paths, 
+	log levels, etc. - A template is provided.
+
+Create the /home/acorn/<instance>/application/dbconfig.ini - database configuration file - a template is provided
+
+Place the /conf directory into /home/acorn/conf - This directory holds the virtual host configuration.  This must be included in the /etc/httpd/conf/httpd.conf file 
+	and apache restarted for it to have any effect.
+	
+Place the /bb and /bb2 directories into the /home/acorn/bb and /home/acorn/bb2.
+
+Place the /drsscripts directories into the /home/acorn/drsscripts directory
+
+Make sure that all scripts in the directories are executatble by acornadm (bb, bb2, and drsscripts)
+
+/home/acorn/public/scripts/acorn.js - Make sure the correct baseURL variable is set at the top of this file
+
+Make sure to chmod the necessary directories
+chmod o=rwx /home/acorn/<instance>/logs/
+
+chmod o=rwx /home/acorn/<instance>/acorn_sessions/
+
+chmod o=rwx /home/acorn/<instance>/public/userfiles/
+
+chmod -R o=rwx /home/acorn/<instance>/public/userreports/
+
+chmod -R o=rwx /home/acorn/<instance>/public/drsstagingfiles/drs1
+
+chmod -R o=rwx /home/acorn/<instance>/public/drsstagingfiles/drs2
+
+Create the crontab.  Cron info is in the conf/crontab.txt file
+
+ACORN also requires that keys be set up for the DRS dropboxes:
+The prod requirements are:
+
+acornftp@drsdrop.hul.harvard.edu
+drs2_acornftp@drsdrop.hul.harvard.edu
+
+Check the config.ini file for the dev/qa requirements.

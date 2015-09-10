@@ -1,0 +1,167 @@
+<?php 
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/group.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/group.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/includes.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/customelements.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/grouprecords.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/matchingtransfergrouprecords.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/transfers.js');
+
+
+$auth = Zend_Auth::getInstance();
+$identity = $auth->getIdentity();
+$accesslevel = $identity[PeopleDAO::ACCESS_LEVEL];
+$userid = $identity[PeopleDAO::PERSON_ID];
+
+$tab = GroupNamespace::getRenderTab();
+
+$title = "";
+$groupid = 0;
+$group = GroupNamespace::getCurrentGroup();
+if (isset($group))
+{
+	$groupid = $group->getPrimaryKey();
+	if (is_null($groupid))
+	{
+		$groupid = 0;
+		$title = "New Group";
+	}
+	else 
+	{
+		$title = "Group " . $group->getGroupName();
+	}
+}
+else 
+{
+	$title = "New Group";
+}
+
+//If this is a group view, then display the group name as the title
+//Otherwise display the action as the title
+$request = Zend_Controller_Front::getInstance()->getRequest();
+if ($request->getActionName() == "index")
+{
+	$this->headTitle($title);
+}
+else 
+{
+	$this->headTitle($request->getActionName())
+     	->headTitle($request->getControllerName());
+}
+
+$savestatus = GroupNamespace::getSaveStatus();
+GroupNamespace::setSaveStatus(GroupNamespace::SAVE_STATE_IDLE);
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="displaySaveStatus(\'' . $savestatus . '\'); initButtons(\'' . $accesslevel . '\', \'' . $userid . '\', \'' . $groupid . '\'); initTabViewBrowserHistory(\'' . $tab . '\'); loadAutoCompleteTextBoxes();"');
+?>
+
+<style type="text/css">
+#yui-history-iframe {
+  position:absolute;
+  top:0; left:0;
+  width:1px; height:1px; /* avoid scrollbars */
+  visibility:hidden;
+}
+
+</style>
+
+
+<!-- Static markup required for browser history management. Note that these
+     could be created using document.write in a script block. But they have
+     to be created while the page is being parsed, so it cannot be done
+     from an imported script file. Also, these have to be created as early
+     as possible to avoid problems on Internet Explorer.
+     Note that "magic URLs" such as:
+
+         javascript:document.open();document.write(new Date().getTime());document.close();
+
+     and such do NOT work on IE6! Only a real document works (that "real
+     document" does not need to be an HTML document. It can be an image
+     as well. Using an asset that you use somewhere else on your site,
+     instead of a separate asset avoids an unnecessary server round trip.
+     Finally, note that the iframe is only used on Internet Explorer.
+     If this page is server generated (by a PHP script for example), it is
+     a good idea to create the IFrame ONLY for Internet Explorer (use
+     server side user agent sniffing) -->
+<iframe id="yui-history-iframe" src="<?php echo $this->baseUrl()?>/assets/blank.html"></iframe>
+<input id="yui-history-field" type="hidden">
+
+<div id="recordinfo">
+	<h1 class="recordtitle"><?php echo $this->placeholder("groupnumber")?></h1>
+    <div id="statusdiv">Your records have been saved!</div>
+</div>
+<div id="groupcontent">
+
+
+<div id="demo" class="yui-navset yui-navset-top">
+  <ul class="yui-nav">
+    <li title="active" class="selected"><a href="#tab1"><em>Identification</em></a></li>
+    <li title="" class=""><a href="#tab2"><em>Login</em></a></li>
+    <li title="" class=""><a href="#tab3"><em>Proposal</em></a></li>
+    <li title="" class=""><a href="#tab4"><em>Report</em></a></li>
+    <li title="" class=""><a href="#tab5"><em>Logout</em></a></li>
+    <li title="" class=""><a href="#tab6"><em>Files</em></a></li>
+    <li id="temptransfer" title="" class=""><a href="#tab7"><em>Temp Transfer</em></a></li>
+    <li id="temptransferreturn" title="" class=""><a href="#tab8"><em>Temp Transfer Return</em></a></li>
+  </ul>
+  <div class="yui-content">
+
+    <div id="tab1"><?php echo $this->form->groupidentificationform ?></div>
+    <div id="tab2"><?php echo $this->form->grouploginform ?></div>
+    <div id="tab3"><?php echo $this->form->groupproposalform ?></div>
+    <div id="tab4"><?php echo $this->form->groupreportform ?></div>
+    <div id="tab5"><?php echo $this->form->grouplogoutform ?></div>
+    <div id="tab6"><?php echo $this->form->groupfileform ?></div>
+    <div id="tab7"><?php echo $this->form->grouptemporarytransferform ?></div>
+    <div id="tab8"><?php echo $this->form->grouptemporarytransferreturnform ?></div>
+    
+    <?php include ("matchingtransfergrouprecords.phtml"); ?>
+    <br>
+    <?php include ("transferlist.phtml"); ?>
+    <br>
+    <?php include ("grouprecords.phtml"); ?>
+  </div>
+</div>
+<?php echo $this->form->transferdialogform ?>
+</div>
+
+<?php 
+//Save button is hidden if there is a disable login message
+/*$hideSaveButton = FALSE;
+$group = GroupNamespace::getCurrentGroup();
+if (isset($group) && !is_null($group))
+{
+	//Find the disable message for the tab
+	switch($tab)
+	{
+		case GroupNamespace::LOGIN:
+			$disabledmessage = $group->getDisableLoginMessage();
+			break;
+		case GroupNamespace::LOGOUT:
+			$disabledmessage = $group->getDisableLogoutMessage();
+			break;
+		case GroupNamespace::TEMP_TRANSFER:
+			$disabledmessage = $group->getDisableTempTransferMessage();
+			break;
+		case GroupNamespace::TEMP_TRANSFER_RETURN:
+			$disabledmessage = $group->getDisableTempTransferReturnMessage();
+			break;
+		default:
+			$disabledmessage = "";
+	}
+	
+	if (!empty($disabledmessage))
+	{
+		$hideSaveButton = TRUE;
+	}
+}
+
+if ($hideSaveButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('matchingtransferbuttons').style.display = 'none'; </script>";
+}
+
+*/
+?>

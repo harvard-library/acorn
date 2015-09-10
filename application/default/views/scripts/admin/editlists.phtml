@@ -1,0 +1,38 @@
+<?php 
+$this->headTitle('Edit Lists');
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/custom.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/editlists.js');
+
+$auth = Zend_Auth::getInstance();
+$identity = $auth->getIdentity();
+$accesslevel = $identity[PeopleDAO::ACCESS_LEVEL];
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="initButtons(\'' . $accesslevel . '\');"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle">Edit Lists </h1>
+</div>
+<div id="editlistcontent">
+
+<div id="demo" class="yui-navset yui-navset-top">
+<div class="example">
+<div class="editlistinformation">
+    <div id="listtype" class="together">
+    	<?php echo $this->form->listtypeselect ?>
+    </div>
+
+	<div id="valuelist"></div>
+	
+	<div class="formerrors" id="editlisterrors"></div>
+	<br style="clear:both"/>
+	<div class="shortbuttonfooter" id="editlistbuttons">
+		<div class="buttondiv"><input type="button" value="Add New" id="addnewbutton"><input type="button" value="Export to Excel" id="exportbutton"></div>
+	</div>
+
+</div>
+</div>
+  </div>
+</div>
+</div>

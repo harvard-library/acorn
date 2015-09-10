@@ -1,0 +1,53 @@
+<div class="formerrors"><?php echo $this->placeholder("temptransferreturnerrormessage")?></div>
+<form id="recordtemporarytransferreturnform" name="recordtemporarytransferreturnform" method="post" action="<?php echo $this->baseUrl()?>/record/addtotransferlist" onsubmit="catchSubmit(this)">
+<div class="example">
+<?php echo $this->element->transferlistname ?>
+<div class="disabledmessage"><?php echo $this->placeholder("temptransferreturndisabledmessage")?></div>
+
+<?php echo $this->element->hiddentemptransferreturnitemid ?>
+<div class="logininformation">
+	<div class="together"><?php echo $this->element->transferreturndateinput ?></div>
+    <div class="calendarChooser" id="tempreturnCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->transferreturnfromselectform ?></div>
+    <div class="together"><?php echo $this->element->transferreturntoselectform ?></div>
+    <div class="together"><?php echo $this->element->returncommentstextarea ?></div>
+</div>  
+
+<div class="transferbuttonfooter" id="returnbuttons">
+    <div class="buttondiv" id="returntransferbuttondiv"><input type="button" value="Add to Return List" id="addtotempreturnlistbutton"></div>
+    <div class="buttondiv" id="returndeletebuttondiv"><input type="button" value="Delete Return" id="deletereturnbutton"></div>
+</div>
+
+</div>
+</form>
+
+<?php 
+//Save button is hidden if there is a disable logout message
+$hideSaveButton = FALSE;
+$hideDeleteButton = FALSE;
+$item = RecordNamespace::getCurrentItem();
+if (isset($item) && !is_null($item))
+{
+	$disabledmessage = $item->getDisableTempTransferReturnMessage();
+	if (!empty($disabledmessage))
+	{
+		$hideSaveButton = TRUE;
+		//If the item is not transferred out in, also disable the delete
+		//or if the item doesn't have a return
+		if (is_null($item->getFunctions()->getTemporaryTransfer()->getPrimaryKey())
+		|| is_null($item->getFunctions()->getTemporaryTransferReturn()->getPrimaryKey()))
+		{
+			$hideDeleteButton = TRUE;
+		}
+	}
+}
+
+if ($hideSaveButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('returntransferbuttondiv').style.display = 'none'</script>";
+}
+if ($hideDeleteButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('returndeletebuttondiv').style.display = 'none'</script>";
+}
+?>

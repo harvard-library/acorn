@@ -1,0 +1,287 @@
+@charset "utf-8";
+/* CSS Document */
+body{font-size:11px;}
+
+button {font-size: 12px;}
+
+#demo {text-align: left;
+height: 45em;
+}
+.functiontitle, .recordtitle {font-weight: bold; font-size: 16px;}
+
+.underconstruction {
+position: absolute;
+}
+
+#statusdiv {
+margin-top: 5px;
+margin-bottom: 5px;
+font-size: 14px;
+font-weight: bold;
+background-color: #ff0;
+
+}
+
+.recordstart {
+float: left;
+width: 45%;
+font-size: 10px;
+margin-bottom: 2em;
+}
+
+#acornimage {
+height: 25px;
+float: left;
+}
+
+.functiontitlediv {
+float: left;
+margin-left: 2%;
+width: 25%;
+margin-bottom: 1em;
+}
+
+/**********Menu *************/
+#acornfunctions {
+position: absolute;
+z-index: 10;
+}
+
+.yuimenu {
+z-index: 10;
+}
+/****************End of Menu ***********/
+
+#recordinfo {
+margin-bottom: .5em; 
+}
+
+legend {color:#000000;}
+
+label {float: left;width: 30%; min-width: 30%; text-align: right; padding-right: 5px; font-size: 11px;}
+
+.recordlabel {
+	float: none;
+	width: auto;
+	text-align:center;
+	padding-right: 0;
+}
+
+input, #storageinput, #authorinput, #courierinput, #courier2input, textarea{
+width: 60%;
+font-size: 11px;
+}
+
+#authorinput, #storageinput, #courierinput, #courier2input {
+position: relative;
+}
+
+select{
+width: 61%;
+font-size: 11px;
+}
+
+.left, .right {
+float: left;
+width: 49%;
+}
+
+.column1, .column2, .column3 {
+	width: 32%;
+	float: left;
+}
+
+.date {
+width: 7em;
+}
+
+.required{
+color: #91171D;
+}
+
+table {
+width: 100%;
+font: 95%;
+}
+
+td {height: 18px;}
+
+.number {
+width: 6em;
+}
+
+.checkboxinput {
+	width: 10px;
+}
+
+.checkboxlabel {
+	width: 95%;
+	float: none;
+	text-align: left;
+	padding: 0;
+	margin-left: .5em;
+}
+
+.commentslabel {
+	text-align: left;
+	margin-left: 1em;
+}
+
+fieldset {
+border: thin;
+border-style: solid;
+border-color: #D3D3D3;
+}
+
+#recorddetails {
+text-align: center;
+}
+
+.fulltextarea{
+width: 95%;
+height: 100px;
+}
+
+.radioinput {
+width: 10px;
+}
+
+.radiolabel {
+float: none;
+text-align: left; 
+padding-left: 5px;
+}
+
+.countlabel {
+float: none;
+text-align: center;
+}
+
+.yui-skin-sam .yui-button button, .yui-skin-sam .yui-button a
+{
+padding-top: 0pt;
+padding-right: 2px;
+padding-bottom: 0pt;
+padding-left: 2px;
+min-height: .5em;
+font-size: 11px;
+line-height: 1;
+}
+
+.fullbuttonfooter {
+width: 100%;
+text-align: right;
+}
+
+.shortbuttonfooter {
+float: right;
+margin-right: 5%;
+margin-bottom: 5px;
+text-align: right;
+
+}
+
+.transferbuttonfooter {
+float: right;
+margin-right: 25%;
+margin-bottom: 5px;
+text-align: right;
+}
+
+.yui-skin-sam .yui-dt-liner {
+    margin:0;padding:0;
+    padding:1px 10px 1px 10px; /* cell padding */
+}
+
+.together{clear: both;
+margin-bottom: 1px;}
+
+.yui-dt-editor {width: 250px; max-width: 250px;}
+
+.yui-dt-editor select, .yui-dt-editor input, .yui-dt-editor textarea {
+	width: 250px; 
+	max-width: 250px; 
+	min-width: 250px;
+}
+
+
+.datatable {
+width: 55%;
+float: left;
+margin-bottom: 2px;
+}
+
+.fulldatatable {
+width: 95%;
+margin-bottom: 2px;
+}
+
+.yui-skin-sam .yuimenubaritemlabel, .yui-skin-sam .yuimenuitemlabel {
+font-size: 11px;
+}
+
+#logout {
+width: 50%;
+float: right;
+text-align: right;
+padding-right: 5%;
+}
+
+#loginoption {
+text-align: right;
+padding-right: 5%;
+font-size: 12px;
+}
+
+.hint {
+font-size: 12px;
+font-weight: bold;
+color: #E00000;
+margin-bottom: 10px;
+}
+
+[disabled] {
+background-color: white;
+border:1px solid #CCCCCC;
+
+}
+
+.errors, .formerrors {
+color: blue;
+font-weight: bold;
+font-size: 12px;
+padding: 3px;
+}
+
+.formerrors {
+text-align: center;
+}
+
+.disabledmessage {
+font-weight: bold;
+text-align: center;
+margin-bottom: 5px;
+}
+
+.buttondiv {
+float: left;
+}
+
+.calendarChooser { 
+margin-left: 10%;
+display:none; 
+position:absolute; 
+z-index:2
+} 
+
+#couriercontainer, #courier2container {
+text-align: left;
+margin-left: 35%;
+width: 60%;
+}
+
+.yui-dt-scrollable .yui-dt-bd
+{
+overflow-x: hidden;
+overflow-y: auto;
+}

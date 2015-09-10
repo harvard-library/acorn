@@ -1,0 +1,20 @@
+[dev]
+db.adapter = PDO_MYSQL
+db.params.host = localhost
+db.params.username = <username>
+db.params.password = <password>
+db.params.dbname = acorndev
+
+[test]
+db.adapter = PDO_MYSQL
+db.params.host = localhost
+db.params.username = <username>
+db.params.password = <password>
+db.params.dbname = acornqa
+
+[prod]
+db.adapter = PDO_MYSQL
+db.params.host = localhost
+db.params.username = <username>
+db.params.password = <password>
+db.params.dbname = acorn

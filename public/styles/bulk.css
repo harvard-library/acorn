@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+
+#bulklogincontent, #bulklogoutcontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 0.25em;
+padding-right: 0.5em;
+padding-bottom: 0.25em;
+padding-left: 0.5em;}
+
+#bulklogincontent, #bulklogoutcontent {
+width: 87%;
+float: right;
+z-index: 1;
+margin-right: 5px;
+}
+
+#myrecordsarea {
+text-align: left;
+position: absolute;
+top: 50px;
+left: 5px;
+width: 7%;
+z-index: 5;
+}
+
+#matchingrecordslist{
+width: 95%;
+}
+
+/**************Login*******************/
+.logininformation {
+width: 60%;
+padding-left: 20%;
+}
+
+/*************End of Login***************/
+
+#yui-dt1-paginator1 {
+display: none;
+}

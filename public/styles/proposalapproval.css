@@ -1,0 +1,121 @@
+@charset "utf-8";
+/* CSS Document */
+
+#emailcontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 1em;
+padding-right: 0.5em;
+padding-bottom: 0.5em;
+padding-left: 0.5em;
+}
+
+#emailbuttons{
+width: 90%;
+text-align: right;
+clear:none;
+margin-top: 2px;
+}
+
+#summarydiv, #reportsummarydiv {
+width: 75%;
+margin-left: 12%;
+margin-bottom: 1%;
+padding: 3px;
+height: 300px;
+overflow:auto;
+border:1px solid #CCCCCC;
+}
+
+.titleheaders {
+font-weight: bold;
+float: left;
+width: 25%;
+}
+
+.singlecolumnheaders {
+font-weight: bold;
+float: left;
+width: 12%;
+}
+
+.data {
+float: left;
+width: 75%;
+}
+
+.singlecolumndata {
+float: left;
+width: 88%;
+}
+
+#historydiv {
+margin-bottom: 10px;
+}
+
+#commentscolumn, #historycommentscolumn {
+width: 65%;
+float: left;
+}
+
+#approvalcommentstextarea, #historycommentstextarea, #messageinput {
+height: 130px;
+overflow:auto;
+width: 68%;
+}
+
+#messageinput {
+height: 200px;
+overflow:auto;
+}
+
+#proposalapprovalcolumn, #historybuttoncolumn {
+width: 35%;
+float: right;
+}
+
+#historybuttoncolumn {
+padding-top: 40px;
+}
+
+#proposedhoursdiv, #completedhoursdiv {
+margin-top: 5%;
+text-align: center;
+font-weight: bold;
+font-size: 14px;
+color: #91171D;
+height: 50px;
+}
+
+#completedhoursdiv {
+margin-top: 1%;
+text-align: center;
+}
+
+.errors {
+padding-left: 35%;
+}
+
+#printproposalbuttondiv, #printreportbuttondiv  {
+float: right;
+width: 11%;
+padding-top: 100px;
+}
+
+#returntorecorddiv {
+text-align: right;
+margin-right: 5%;
+font-size: 12px;
+font-weight: bold;
+}
+
+#approvalbuttons, #historybuttons {
+margin-top: 10px;
+text-align: center;
+}
+

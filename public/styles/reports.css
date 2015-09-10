@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+
+#reportcontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 1em;
+padding-right: 0.5em;
+padding-bottom: 0.5em;
+padding-left: 0.5em;
+}
+
+.reportinformation {
+margin-left: 25%;
+width: 50%;
+}

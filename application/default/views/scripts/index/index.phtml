@@ -1,0 +1,30 @@
+<?php 
+$this->headTitle('User Login');
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/userlogin.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/customelements.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/userlogin.js');
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="initButtons(); loadRepositoryValues(); initContent()"');
+?>
+
+<form id="userloginform" name="userloginform" action="<?php echo $this->baseUrl()?>/index/process" method="post">
+<div id="userlogincontent">
+	<img alt="ACORN Title" src="/images/AcornTitle.jpg" border="0">
+    <div id="recordinfo">
+        <h1 class="recordtitle">Please Login </h1>
+    </div>
+    <div id="userlogindata">
+    	<? echo $this->form ?>
+        <div class="together"><?php echo $this->form->usernameinput ?></div>
+		<div class="together"><?php echo $this->form->passwordinput ?></div>
+		<div class="together"><?php echo $this->form->accesslevelselectform ?></div>
+		<div class="shortbuttonfooter">
+			<?php echo $this->form->userloginbutton ?>
+        </div>
+    </div>
+</div>
+</form>
+
+

@@ -1,0 +1,112 @@
+@charset "utf-8";
+/* CSS Document */
+
+#searchcontent, #fallbackcontent, #searchresultscontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 0.25em;
+padding-right: 0.5em;
+padding-bottom: 0.25em;
+padding-left: 0.5em;}
+
+
+#fallbackmessage {
+font-size: 12px;
+font-weight: bold;
+color: darkred;
+text-align: center;
+height: 200px;
+padding-top: 20px;
+}
+
+#recordnumbersearcharea{
+width: 60%;
+margin-left: 25%;
+}
+
+#searchgroupinformation {
+width: 60%;
+margin-left: 20%;
+}
+
+#groupselect {
+width: 45%;
+float: left;
+margin-right: 5px;
+}
+
+
+#recordnumberinput {
+margin-left: 5px;
+margin-right: 5px;
+}
+
+#recsearch, #advancedsearch {
+margin-top: 1em;
+margin-bottom: 1em;
+}
+
+#advancedsearch {
+padding: 5px;
+}
+
+
+#loadsavedarea, #savesearcharea {
+width: 50%;
+margin-left: 50%;
+}
+
+#savesearcharea {
+margin-top: 2em;
+}
+
+#savesearchinput {
+width: 55%;
+}
+
+
+
+#yui-dropdownceditor0-container, #yui-dropdownceditor4-container, 
+#yui-dropdownceditor0-container select, #yui-dropdownceditor4-container select{
+max-width: 40px;
+width: 40px;
+}
+
+#columnshowhide {
+margin-bottom: 1em;
+}
+
+#searcherrormessagesdiv{
+margin-left: 25%;
+}
+
+#orparagraphdiv {
+margin-left: 40%;
+font-weight: bold;
+}
+
+#yui-dt0-paginator1 {
+display: none;
+}
+
+#totalrecordcount{
+float: left;
+font-weight: bold;
+font-size: 12px;
+}
+
+#searchresultsbuttons
+{
+text-align: right;
+}
+
+#columnshowhide .yui-dt-bd
+{
+overflow-x: auto;
+overflow-y: auto;
+}

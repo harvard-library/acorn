@@ -1,0 +1,33 @@
+
+<div id="matchingtransfergrouprecordarea">
+Matching Group Records
+<div id="matchingtransfergrouprecords"></div>
+
+<div class="fullbuttonfooter" id="matchingtransferbuttons">
+<input type="button" value="Add to Transfer List" id="matchingaddtotransferlistbutton" />
+<input type="button" value="Save" id="savematchinggroupbutton" />
+<input type="button" value="Remove From List" id="removefrommatchinggroupbutton" />
+</div>
+
+</div>
+
+<?php 
+//Save button is hidden if there is a disable login message
+$hideSaveButton = FALSE;
+$group = GroupNamespace::getCurrentGroup();
+if (isset($group) && !is_null($group))
+{
+	$disabledmessage = $group->getDisableLoginMessage();
+	if (!empty($disabledmessage))
+	{
+		$hideSaveButton = TRUE;
+	}
+}
+
+if ($hideSaveButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('matchingtransferbuttons').style.display = 'none'; </script>";
+}
+
+
+?>

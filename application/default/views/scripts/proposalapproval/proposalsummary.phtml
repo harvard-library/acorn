@@ -1,0 +1,66 @@
+<div class="formerrors"><?php echo $this->placeholder("summaryerrormessage")?></div>
+<form id="approvalform" name="approvalform" method="post" action="<?php echo $this->baseUrl()?>/proposalapproval/saveapproval">
+<div class="example">
+<div class="disabledmessage"><?php echo $this->placeholder("approvaldisabledmessage")?></div>
+<div id="printproposalbuttondiv"><input type="button" value="Print Proposal" id="printproposalbutton"></div>
+<div id="summarydiv">
+	<div class="left">
+		<div class="together"><div class="titleheaders">Repository:</div><div class="data"> <?php echo $this->placeholder("repository");?></div></div>
+		<div class="together"><div class="titleheaders">Curator:</div><div class="data"> <?php echo $this->placeholder("curator");?></div></div>
+		<div class="together"><div class="titleheaders">Approving Curator:</div><div class="data"> <?php echo $this->placeholder("approvingcurator");?></div></div>
+		<div class="together"><div class="titleheaders">Project:</div><div class="data"> <?php echo $this->placeholder("project");?></div></div>
+		<div class="together"><div class="titleheaders">Group:</div><div class="data"> <?php echo $this->placeholder("group");?></div></div>
+		<div class="together"><div class="titleheaders">Coordinator:</div><div class="data"> <?php echo $this->placeholder("coordinator");?></div></div>
+		<div class="together"><div class="titleheaders">Item Counts:</div><div class="data"> <?php echo $this->placeholder("counts");?></div></div>
+	</div>
+	
+	<div class="right">
+		<div class="together"><div class="titleheaders">Call Numbers:</div><div class="data"> <?php echo $this->placeholder("callnumbers");?></div></div>
+		<div class="together"><div class="titleheaders">Author/Artist:</div><div class="data"> <?php echo $this->placeholder("author");?></div></div>
+		<div class="together"><div class="titleheaders">Title:</div><div class="data"> <?php echo $this->placeholder("itemtitle");?></div></div>
+		<div class="together"><div class="titleheaders">Date of Object:</div><div class="data"> <?php echo $this->placeholder("dateofobject");?></div></div>
+		<div class="together"><div class="titleheaders">Size:</div><div class="data"> <?php echo $this->placeholder("size");?></div></div>
+	</div>
+	
+	<br style="clear: both"/>
+	<div class="together"><div class="singlecolumnheaders">Comments:</div><div class="singlecolumndata"> <?php echo $this->placeholder("comments");?><br/><br/></div></div>
+	<div class="together"><div class="singlecolumnheaders">Description:</div><div class="singlecolumndata"> <?php echo $this->placeholder("description");?><br/><br/></div></div>
+	<div class="together "><div class="singlecolumnheaders">Condition:</div><div class="singlecolumndata"> <?php echo $this->placeholder("condition");?><br/><br/></div></div>
+	<div class="together"><div class="singlecolumnheaders">Proposed Treatment:</div><div class="singlecolumndata"> <?php echo $this->placeholder("treatment");?><br/><br/></div></div>
+</div>
+
+<?php echo $this->element->hiddenapprovaltype ?>
+
+<div id="commentscolumn">
+	<div class="together"><?php echo $this->element->approvalcommentstextarea ?></div>
+</div>
+
+<div id="proposalapprovalcolumn">
+	<div id="proposedhoursdiv"><?php echo $this->placeholder("proposedhours");?></div>
+	<div class="contactarea">
+		<div class="together" id="summaryauthordiv"><?php echo $this->element->summaryauthorselect ?></div>
+		<div class="together"><?php echo $this->element->summarytoinput ?></div>
+		<div class="together"><?php echo $this->element->summaryccinput ?></div>
+	</div>
+	<div id="approvalbuttons">
+		<input type="button" value="Approve" id="approvebutton">
+    	<input type="button" value="Deny" id="denybutton">
+		<input type="button" value="Add Comment" id="amendbutton">
+	</div>
+</div>
+
+</div>
+</form>
+<?php 
+$item = RecordNamespace::getCurrentItem();
+if (!isset($item) || is_null($item))
+{
+	echo "<script type=\"text/javascript\">document.getElementById('approvalbuttons').style.display = 'none';</script>";
+}
+else 
+{
+	echo "<script type=\"text/javascript\">document.getElementById('approvalbuttons').style.display = 'block'</script>";
+}
+
+
+?>

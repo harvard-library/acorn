@@ -1,0 +1,37 @@
+<?php 
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle("Record Not Member of Your Repository");
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/errors.css');
+
+$this->placeholder('body')->set('class="yui-skin-sam"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle">Record Not Member of Your Repository</h1>
+</div>
+<div id="notinrepositorycontent">
+
+<div id="demo" class="yui-navset yui-navset-top">
+  <form id="notinrepositoryform" name="notinrepositoryform" method="get" action="<?php echo $this->baseUrl()?>/user/index">
+<div class="example">
+<div class="notinrepositoryinformation">
+ <div id="notinrepositorymessage">
+ 	<?php echo $this->placeholder("recordnumberlabel")?> is not part of your repository.  Please contact the ACORN administrator if you must have rights to view this record.
+</div>
+	 <div id="notinrepositorybuttondiv" class="notinrepositorybuttondiv"><input type="button" value="OK" id="notinrepositorybutton" /></div>
+ 
+</div>
+</div>
+</form>
+  </div>
+</div>
+
+<script type="text/javascript">
+function onButtonReady() {
+
+	//Makes the buttons YUI widgets for a nicer look.
+	var oButton = new YAHOO.widget.Button("notinrepositorybutton", {type: "submit"});
+}
+
+YAHOO.util.Event.onContentReady("notinrepositorybutton", onButtonReady);
+</script>

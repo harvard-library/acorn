@@ -1,0 +1,75 @@
+@charset "utf-8";
+/* CSS Document */
+
+#personprofilecontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 1em;
+padding-right: 0.5em;
+padding-bottom: 0.5em;
+padding-left: 0.5em;
+}
+
+#editornewarea, #personinformation, #passwordinformation {
+margin-left: 15%;
+width: 70%;
+}
+
+#inactivediv{
+text-align: right;
+margin-right: 10%;
+}
+#personautocomplete, #newperson {
+width: 50%;
+margin-bottom: 1.5em;
+float: left;
+}
+
+#personcontainer {
+margin-left: 36%;
+width: 55%;
+}
+
+#personinput {
+width: 60%;
+}
+
+#createnewbutton{
+margin-left: 1em;
+}
+
+#personname{
+font-size: 14px;
+font-weight: bold;
+text-align: center;
+}
+
+.personbuttonfooter{
+width: 90%;
+text-align: right;
+clear:none;
+margin-top: 2px;
+}
+
+#roletypelist {
+width: 58%;
+float: left;
+margin-bottom: 2px;
+
+}
+
+#roletypearea {
+width: 58%;
+margin-left: 30%;
+padding-left: 5px;
+}
+
+#drsemailsdiv{
+padding: 10px 10px 0 5px;
+margin-left: 30%;
+}

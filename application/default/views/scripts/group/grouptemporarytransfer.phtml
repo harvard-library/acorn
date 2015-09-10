@@ -1,0 +1,17 @@
+<div class="formerrors"><?php echo $this->placeholder("temptransfererrormessage")?></div>
+<h1 class="functiontitle" align="center">Temporary Transfer</h1>
+
+<form id="grouptemporarytransferform" name="grouptemporarytransferform" method="post" action="<?php echo $this->baseUrl()?>/group/addtotransferlist">
+<div class="example">
+<?php echo $this->element->transferlistname ?>
+<?php echo $this->element->transferids6 ?>
+<div class="disabledmessage"><?php echo $this->placeholder("temptransferdisabledmessage")?></div>
+<div class="logininformation">
+	<div class="together"><?php echo $this->element->transferdateinput ?></div>
+    <div class="calendarChooser" id="temptransferCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->transferfromselectform ?></div>
+    <div class="together"><?php echo $this->element->transfertoselectform ?></div>
+	<div class="together"><?php echo $this->element->temptransfercommentstextarea ?></div>
+</div>  
+</div>
+</form>

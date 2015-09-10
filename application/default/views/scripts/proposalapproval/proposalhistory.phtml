@@ -1,0 +1,33 @@
+<div class="formerrors"><?php echo $this->placeholder("historyerrormessage")?></div>
+<form id="historyform" name="historyform" method="post" action="<?php echo $this->baseUrl()?>/proposalapproval/savecomment#tabview=tab1" onsubmit="catchSubmit(this)">
+<div class="example">
+<div id="historydiv">
+</div>
+<div id="historycommentscolumn">
+	<div class="together"><?php echo $this->element->historycommentstextarea ?></div>
+</div>
+
+<div id="historybuttoncolumn">
+	<div class="contactarea">
+		<div class="together" id="historyauthordiv"><?php echo $this->element->historyauthorselect ?></div>
+		<div class="together"><?php echo $this->element->historytoinput ?></div>
+		<div class="together"><?php echo $this->element->historyccinput ?></div>
+	</div>
+	<div id="historybuttons">
+		<input type="button" value="Add Comment" id="commentbutton">
+	</div>
+</div>
+
+</div>
+</form>
+<?php 
+$item = RecordNamespace::getCurrentItem();
+if (!isset($item) || is_null($item))
+{
+	echo "<script type=\"text/javascript\">document.getElementById('historybuttons').style.display = 'none';</script>";
+}
+else 
+{
+	echo "<script type=\"text/javascript\">document.getElementById('historybuttons').style.display = 'block'</script>";
+}
+?>

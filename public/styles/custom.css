@@ -1,0 +1,58 @@
+@charset "utf-8";
+/* CSS Document */
+
+#customtextcontent, #editlistcontent, #savedsearchcontent {text-align: left;
+background-color: #edf5ff;
+background-repeat: repeat;
+background-attachment: scroll;
+background-position: 0% 0%;
+border-width: 1px;
+border-style: solid;
+border-color: #808080;
+padding-top: 0.25em;
+padding-right: 0.5em;
+padding-bottom: 0.25em;
+padding-left: 0.5em;
+}
+
+#customtexttype, #listtype {
+margin-left: 25%;
+width: 50%;
+margin-bottom: 2em;
+padding-top: 1em;
+}
+
+#savedsearchlist, .savedsearchbuttonfooter {
+margin-left: 15%;
+width: 70%;
+}
+
+#customtextlist, #valuelist {
+margin-left: 3%;
+width: 94%;
+}
+
+#customtextbuttons, #editlistbuttons {
+margin-right: 5%;
+}
+
+/* Class for marked rows */
+.yui-skin-sam .yui-dt tr.newitem,
+.yui-skin-sam .yui-dt tr.newitem td.yui-dt-asc,
+.yui-skin-sam .yui-dt tr.newitem td.yui-dt-desc,
+.yui-skin-sam .yui-dt tr.newitem td.yui-dt-asc,
+.yui-skin-sam .yui-dt tr.newitem td.yui-dt-desc {
+    background-color: #a33;
+    color: #fff;
+}
+
+.customtextbuttonfooter, .savedsearchbuttonfooter {
+text-align: right;
+}
+
+.yui-dt-editor textarea
+{
+height: 200px;
+min-height: 200px;
+}
+

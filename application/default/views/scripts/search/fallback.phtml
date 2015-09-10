@@ -1,0 +1,33 @@
+<?php 
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle($request->getActionName())
+     ->headTitle($request->getControllerName());
+     
+/* Combo-handled YUI CSS files: */
+//$this->headLink()->appendStylesheet('http://yui.yahooapis.com/combo?2.7.0/build/reset-fonts-grids/reset-fonts-grids.css&2.7.0/build/menu/assets/skins/sam/menu.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/recordsearch.css');
+
+/* Combo-handled YUI JS files: */
+//$this->headScript()->appendFile($this->baseUrl() . '/scripts/recordstatus.js');
+//$this->headScript()->appendFile('http://yui.yahooapis.com/combo?2.7.0/build/yahoo-dom-event/yahoo-dom-event.js&2.7.0/build/container/container_core-min.js&2.7.0/build/menu/menu-min.js');
+
+$this->placeholder('body')->set('class="yui-skin-sam"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle">Column Chooser Error </h1>
+</div>
+<div id="fallbackcontent">
+
+<!-- Static markup required for the TabView widget. -->
+
+<div id="demo" class="yui-navset yui-navset-top">
+<div class="example">
+<div id="fallbackmessage">
+	An error occurred when attempting to load the column chooser.<br>
+	Please notify the ACORN administrator of this error. <br>
+	Press back to continue.  
+</div>
+</div>
+
+</div>
+</div>

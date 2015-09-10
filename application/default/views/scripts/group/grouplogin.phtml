@@ -1,0 +1,18 @@
+<div class="formerrors"><?php echo $this->placeholder("loginerrormessage")?></div>
+<h1 class="functiontitle" align="center">Group Login</h1>
+
+<form id="grouploginform" name="grouploginform" method="post" action="<?php echo $this->baseUrl()?>/grouplogin/savelogin">
+<div class="example">
+<?php echo $this->element->transferlistname ?>
+<?php echo $this->element->transferids1 ?>
+<div class="disabledmessage"><?php echo $this->placeholder("logindisabledmessage")?></div>
+<div class="logininformation">
+	<div class="together"><?php echo $this->element->logindateinput ?></div>
+	<div class="calendarChooser" id="loginCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->loginbyselectform ?></div>
+	<div class="together"><?php echo $this->element->loginfromselectform ?></div>
+	<div class="together"><?php echo $this->element->logintoselectform ?></div>      
+</div> 
+</div>
+</form>
+

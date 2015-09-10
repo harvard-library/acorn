@@ -1,0 +1,295 @@
+@charset "utf-8";
+/* CSS Document */
+
+#recordcontent {
+width: 88%;
+float: right;
+z-index: 1;
+margin-right: 5px;
+}
+
+
+
+#myrecordsarea {
+text-align: left;
+position: absolute;
+top: 100px;
+left: 5px;
+width: 7%;
+z-index: 5;
+}
+
+#editprojectbutton{
+text-align: center;
+font-size: 80%;
+padding: 0;
+}
+
+#projectselect{
+width: 50%;
+}
+
+#storageautocomplete {
+margin-bottom: .5em;
+}
+
+#storagecontainer, #authorcontainer{
+margin-left: 31%;
+width: 55%;
+}
+
+#authorcontainer{
+margin-top: 20px;
+position: absolute;
+}
+
+/**********************Delete Buttons ***********************/
+#deletebutton, #deleteloginbutton, #deletelogoutbutton, #deletetransferbutton, #deletereturnbutton, #deleteoswbutton{
+margin-left: 3em;
+}
+/*****************End of Delete Buttons *****************/
+
+
+/******************** Identification *****************/
+
+#recordtombstone{
+padding-top: 4px;
+margin-top: 3px;
+}
+
+#hollisnumberinput {
+width: 30%;
+}
+
+#miscinfo {
+min-height: 130px; 
+height: 130px;
+}
+
+#countnoncollcontainer {
+width: 30%;
+float: left;
+margin-right: 1px;
+}
+
+#commentscontainer{
+position: absolute;
+width: 25%;
+left: 33%;
+}
+
+#repositorycontainer {
+position: absolute;
+width: 40%;
+left: 59%;
+}
+
+#noncollectioncontainer {
+text-align: center;
+}
+
+#commentstextarea {
+width: 98%;
+height: 100px;
+overflow:auto;
+}
+
+#repositorymemotextarea { 
+height: 50px;
+overflow: auto;
+}
+
+#commentsfieldset, #repositoryfieldset {
+height: 125px;
+}
+
+.countfieldset {
+width: 85%;
+}
+
+#callnumberdiv ul, #titlediv ul, #hollisnumberdiv ul, #callnumbermessage {
+ float: left;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+#callnumbermessage {
+ float: left;
+  width: 60%;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.overridebuttondiv {
+ display: none; 
+}
+
+/*#curatorlist {
+width: 56%;
+float: left;
+}*/
+/**************End of Identification***********/
+
+/**************Login*******************/
+.logininformation {
+width: 60%;
+padding-left: 20%;
+}
+
+.fromoverridediv {
+position: absolute;
+margin-left: 55%;
+}
+
+/*************End of Login***************/
+
+
+/**************Logout******************/
+#logoutinformation {
+width: 60%;
+padding-left: 20%;
+}
+/*************End of Logout***************/
+
+
+/***********************Proposal******************/
+.proposalcolumn1, .proposalcolumn2 {
+	width: 39%;
+	float: left;
+}
+
+.proposaldimensionscolumn {
+	width: 20%;
+	float: left;
+}
+
+#proposedhoursdiv {
+padding-left: 30%;
+padding-bottom: 10px;
+width: 50%;
+}
+
+#proposaldims {
+clear: both;
+width: 100%;
+}
+
+#unitselect{
+margin-left: 30%;
+width: 30%; 
+margin-bottom: 3px;
+}
+
+#proposalcommentstextarea{
+height: 75px;
+overflow:auto;
+}
+
+.fullproposaltextarea{
+width: 95%;
+height: 250px;
+}
+/************End of Proposal ***********/
+
+/**********Report*****************/
+#reporthoursdiv {
+padding-left: 40%;
+padding-bottom: 1%;
+width: 50%;
+}
+
+#presrectextarea {
+height: 120px;	
+}
+
+#presrec1select, #presrec2select {
+width: 45%;
+}
+
+#reportchecksdiv{
+padding-left: 10%;
+padding-bottom: 1em;
+width: 90%;
+}
+
+#reporttreatmenttextarea {
+height: 150px;
+}
+
+#reporttreatmentsummarytextarea { 
+height: 90px;
+}
+
+#reportunitselect{
+margin-left: 30%;
+width: 30%; 
+margin-bottom: 3px;
+}
+
+.reportdimsdiv {
+width: 30%;
+margin-right: 2px;
+float: left;
+text-align: center;
+}
+
+.treatmentlabel {
+width: 100%; 
+text-align: left;
+}
+
+#reportinfo {
+min-height: 160px; 
+height: 160px;
+}
+
+.reportcolumn1 {
+width: 40%;
+float: left;
+margin-right: 1px;
+}
+
+.reportcolumn2{
+position: absolute;
+width: 28%;
+left: 42%;
+}
+
+.reportcolumn3 {
+position: absolute;
+width: 25%;
+left: 72%;
+}
+
+/*********************End of Report***************/
+
+/************** Files ************/
+#nondigitaldiv {
+padding-left: 25%; 
+float: left; 
+width: 25%;}
+
+#files {
+margin-bottom: 1em;
+}
+
+#deletebuttondiv {
+float: right;
+}
+
+/*************End of Files*******************/
+
+
+/*****************Transfers****************/
+#temptransfercommentstextarea, #returncommentstextarea{
+height: 100px;
+overflow:auto;
+}
+
+/*************End of Transfers*******************/
+
+
+
+
+
+

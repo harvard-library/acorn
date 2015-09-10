@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Default Layout for ACORN
+ *  
+ * @author Valdeva Crema
+ */
+
+echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+
+?>
+
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<?php echo $this->headTitle(); ?>
+		
+		<?php include("jsincludes.phtml"); ?>
+		<?php echo $this->headScript(); ?>
+	    
+	    <?php include("cssincludes.phtml"); ?>
+		<?php echo $this->headLink(); ?>
+	    
+	    <style type="text/css">
+			#logcontainer {position:relative;float:right;margin:1em;}
+		/*margin and padding on body element
+		  can introduce errors in determining
+		  element position and are not recommended;
+		  we turn them off as a foundation for YUI
+		  CSS treatments. */
+		body {
+			margin:0;
+			padding:0;
+		}
+		</style>
+
+	</head>
+	
+	<body <?php echo $this->placeholder('body') ?>>
+		<h1><?php echo $this->placeholder('title') ?></h1>
+		
+		<?php 
+			/* This is the authorization handler.  */
+			$auth = Zend_Auth::getInstance();
+			
+			/*
+			 * See if there is someone logged into the session.
+			 * If so, display the menu and the logout options.
+			 */
+	        if ($auth->hasIdentity()) {
+	        	$identity = $auth->getIdentity();
+	        	
+				$displayname = $identity[PeopleDAO::DISPLAY_NAME];
+				echo '<div id="logout">';
+	           	echo  $displayname .' <a href="' . $this->baseUrl() . '/index/logout">Logout</a>';
+	           	echo '</div>';
+	           	include('menu.phtml');  
+	        }
+	        else 
+	        {
+	        	echo '<div id="loginoption" class="yuimenubar yuimenubarnav">';
+	           	echo '<a href="' . $this->baseUrl() .'/index">Login</a>';
+	           	echo '</div>';
+	        }
+        ?>
+        <div id="logcontainer"></div>
+        <?php echo $this->layout()->content ?>
+
+		<br>
+		<br>
+	</body>
+
+</html>

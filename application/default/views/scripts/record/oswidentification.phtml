@@ -1,0 +1,59 @@
+<div class="formerrors"><?php echo $this->placeholder("oswerrormessage")?></div>
+<div class="recordstart" id="recordcreation">Record Created <?php echo $this->placeholder('createdate') ?> by <?php echo $this->placeholder('createdby')?></div>
+
+<div class="functiontitlediv"><h1 class="functiontitle" >OSW Identification</h1></div>
+<br style="clear: both">
+<form id="oswidentificationform" name="oswidentificationform" method="post" action="<?php echo $this->baseUrl()?>/osw/saveosw" onsubmit="catchSubmit(this)">
+<div class="example">
+<div class="disabledmessage"><?php echo $this->placeholder("oswdisabledmessage")?></div>
+
+<?php echo $this->element->callnumbererrorhidden ?>
+<?php echo $this->element->hiddenoswid ?>
+<div class="left">
+	<div class="together"><?php echo $this->element->titleinput ?></div>
+    <div class="together"><?php echo $this->element->repositoryselectform ?></div>
+    <div class="together"><?php echo $this->element->chargetoselectform ?></div>
+    <div class="together"><?php echo $this->element->curatorselectform ?></div>
+    <div class="together"><?php echo $this->element->projectselectform ?></div>
+    <div class="together"><?php echo $this->element->groupselectform ?></div>
+    <div class="together"><?php echo $this->element->purposeselectform ?></div>
+	<div class="together"><label class="inputlabel">Call Number(s)</label><div id="callnumbercells" class="datatable"></div></div>
+	<div class="together" id="callnumberdiv"><?php echo $this->element->callnumberhidden?><div class="overridebuttondiv" id="idsavecallbuttondiv"><div id="callnumbermessage" class="errors"></div><input type="button" value="Override" id="savecallnumberbutton"></div></div>
+	<div class="together"><?php include ("finalcounts.phtml"); ?></div>
+</div>
+<div class="right">
+	<div class="together"><?php echo $this->element->worklocationselectform ?></div>
+    <div class="together"><?php include ("workdoneby.phtml"); ?></div>
+    <div class="together"><?php echo $this->element->workdonebyhidden?></div>
+    <div class="together">
+    	<?php echo $this->element->workstartdateinput ?> Work End Date<?php echo $this->element->workenddateinput ?>
+    </div>
+    <div class="calendarChooser" id="workstartCalendarChooserContainer"></div><div class="calendarChooser" id="workendCalendarChooserContainer"></div>
+    <div class="together"><?php include ("worktype.phtml"); ?></div>
+    <div class="together"><?php echo $this->element->worktypehidden?></div>
+    <div class="together"><?php echo $this->element->formatselectform ?></div>
+    <div class="together"><?php echo $this->element->commentstextarea ?></div>
+</div>
+
+
+
+<br style="clear:both;">
+<hr />
+
+<div id="oswworkdescriptiondiv">
+	<div class="together"><?php echo $this->element->workdescriptiontextarea ?></div>
+</div>
+<div id="oswhours">
+	<div class="oswhoursleft"><?php echo $this->element->proposedhours ?></div>
+	<div class="oswhoursright"><?php echo $this->element->actualhours ?></div>
+</div>
+
+
+<div class="shortbuttonfooter" id="identificationbuttons">
+	<input type="button" value="Save" id="saveoswbutton">
+    <input type="button" value="Clear Changes" id="clearoswbutton">
+    <input type="button" value="Delete Record" id="deleteoswbutton">
+   </div>
+</div>
+
+</form>

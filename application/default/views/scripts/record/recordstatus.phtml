@@ -1,0 +1,83 @@
+<?php 
+$item = RecordNamespace::getCurrentItem();
+if (isset($item))
+{
+	$itemid = $item->getItemID();
+	if (is_null($itemid))
+	{
+		$itemid = 0;
+		$title = "Can not display status.";
+	}
+	else 
+	{
+		$title = "Record Status for Record #" . $itemid;
+	}
+}
+else 
+{
+	$title = "Can not display status.";
+}
+$this->headTitle($title);
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/recordstatus.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/recordstatus.js');
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="initButtons(); loadStatus()"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle"><?php echo $this->placeholder("recordstatustitle")?></h1>
+</div>
+<div id="statuscontent">
+
+<!-- Static markup required for the TabView widget. -->
+
+<div id="demo" class="yui-navset yui-navset-top">
+<form id="statusform" name="statusform" method="get" action="">
+<div class="example">
+<fieldset id="statusfieldset"><legend class="status">Status</legend>
+<div id="currentstatus"><?php echo $this->placeholder("currentstatus")?></div>
+</fieldset>
+<fieldset id="proposalapprovalfieldset"><legend class="status">Proposal Approval</legend>
+<div id="proposalapproval"><?php echo $this->placeholder("proposalapproval")?></div>
+</fieldset>
+
+<fieldset id="iteminformationfieldset"><legend class="status">Item Information</legend>
+<div class="left">
+	<div class="together"><?php echo $this->form->callnumberinput ?></div>
+    <div class="together"><?php echo $this->form->titleinput ?></div>
+    <div class="together"><?php echo $this->form->authorinput ?></div>
+    <div class="together"><?php echo $this->form->dateofobjectinput ?></div>
+    <div class="together"><?php echo $this->form->numberofitemsinput ?></div>
+   	<div class="together"><?php echo $this->form->repositoryinput ?></div>
+   	<div class="together"><?php echo $this->form->departmentinput ?></div>
+   	<div class="together"><?php echo $this->form->chargetoinput ?></div>
+   	<div class="together"><?php echo $this->form->curatorinput ?></div>  	
+</div>
+
+<div class="right">
+	<div class="together"><?php echo $this->form->projectinput ?></div>
+    <div class="together"><?php echo $this->form->groupinput ?></div>
+    <div class="together"><?php echo $this->form->coordinatorinput ?></div>
+   	<div class="together"><?php echo $this->form->commentstextarea ?></div>
+   	<?php echo $this->form->expecteddateofreturninput ?>Insurance Value <?php echo $this->form->insuranceinput ?>
+   	<div class="together"><?php echo $this->form->repositorymemotextarea ?></div> 
+</div>
+</fieldset>
+
+<fieldset id="activityfieldset"><legend class="status">Activity</legend>
+	<div id="statuslist"></div>
+</fieldset>
+
+</fieldset>
+
+	<br style="clear:both"/>
+	<div class="fullbuttonfooter" id="statusbuttons">
+		<?php echo $this->form->gotorecordbutton ?>
+		<?php echo $this->form->donebutton ?>
+    </div>
+</div>
+
+</form>
+</div>
+</div>

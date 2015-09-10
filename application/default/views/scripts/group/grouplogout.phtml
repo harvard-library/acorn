@@ -1,0 +1,17 @@
+<div class="formerrors"><?php echo $this->placeholder("logouterrormessage")?></div>
+<h1 class="functiontitle" align="center">Group Logout</h1>
+
+<form id="grouplogoutform" name="grouplogoutform" method="post" action="<?php echo $this->baseUrl()?>/grouplogout/savelogout">
+<div class="example">
+<?php echo $this->element->transferlistname ?>
+<?php echo $this->element->transferids4 ?>
+<div class="disabledmessage"><?php echo $this->placeholder("logoutdisabledmessage")?></div>
+<div class="logininformation">
+	<div class="together"><?php echo $this->element->logoutdateinput ?></div>
+	<div class="calendarChooser" id="logoutCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->logoutbyselectform ?></div>
+	<div class="together"><?php echo $this->element->logoutfromselectform ?></div>
+	<div class="together"><?php echo $this->element->logouttoselectform ?></div>  
+</div> 
+</div>
+</form>

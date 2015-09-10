@@ -1,0 +1,35 @@
+<?php 
+$title = "Report: Completed Work for a Project";
+
+$this->headTitle($title);
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/reports.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/reports.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/customelements.js');
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="initCompletedByProjectContent(); initDateChoosers();"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle">Completed Work for a Project</h1>
+</div>
+<div id="reportcontent">
+<div id="demo" class="yui-navset yui-navset-top">
+<div class="formerrors"><?php echo $this->placeholder("reporterrormessage")?></div>
+<div class="example">
+<div class="reportinformation">
+	<form id="reportform" name="reportform" method="post" action="<?php echo $this->baseUrl()?>/report/completedprojectreport">
+    	<div class="together"><?php echo $this->form->projectselectform?></div>
+        <div class="together"><?php echo $this->form->begindateinput?></div>
+        <div class="calendarChooser" id="beginDateChooserContainer"></div>
+        <div class="together"><?php echo $this->form->enddateinput?></div>
+        <div class="calendarChooser" id="endDateChooserContainer"></div>
+        <div class="shortbuttonfooter"><input type="button" value="Create Report" id="createreportbutton"></div>
+    </form>
+
+</div>
+</div>
+</div>
+</div>
+
+

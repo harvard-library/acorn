@@ -1,0 +1,92 @@
+<div class="formerrors"><?php echo $this->placeholder("proposalerrormessage")?></div>
+<div class="formerrors" id="emailerror"></div>
+<form id="proposalform" name="proposalform" method="post" action="<?php echo $this->baseUrl()?>/recordproposal/saveproposal" onsubmit="catchSubmit(this)">
+<div class="example">
+<div class="disabledmessage"><?php echo $this->placeholder("proposaldisabledmessage")?></div>
+<?php echo $this->element->hiddenproposalitemid ?>
+<div class="proposalcolumn1">
+    <div class="together"><?php echo $this->element->coordinatorinput ?></div>
+    <div class="together"><?php echo $this->element->proposalcommentstextarea ?></div>    
+</div>
+
+<div class="proposalcolumn2">
+	<div class="together"><?php echo $this->element->proposaldateinput ?></div>
+    <div class="calendarChooser" id="proposalCalendarChooserContainer"></div>
+	<div class="together"><?php include ("proposedby.phtml"); ?></div>
+    <div class="together"><?php echo $this->element->proposalbyhidden?></div>
+    <div class="together"><?php echo $this->element->examdateinput ?></div>
+    <div class="calendarChooser" id="examCalendarChooserContainer"></div>
+	<div class="together"><?php echo $this->element->examlocationselectform ?></div>
+</div>
+
+<div class="proposaldimensionscolumn">
+	<fieldset id="fielddimensions"><legend>Dimensions</legend>
+    	<div id="proposaldims">
+        <div class="units"><?php echo $this->element->unitselect ?></div>
+        <div class="together"><?php echo $this->element->proposalheightinput ?></div>
+        <div class="together"><?php echo $this->element->proposalwidthinput  ?></div>
+        <div class="together"><?php echo $this->element->proposalthicknessinput ?></div>
+        </div>
+    </fieldset>
+</div>
+
+<br style="clear:both;">
+<br>
+
+<div class="column1">
+	<div class="together"><?php echo $this->element->proposaldescriptionselect ?></div>
+    <?php echo $this->element->proposaldescriptiontextarea ?>
+</div>
+
+<div class="column2">
+	<div class="together"><?php echo $this->element->proposalconditionselect ?></div>
+    <?php echo $this->element->proposalconditiontextarea ?>
+</div>
+
+<div class="column3">
+	<div class="together"><?php echo $this->element->proposaltreatmentselect ?></div>
+    <?php echo $this->element->proposaltreatmenttextarea ?>
+</div>
+
+<br style="clear:both;">
+
+<div id="proposedhoursdiv">
+    <div class="together"><?php echo $this->element->proposedhoursmin ?> to <?php echo $this->element->proposedhoursmax?></div>
+</div>
+
+
+<div class="shortbuttonfooter" id="proposalapprovalbuttons">
+	<div id="emailproposaldiv"><input type="button" value="Email Proposal" id="emailproposalbutton"></div>
+    <input type="button" value="View Proposal Approval" id="viewproposalapprovalbutton">
+</div>
+
+<div class="shortbuttonfooter" id="proposalbuttons">
+	<input type="button" value="Save" id="saveproposalbutton">
+    <input type="button" value="Clear Changes" id="clearproposalbutton">
+</div>
+
+</div>
+</form>
+<?php 
+$item = RecordNamespace::getCurrentItem();
+if (!isset($item) || is_null($item))
+{
+	echo "<script type=\"text/javascript\">document.getElementById('proposalbuttons').style.display = 'none'; document.getElementById('proposalapprovalbuttons').style.display = 'none'</script>";
+}
+else 
+{
+	$disabledmessage = $item->getDisableProposalMessage();
+	if (empty($disabledmessage))
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('proposalbuttons').style.display = 'block'</script>";
+	}
+	else 
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('proposalbuttons').style.display = 'none'</script>";
+	}
+	if (is_null($item->getFunctions()->getProposal()->getPrimaryKey()))
+	{
+		echo "<script type=\"text/javascript\">document.getElementById('proposalapprovalbuttons').style.display = 'none'</script>";
+	}
+}
+?>

@@ -1,0 +1,52 @@
+<div class="formerrors"><?php echo $this->placeholder("loginerrormessage")?></div>
+<form id="recordloginform" name="recordloginform" method="post" action="<?php echo $this->baseUrl()?>/recordlogin/savelogin" onsubmit="catchSubmit(this)">
+<div class="example">
+<?php echo $this->element->transferlistname ?>
+<div class="disabledmessage"><?php echo $this->placeholder("logindisabledmessage")?></div>
+<?php echo $this->element->hiddenloginitemid ?>
+<div class="logininformation">
+	<?php echo $this->element->logindateinput ?>
+	<div class="calendarChooser" id="loginCalendarChooserContainer"></div>
+	<?php echo $this->element->loginbyselectform ?><div class="fromoverridediv" id="loginfromoverridediv"><?php echo $this->element->loginfromoverridecheckbox ?></div>
+	<?php echo $this->element->loginfromselectform ?>
+	<?php echo $this->element->logintoselectform ?>  
+</div>  
+	<div class="shortbuttonfooter" id="loginbuttons">
+    <div class="buttondiv" id="logintransferbuttondiv"><input type="button" value="Add to Transfer List" id="addtotransferlistbutton"></div>
+    <div class="buttondiv" id="loginsavebuttondiv"><input type="button" value="Save" id="saveloginbutton"></div>
+    <div class="buttondiv" id="logindeletebuttondiv"><input type="button" value="Delete Login" id="deleteloginbutton"></div>
+    </div>
+
+</div>
+</form>
+
+<?php 
+//Save and delete buttons are hidden if there is a disable login message
+$hideSaveButton = FALSE;
+$hideDeleteButton = FALSE;
+$item = RecordNamespace::getCurrentItem();
+if (isset($item) && !is_null($item))
+{
+	$disabledmessage = $item->getDisableLoginMessage();
+	if (!empty($disabledmessage))
+	{
+		$hideSaveButton = TRUE;
+		//If the item is logged out, also disable the delete
+		if (!is_null($item->getFunctions()->getLogout()->getPrimaryKey()))
+		{
+			$hideDeleteButton = TRUE;
+		}
+	}
+}
+
+if ($hideSaveButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('loginsavebuttondiv').style.display = 'none'; document.getElementById('logintransferbuttondiv').style.display = 'none';</script>";
+}
+if ($hideDeleteButton)
+{
+	echo "<script type=\"text/javascript\">document.getElementById('logindeletebuttondiv').style.display = 'none'</script>";
+}
+
+
+?>

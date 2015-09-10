@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+#userlogindata
+{
+padding-left: 25%;
+padding-right: 25%;
+margin-top: 2em;
+}
+
+#userhomepagedata
+{
+padding-left: 5%;
+padding-right: 5%;
+margin-top: 2em;
+}
+
+
+.buttonfooter {margin-top: 1em;}
+
+#recordinfo {
+padding-top: 2em;
+}
+
+#userlogincontent, #userhomepagecontent 
+{
+background-color: #edf5ff;
+height: 40em;
+padding-bottom: 5em;
+}

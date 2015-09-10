@@ -1,0 +1,16 @@
+<div id="transferdialog">
+	<div class="hd">Please enter the transfer information</div>
+	<div class="bd">
+		<form method="POST" action="<?php echo $this->baseUrl()?>/reports/<?php echo $this->element->getAction()?>">
+			<div id="courierautocomplete" class="together">
+			<?php echo $this->element->courierinput?>
+	        <br>
+			<div id="couriercontainer"></div>
+			<div id="courier2autocomplete" class="together">
+			<?php echo $this->element->courier2input?>
+	        <br>
+			<div id="courier2container"></div>
+			<div class="together"><?php echo $this->element->transportcontainertextarea ?></div>
+		</form>
+	</div>
+</div>

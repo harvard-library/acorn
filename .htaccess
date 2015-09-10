@@ -1,0 +1,14 @@
+# Rewrite rules for Zend Framework
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* public/index.php
+
+# Security: Don't allow browsing of directories
+Options -Indexes
+
+# PHP settings
+php_flag magic_quotes_gpc off
+php_flag register_globals off
+php_flag short_open_tag on
+
+

@@ -1,0 +1,96 @@
+@charset "utf-8";
+/* CSS Document */
+
+#oswcontent {
+width: 99%;
+margin-left: 5px;
+margin-right: 5px;
+}
+
+#oswcount {
+width: 80%;
+margin-left: 10%;
+}
+
+.oswhoursleft, .oswhoursright {
+width: 45%;
+float: left;
+}
+
+.oswhoursleft {
+text-align: right; 
+padding-right: 1em;
+}
+
+.oswhourslabel {
+float: none;
+}
+
+.oswworkdescriptionlabel {
+width: 15%;
+min-width: 15%;
+}
+
+#oswworkdescriptiondiv {
+width: 100%;
+}
+
+#commentstextarea {
+height: 90px;
+}
+
+#workdescriptiontextarea{
+width: 80%;
+height: 200px;
+}
+
+#editprojectbutton{
+text-align: center;
+font-size: 80%;
+padding: 0;
+}
+
+#projectselect{
+width: 50%;
+}
+
+#deleteoswbutton{
+margin-left: 3em;
+}
+
+.countfieldset {
+margin-left:30%;
+width: 55%;
+}
+
+#workstartdateinput {
+margin-right: 5px;	
+}
+
+#callnumberdiv ul, #titlediv ul, #hollisnumberdiv ul, #callnumbermessage {
+ float: left;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+#callnumbermessage {
+ float: left;
+  width: 60%;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+/************** Files ************/
+#nondigitaldiv {
+padding-left: 25%; 
+float: left; 
+width: 25%;}
+
+#files {
+margin-bottom: 1em;
+}
+
+/*************End of Files*******************/
+
+
+

@@ -1,0 +1,36 @@
+<?php 
+$this->headTitle('Custom Text');
+     
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/customtext.js');
+
+$auth = Zend_Auth::getInstance();
+$identity = $auth->getIdentity();
+$accesslevel = $identity[PeopleDAO::ACCESS_LEVEL];
+
+$this->placeholder('body')->set('class="yui-skin-sam" onload="setAccessLevel(\'' . $accesslevel . '\'); initButtons()"');
+?>
+<div id="recordinfo">
+	<h1 class="recordtitle">Custom Text </h1>
+</div>
+<div id="customtextcontent">
+<div id="demo" class="yui-navset yui-navset-top">
+<div class="example">
+<div class="customtextinformation">
+    <div id="listtype" class="together">
+    	<?php echo $this->form->listtypeselect ?>
+    </div>
+
+	<div id="customtextlist"></div>
+
+	<div class="formerrors" id="customtexterrors"></div>
+	<br style="clear:both"/>
+	<div class="shortbuttonfooter" id="customtextbuttons">
+		<div class="buttondiv"><input type="button" value="Add New" id="addnewbutton"></div>
+		<div class="buttondiv"><input type="button" value="Delete Selected" id="deleteselectedbutton" /></div>
+	</div>
+</div>
+</div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,269 @@
+@charset "utf-8";
+/* CSS Document */
+
+#numbertocreatediv {
+padding-left: 25%;
+float: left;
+text-align: left;
+}
+
+#otherbuttonsdiv {
+float: right;
+text-align: right;
+}
+#groupidbuttonsdiv
+{
+text-align: right;
+margin-top: 10px;
+}
+
+#grouploginbuttonsdiv, #grouplogoutbuttonsdiv
+{
+width: 75%;
+text-align: right;
+}
+
+#logintransfergroupbuttons, #logouttransfergroupbuttons {
+width: 100%;
+text-align: right;
+}
+
+
+#groupcommentsfieldset, #grouprepositoryfieldset
+{
+height: 90px;
+}
+
+#groupcountsfieldset {
+height: 75px;
+text-align: center;
+}
+
+#groupcommentstextarea {
+	width: 95%;
+	height: 65px;
+	overflow:auto;
+}
+
+#groupmemotextarea { 
+	height: 20px;
+	overflow: auto;
+}
+
+#groupcontent {
+width: 98%;
+margin-right: 5px;
+margin-left: 5px;
+}
+
+/**********************Delete Buttons ***********************/
+#deletebutton{
+margin-left: 3em;
+}
+/*****************End of Delete Buttons *****************/
+
+
+/*********Identification*******************/
+#hollisinput {
+width: 30%;
+}
+.countfieldset {
+width: 85%;
+}
+
+#countnoncollcontainer {
+width: 30%;
+float: left;
+margin-right: 1px;
+}
+
+#commentscontainer{
+position: absolute;
+width: 25%;
+left: 33%;
+}
+
+#commentstextarea {
+width: 98%;
+height: 75px;
+overflow:auto;
+}
+
+#repositorymemotextarea { 
+height: 25px;
+overflow: auto;
+}
+
+#repositorycontainer {
+position: absolute;
+width: 40%;
+left: 59%;
+}
+
+#noncollectioncontainer {
+text-align: center;
+}
+
+#storageautocomplete
+{
+margin-bottom: .5em;
+}
+
+#storagecontainer, #authorcontainer {
+margin-left: 31%;
+width: 55%;
+}
+
+#projectselect
+{
+width: 50%;
+}
+
+#groupinput
+{
+width: 45%;
+}
+
+#grouprecordarea {
+width: 98%;
+}
+
+#groupidentificationbuttons {
+margin-top: 1em;	
+}
+
+/***************End of Identification**************/
+
+/**************Login***********************/
+.logininformation {
+width: 60%;
+padding-left: 20%;
+}
+/**************End of Login****************/
+
+/***********************Proposal******************/
+.proposalcolumn1, .proposalcolumn2 {
+	width: 39%;
+	float: left;
+}
+
+.proposaldimensionscolumn {
+	width: 20%;
+	float: left;
+}
+
+#proposedhoursdiv {
+padding-left: 30%;
+width: 50%;
+}
+
+#proposaldims {
+clear: both;
+width: 100%;
+}
+
+.proposalunitsdiv {
+width: 100%; 
+text-align: left; 
+float: left;
+}
+
+#proposalcommentstextarea{
+height: 75px;
+overflow:auto;
+}
+
+/************End of Proposal ***********/
+
+/**********Report*****************/
+#reporthoursdiv {
+padding-left: 40%;
+width: 50%;
+}
+
+#presrectextarea {
+height: 100px;	
+}
+
+#presrec1select, #presrec2select {
+width: 45%;
+}
+
+#reportchecksdiv{
+padding-left: 10%;
+padding-bottom: 1em;
+width: 90%;
+}
+
+#reporttreatmenttextarea {
+height: 115px;
+}
+
+#reporttreatmentsummarytextarea { 
+height: 50px;
+}
+
+.unitsdiv {
+width: 30%; 
+text-align: left; 
+float: left;
+}
+
+.reportdimsdiv {
+width: 30%;
+margin-right: 2px;
+float: left;
+text-align: center;
+}
+
+.treatmentlabel {
+width: 100%; 
+text-align: left;
+}
+
+#reportinfo {
+min-height: 160px; 
+height: 160px;
+}
+
+.reportcolumn1 {
+width: 40%;
+float: left;
+margin-right: 1px;
+}
+
+.reportcolumn2{
+position: absolute;
+width: 28%;
+left: 42%;
+}
+
+.reportcolumn3 {
+position: absolute;
+width: 25%;
+left: 72%;
+}
+
+/*********************End of Report***************/
+
+/***********Transfers *****************/
+#temptransfercommentstextarea, #returncommentstextarea{
+height: 100px;
+overflow:auto;
+}
+
+/**********Files***************/
+#nondigitaldiv {
+padding-left: 25%; 
+float: left; 
+width: 25%;}
+
+#groupfiles {
+margin-bottom: 1em;
+}
+
+#deletebuttondiv {
+float: right;
+}
+
+/*********End of Files*************/

@@ -1,0 +1,78 @@
+<?php 
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/files.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/groupfile.js');
+$this->headScript()->appendFile($this->baseUrl() . '/scripts/dropzone.js');
+
+$accesslevel = "None";
+$auth = Zend_Auth::getInstance();
+if ($auth->hasIdentity())
+{
+	$identity = $auth->getIdentity();
+	$accesslevel = $identity[PeopleDAO::ACCESS_LEVEL];
+}
+?>
+<div class="formerrors"><?php echo $this->placeholder("fileserrormessage")?></div>
+<div class="disabledmessage"><?php echo $this->placeholder("filesdisabledmessage")?></div>
+<?php echo $this->element->hiddenfilepkid ?>
+<div class="together">
+	<?php echo $this->element->filesearchinput?>
+</div>
+<div id="files"></div>
+
+<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR) {?>
+<article itemscope itemtype="http://schema.org/WebApplication">
+<div id="dropzone"><form action="<?php $this->baseUrl(); ?>/groupfiles/addnewfile" class="dropzone" id="group-file-upload">
+</form></div>
+</article>
+
+<div class="fullbuttonfooter" id="filebuttons">
+	<input type="button" value="Send to DRS" id="sendtodrsbutton">
+</div>
+
+<?php }?>
+
+<script type="text/javascript">
+document.getElementById('filebuttons').style.display = 'none';
+var files = 0;
+Dropzone.options.groupFileUpload = {
+		paramName: "file", // The name that will be used to transfer the file
+		  addRemoveLinks: true,
+		  init: function() {
+			this.on("processing", function(file)
+				{
+					//When a file is being processed, don't allow it to be displayed
+					document.getElementById('filebuttons').style.display = 'none';
+				});
+		    this.on("success", function(file, retval) { 
+			    if (files > 0)
+			    {
+		    		document.getElementById('filebuttons').style.display = 'block';
+			    }
+			 });
+		    this.on("error", function(file, message) { alert(message); });
+		    this.on("removedfile", function(file) {
+		    	removeFileFromTempDirectory(file["name"]);
+		    	files--;
+			    if (files == 0)
+			    {
+			    	document.getElementById('filebuttons').style.display = 'none';
+			    }
+			    });
+		    this.on("addedfile", function(file) {
+			    files++;
+			    });
+		    this.on("canceled", function(file) {
+		    	files--;
+			    if (files == 0)
+			    {
+			    	document.getElementById('filebuttons').style.display = 'none';
+			    }
+			    });
+		    
+		  }
+		};
+
+</script>
+
+

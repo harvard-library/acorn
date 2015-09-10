@@ -1,0 +1,16 @@
+# Rewrite rules for Zend Framework
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* index.php
+
+# Security: Don't allow browsing of directories
+Options -Indexes
+
+# PHP settings
+php_flag magic_quotes_gpc off
+php_flag register_globals off
+php_flag short_open_tag on
+
+php_value post_max_size 75M
+php_value upload_max_filesize 75M
+php_value max_execution_time 300
