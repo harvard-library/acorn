@@ -1,7 +1,7 @@
 //PROD
-//var baseUrl = "http://acorn.lib.harvard.edu:8881/";
+var baseUrl = "http://acorn.lib.harvard.edu:8881/";
 //DEV
-var baseUrl = "http://acorn.local/";
+//var baseUrl = "http://sal.hul.harvard.edu:8883/";
 //QA
 //var baseUrl = "http://sal.hul.harvard.edu:8884/";
 var accesslevel = 'None';
