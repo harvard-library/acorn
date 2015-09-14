@@ -197,10 +197,11 @@
  			$isvalid = FALSE;
  			$this->getElement('workdonebyhidden')->addError('Please enter at least one Work Done By.');
  		}
+ 		// Don't allow more than 1 work type to be added (bug 4210)
  		if (count($item->getWorkTypes()) == 0)
  		{
  			$isvalid = FALSE;
- 			$this->getElement('worktypehidden')->addError('Please enter at least one Work Type.');
+ 			$this->getElement('worktypehidden')->addError('Please enter a Work Type.');
  		}
  		
  		$newcallnumbers = $item->getCallNumbers();
@@ -241,7 +242,7 @@
  		if (count($item->getWorkTypes()) == 0)
  		{
  			$isvalid = FALSE;
- 			$this->getElement('worktypehidden')->addError('Please enter at least one Work Type.');
+ 			$this->getElement('worktypehidden')->addError('Please enter a Work Type.');
  		}
  			
  		$newcallnumbers = $item->getCallNumbers();

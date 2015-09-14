@@ -66,8 +66,8 @@ class RecordincludesController extends Zend_Controller_Action
     				);
     		}
     	}
-
-    	if (!isset($item) || is_null($item) || $item->isEditable())
+		// Don't allow more than 1 work type to be added (bug 4210)
+    	if (!isset($item) || is_null($item) || $item->isEditable() and count($worktypes) == 0)
     	{
 		    //Add a row to use as an 'add' row
 	    	array_push($worktypes, array(WorkTypeDAO::WORK_TYPE_ID => 0, WorkTypeDAO::WORK_TYPE => '(Double click to add)'));

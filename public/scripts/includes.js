@@ -278,8 +278,8 @@ function loadWorkTypes()
 {
 	function onWorkTypeListReady() {
 		var myWorkTypeColumnDefs = [
-                {key:"WorkType",label:"(Add one per row)",
-                	editor:new workTypeDropdownCellEditor({acornUrl: "list/populateworktypes"})},
+// changed for bug 4210 {key:"WorkType",label:"(Add one per row)",
+                {key:"WorkType",label:'', editor:new workTypeDropdownCellEditor({acornUrl: "list/populateworktypes"})},
                 {key:"WorkTypeID"}
           ];
     	var myWorkTypeDataSource = new YAHOO.util.DataSource(baseUrl + "recordincludes/findworktypes");
@@ -323,10 +323,12 @@ function loadWorkTypes()
 						//Set the must confirm page unload variable
 						//(see checkModifications.js)
 						mustConfirmLeave = true;
-						//If the blank column was filled, add a new row
+						
+/*	commented out for requested change via Bugzilla ticket 4210
+  					//If the blank column was filled, add a new row
 						if (oldID == 0)
 						{
-							myWorkTypeDataTable.addRow({WorkTypeID: 0, WorkType: "(Double click to add)"}); 
+							myWorkTypeDataTable.addRow({WorkTypeID: 0, WorkType: "(Double click to add)"});
 						}
 						//If it was changed remove the old one from the array
 						else
@@ -335,6 +337,7 @@ function loadWorkTypes()
 						    		{method: 'get', 
 									parameters: {worktypeid: oldID}});
 						}
+*/
 						//If the new column is blank, delete it
 						if (oNewData == 0)
 						{

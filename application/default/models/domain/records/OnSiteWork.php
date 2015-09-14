@@ -119,9 +119,14 @@ class OnSiteWork extends Record
     public function addWorkType(WorkType $workType)
     {
     	$worktypes = $this->getWorkTypes();
-    	$worktypes[$workType->getPrimaryKey()] = $workType;
-    	$this->setWorkTypes($worktypes);
-    	$this->updateNamespaceRecord();
+    	
+		// Don't allow more than 1 work type to be added (bug 4210)
+    	if (count($worktypes) == 0) 
+    	{
+	    	$worktypes[$workType->getPrimaryKey()] = $workType;
+    		$this->setWorkTypes($worktypes);
+    		$this->updateNamespaceRecord();
+    	}
     }
 
     /**
