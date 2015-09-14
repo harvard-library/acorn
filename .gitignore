@@ -1,8 +1,7 @@
 .cache/
+.gitignore
+.project
 .settings/
 acorn_sessions/
-application/bootstrap.php
-application/clibootstrap.php
-application/config.ini
 logs/
-public/scripts/acorn.js
+public/documentation
