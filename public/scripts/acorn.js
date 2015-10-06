@@ -23,7 +23,8 @@ function loadStorageValues()
 		"Fume hood",
 		"Paper vault",
 		"Large flat files",
-		"Salvage room"
+		"Salvage room",
+		"Room 018"
 		];
 	    // Use a LocalDataSource
 	    var oDS = new YAHOO.util.LocalDataSource(arrayStorage);
