@@ -27,9 +27,10 @@ width: 75%;
 margin-left: 12%;
 margin-bottom: 1%;
 padding: 3px;
-height: 300px;
+height: 600px;
 overflow:auto;
 border:1px solid #CCCCCC;
+background-color: white;
 }
 
 .titleheaders {
@@ -63,8 +64,14 @@ width: 65%;
 float: left;
 }
 
-#approvalcommentstextarea, #historycommentstextarea, #messageinput {
+#historycommentstextarea, #messageinput {
 height: 130px;
+overflow:auto;
+width: 68%;
+}
+
+#approvalcommentstextarea {
+height: 95px;
 overflow:auto;
 width: 68%;
 }
@@ -83,13 +90,22 @@ float: right;
 padding-top: 40px;
 }
 
-#proposedhoursdiv, #completedhoursdiv {
+#completedhoursdiv {
 margin-top: 5%;
 text-align: center;
 font-weight: bold;
 font-size: 14px;
 color: #91171D;
 height: 50px;
+}
+
+#proposedhoursdiv {
+margin-top: 1%;
+text-align: center;
+font-weight: bold;
+font-size: 14px;
+color: #91171D;
+height: 40px;
 }
 
 #completedhoursdiv {
