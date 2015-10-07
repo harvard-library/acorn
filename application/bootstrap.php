@@ -49,11 +49,10 @@ $loader->setFallbackAutoloader(true);
 // setup controller
 $frontController = Zend_Controller_Front::getInstance();
 
-$env = 'prod';
+$env = 'test';
 // Change $env variable to 'prod' parameter under production environemtn
 $initializer = new Initializer($env);
 $frontController->registerPlugin($initializer);    
-
 
 //Start session
 Zend_Session::start();

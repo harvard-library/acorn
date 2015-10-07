@@ -54,7 +54,7 @@ require_once "Zend/Loader/Autoloader.php";
 $loader = Zend_Loader_Autoloader::getInstance();
 $loader->setFallbackAutoloader(true);
 
-$env = 'prod';
+$env = 'test';
 // Change $env variable to 'prod' parameter under production environemtn
 $initializer = new CLIInitializer($env);
 
