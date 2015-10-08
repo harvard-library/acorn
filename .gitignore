@@ -1,0 +1,6 @@
+.cache/
+.project
+.settings/
+acorn_sessions/sess_*
+logs/*log*
+public/documentation
