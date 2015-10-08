@@ -1,0 +1,8 @@
+.cache/
+.project
+.settings/
+acorn_sessions/sess_*
+application/bootstrap.php
+application/clibootstrap.php
+logs/*log*
+public/documentation
