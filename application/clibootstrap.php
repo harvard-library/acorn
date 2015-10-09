@@ -55,7 +55,7 @@ $loader = Zend_Loader_Autoloader::getInstance();
 $loader->setFallbackAutoloader(true);
 
 $env = 'test';
-// Change $env variable to 'prod' parameter under production environemtn
+// Change $env variable to 'prod' parameter under production environment
 $initializer = new CLIInitializer($env);
 
 //Start session

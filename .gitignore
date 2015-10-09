@@ -1,2 +1,8 @@
+.cache/
+.project
+.settings/
+application/config.ini
 acorn_sessions/sess_*
 logs/*log*
+public/drsstagingfiles
+public/documentation
