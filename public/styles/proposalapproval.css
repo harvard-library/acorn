@@ -22,12 +22,22 @@ clear:none;
 margin-top: 2px;
 }
 
-#summarydiv, #reportsummarydiv {
+#reportsummarydiv {
 width: 75%;
 margin-left: 12%;
 margin-bottom: 1%;
 padding: 3px;
-height: 600px;
+height: 300px;
+overflow:auto;
+border:1px solid #CCCCCC;
+}
+
+#summarydiv {
+width: 75%;
+margin-left: 12%;
+margin-bottom: 1%;
+padding: 3px;
+height: 450px;
 overflow:auto;
 border:1px solid #CCCCCC;
 background-color: white;
