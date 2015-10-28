@@ -22,17 +22,7 @@ clear:none;
 margin-top: 2px;
 }
 
-#reportsummarydiv {
-width: 75%;
-margin-left: 12%;
-margin-bottom: 1%;
-padding: 3px;
-height: 300px;
-overflow:auto;
-border:1px solid #CCCCCC;
-}
-
-#summarydiv {
+#summarydiv, #reportsummarydiv {
 width: 75%;
 margin-left: 12%;
 margin-bottom: 1%;
