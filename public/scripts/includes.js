@@ -522,7 +522,7 @@ function loadWorkDoneBy(recordtype)
          };
 
 
-		var myWorkByTable = new YAHOO.widget.DataTable("workdonebylist", myWorkByColumnDefs, myWorkByDataSource, {scrollable:true, height:"4em"});
+		var myWorkByTable = new YAHOO.widget.DataTable("workdonebylist", myWorkByColumnDefs, myWorkByDataSource, {scrollable:true});
 		if (isEditable())
 	    {
 			myWorkByTable.subscribe("cellDblclickEvent",function(ev) {
