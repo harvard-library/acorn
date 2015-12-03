@@ -1,3 +1,9 @@
+For Release 2.12.6 (12-02-2015) TE
+----------------------------------------------------
+* Added "Room 018" as a choice under "Storage" On the Record Identification page (Bug 4190)
+* Now using bigger boxes and a white background for Record->Proposal->View Proposal Approval->Proposal Approval and Record->Report->View Report Summary (bug 4208)
+* On the record page; removed the small "My Records" shortcut box/feature on the left and increased the size of the tabbed screens (bug 4205)
+
 For Release 2.12.5 (09-02-2014) TE
 ----------------------------------------------------
 * OSW forms use full names, not initials; remove footnote with names;
