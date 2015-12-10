@@ -1127,6 +1127,14 @@ function loadCallNumbers(recordtype)
 						{
 							myDataTable.addRow({CallNumber: "(Double click to add)"}); 
 						}
+						// To support the editing of call numbers (per Bug 4208) 
+						else if (oOldData != "")
+						{
+							var myAjax = new Ajax.Request(baseUrl + "recordincludes/removecallnumber",
+						    		{method: 'get', 
+									parameters: {callnumber: oOldData, recordtype: recordtype}});							
+						}
+						
 						//If the new column is blank, delete it
 						if (oNewData == "")
 						{
@@ -1158,10 +1166,6 @@ function loadCallNumbers(recordtype)
 												//show the messsage and buttons.
 												document.getElementById('idsavecallbuttondiv').style.display = "block";
 				
-											}
-											else
-											{
-												
 											}
 										}
 									}
