@@ -80,6 +80,12 @@ margin-right: 5px;
   margin-bottom: 10px;
 }
 
+#workdonebylist div.yui-dt-bd  {
+	height: 10em;
+	width: 26em;
+	resize: both;
+}
+
 /************** Files ************/
 #nondigitaldiv {
 padding-left: 25%; 

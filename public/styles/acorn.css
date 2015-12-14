@@ -285,3 +285,7 @@ width: 60%;
 overflow-x: hidden;
 overflow-y: auto;
 }
+
+#callnumbercells div.yui-dt-bd {
+	resize: both;
+}
