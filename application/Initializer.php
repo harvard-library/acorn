@@ -41,7 +41,9 @@ class Initializer extends Zend_Controller_Plugin_Abstract
      * @var string Path to application root
      */
     protected $_root;
-   
+    
+    protected $_ssl;
+
     /**
      * Constructor
      *
@@ -51,14 +53,15 @@ class Initializer extends Zend_Controller_Plugin_Abstract
      * @param  string|null $root 
      * @return void
      */
-    public function __construct($env, $root = null)
+    public function __construct($env, $ssl = FALSE, $root = null)
     {
         $this->_env = $env;
         if (null === $root) {
             $root = realpath(dirname(__FILE__) . '/../');
         }
         $this->_root = $root;
-        
+        $this->_ssl = $ssl;
+
         $this->_front = Zend_Controller_Front::getInstance();
         $this->initPhpConfig();
         
@@ -189,6 +192,16 @@ class Initializer extends Zend_Controller_Plugin_Abstract
     
 	public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
+
+        // Using ssl now    
+        if ($this->_ssl)
+        {
+            if (!isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') 
+            {
+                header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            }
+        }
+
     	if (Zend_Auth::getInstance()->hasIdentity())
     	{
     		$identity = Zend_Auth::getInstance()->getIdentity();
