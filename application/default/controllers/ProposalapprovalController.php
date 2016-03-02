@@ -640,6 +640,9 @@ class ProposalapprovalController extends Zend_Controller_Action
 	    		$submittedby = '';
 	    		$submittedbyemail = '';
 	    	}
+	    	// Title
+//#-	    	$title = $currentItem->getTitle();
+	    	
 			//Approving Curator
 			$approvingcurator = PeopleDAO::getPeopleDAO()->getPerson($currentItem->getApprovingCuratorID());
 			$approvingcuratoremail = $approvingcurator->getEmailAddress();
@@ -709,7 +712,8 @@ class ProposalapprovalController extends Zend_Controller_Action
 	        $callstring = implode(',', $callnumbers);
 	        
 			$url = $config->getACORNUrl() . "proposalapproval/index/recordnumber/" . $currentItem->getItemID();
-			$subject = "ACORN Record# " . $currentItem->getItemID() . " Proposal Approval Request";
+ // #- here			$subject = "ACORN Record# " . $currentItem->getItemID() . " Proposal Approval Request";
+			$subject = "ACORN Proposal Approval Request: Record " . $currentItem->getItemID() . ', "' . $currentItem->getAuthorArtist() . '"' . ', "' . $currentItem->getTitle() . '"'; // #- here
 			$message = "Dear " . $approvingcuratorname .",\r\nYour approval is needed for a Record Proposal for ACORN Record# ".$currentItem->getItemID() . ", " . $callstring . "\r\n";
 			$message .= " Follow this link to view the proposal (Firefox is the preferred browser): " . $url;
 			$message .= " . Please Approve or Deny by using the buttons on the lower right.  If you have a comment or question please use the Comments text box and then click the Add Comment button on the bottom right to send.";
