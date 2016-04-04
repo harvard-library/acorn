@@ -8,5 +8,6 @@ public/documentation
 public/drsstagingfiles
 public/userfiles/*
 public/userreports/*.pdf
+public/userreports/cvsreports/*.csv
 public/userreports/pdfreports/*.pdf
 public/userreports/searches
