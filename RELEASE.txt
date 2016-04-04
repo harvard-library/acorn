@@ -1,3 +1,10 @@
+For Release 2.12.7 (12-14-2015) TE
+----------------------------------------------------
+* Remove/hide 'Treatments of Note' from the Report screen (Bug 4202)
+* Made the call number box, on the identification page, expandable (bug 4206)
+* Changing a call number is now supported (bug 4206)
+* Increased the size of the 'Word Done By' box and made it expandable (bug 4214)
+
 For Release 2.12.6 (12-02-2015) TE
 ----------------------------------------------------
 * Added "Room 018" as a choice under "Storage" On the Record Identification page (Bug 4190)

@@ -4,5 +4,10 @@
 application/config.ini
 acorn_sessions/sess_*
 logs/*log*
-public/drsstagingfiles
 public/documentation
+public/drsstagingfiles
+public/userfiles/*
+public/userreports/*.pdf
+public/userreports/cvsreports/*.csv
+public/userreports/pdfreports/*.pdf
+public/userreports/searches
