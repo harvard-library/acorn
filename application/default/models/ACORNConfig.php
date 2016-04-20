@@ -127,10 +127,6 @@ class ACORNConfig extends DRSDropperConfig
 		return $url;
 	}
 	
-	public function getDRSVersion()
-	{
-		return $this->get(self::DRS_VERSION);
-	}
 	
 } /* end of class ACORNConfig */
 

@@ -38,17 +38,11 @@ class DRSDropperConfig
 {
 	const STAGING_FILE_DIRECTORY_NAME = 'stagingpath';
 	const DRS2_STAGING_FILE_DIRECTORY_NAME = 'drs2stagingpath';
-	const BB_CLIENT_PATH_NAME = 'bbclientpath';
 	const BB2_CLIENT_PATH_NAME = 'bb2clientpath';
-	const BB_SCRIPT_NAME = 'bbscriptname';
 	const BB2_SCRIPT_NAME = 'bb2scriptname';
 	const BATCH_TYPE_NAME = 'batchtype';
-	const DRS_VERSION = 'drsversion';
-	const DRS_DROPBOX_STRING = 'drsdropboxstring';
 	const DRS2_DROPBOX_STRING = 'drs2dropboxstring';
 	
-	const DRS = 'drs';
-	const DRS2 = 'drs2';
 	const SYNC_DIRECTORY = 'sync';
 	const AUX_DIRECTORY = '_aux';
 	
@@ -84,25 +78,13 @@ class DRSDropperConfig
 	protected function verifyConfigSettings()
 	{
 		parent::verifyConfigSettings();
-		if (is_null($this->get(self::BB_CLIENT_PATH_NAME))) 
-		{
-			throw new DRSConfigException('Missing "' . self::BB_CLIENT_PATH_NAME . '" configuration setting.');
-		}
-		elseif (is_null($this->get(self::BB2_CLIENT_PATH_NAME))) 
+		if (is_null($this->get(self::BB2_CLIENT_PATH_NAME))) 
 		{
 			throw new DRSConfigException('Missing "' . self::BB2_CLIENT_PATH_NAME . '" configuration setting.');
-		}
-		elseif (is_null($this->get(self::BB_SCRIPT_NAME))) 
-		{
-			throw new DRSConfigException('Missing "' . self::BB_SCRIPT_NAME . '" configuration setting.');
 		}
 		elseif (is_null($this->get(self::BB2_SCRIPT_NAME))) 
 		{
 			throw new DRSConfigException('Missing "' . self::BB2_SCRIPT_NAME . '" configuration setting.');
-		}
-		elseif (is_null($this->get(self::STAGING_FILE_DIRECTORY_NAME))) 
-		{
-			throw new DRSConfigException('Missing "' . self::STAGING_FILE_DIRECTORY_NAME . '" configuration setting.');
 		}
 		elseif (is_null($this->get(self::DRS2_STAGING_FILE_DIRECTORY_NAME))) 
 		{
@@ -111,14 +93,6 @@ class DRSDropperConfig
 		elseif (is_null($this->get(self::BATCH_TYPE_NAME))) 
 		{
 			throw new DRSConfigException('Missing "' . self::BATCH_TYPE_NAME . '" configuration setting.');
-		}
-		elseif (is_null($this->get(self::DRS_VERSION)))
-		{
-			throw new DRSConfigException('Missing "' . self::DRS_VERSION . '" configuration setting.');
-		}
-		elseif (is_null($this->get(self::DRS_DROPBOX_STRING)))
-		{
-			throw new DRSConfigException('Missing "' . self::DRS_DROPBOX_STRING . '" configuration setting.');
 		}
 		elseif (is_null($this->get(self::DRS2_DROPBOX_STRING)))
 		{
@@ -131,14 +105,7 @@ class DRSDropperConfig
 	 */
 	public function getBbClientPath()
 	{
-		if ($this->get(self::DRS_VERSION) == self::DRS)
-		{
-			return $this->get(self::BB_CLIENT_PATH_NAME);
-		}
-		elseif ($this->get(self::DRS_VERSION) == self::DRS2)
-		{
-			return $this->get(self::BB2_CLIENT_PATH_NAME);
-		}
+		return $this->get(self::BB2_CLIENT_PATH_NAME);
 	}
 	
 	/**
@@ -146,14 +113,7 @@ class DRSDropperConfig
 	 */
 	public function getBbScriptName()
 	{
-		if ($this->get(self::DRS_VERSION) == self::DRS)
-		{
-			return $this->get(self::BB_SCRIPT_NAME);
-		}
-		elseif ($this->get(self::DRS_VERSION) == self::DRS2)
-		{
-			return $this->get(self::BB2_SCRIPT_NAME);
-		}
+		return $this->get(self::BB2_SCRIPT_NAME);
 	}
 	
 	/**
@@ -161,16 +121,7 @@ class DRSDropperConfig
 	 */
 	public function getStagingFileDirectory($stripfullpath = FALSE)
 	{
-		$stagingpath = "";
-		if ($this->get(self::DRS_VERSION) == self::DRS)
-		{
-			$stagingpath = $this->get(self::STAGING_FILE_DIRECTORY_NAME);
-		}
-		//DRS2/BB2 must use image-<suffix>
-		elseif ($this->get(self::DRS_VERSION) == self::DRS2)
-		{
-			$stagingpath = $this->get(self::DRS2_STAGING_FILE_DIRECTORY_NAME);
-		}
+		$stagingpath = $this->get(self::DRS2_STAGING_FILE_DIRECTORY_NAME);
 		if ($stripfullpath)
 		{
 			return $this->stripFullPath($stagingpath);
@@ -183,15 +134,7 @@ class DRSDropperConfig
 	 */
 	public function getBatchType()
 	{
-		if ($this->get(self::DRS_VERSION) == self::DRS)
-		{
-			return $this->get(self::BATCH_TYPE_NAME);
-		}
-		//DRS2/BB2 must use image-<suffix>
-		elseif ($this->get(self::DRS_VERSION) == self::DRS2)
-		{
-			return "image" . $this->get(self::BATCH_TYPE_NAME);
-		}
+		return "image" . $this->get(self::BATCH_TYPE_NAME);
 	}
 	
 	/**
@@ -200,26 +143,9 @@ class DRSDropperConfig
 	 */
 	public function getAuxillaryDirectoryName()
 	{
-		//sync for DRS1/BB1
-		if ($this->get(self::DRS_VERSION) == self::DRS)
-		{
-			return self::SYNC_DIRECTORY;
-		}
-		//_aux for DRS2/BB2
-		elseif ($this->get(self::DRS_VERSION) == self::DRS2)
-		{
-			return self::AUX_DIRECTORY;
-		}
+		return self::AUX_DIRECTORY;
 	}
 
-	/**
-	 * Returns the current DRS version to use (drs or drs2)
-	 * @return String
-	 */
-	public function getDRSVersion()
-	{
-		return $this->get(self::DRS_VERSION);
-	}
 
 	/**
 	 * Returns the string for sftp-ing the files
@@ -227,17 +153,7 @@ class DRSDropperConfig
 	 */
 	public function getDRSDropboxString()
 	{
-		//DRS1 dropbox
-		if ($this->get(self::DRS_VERSION) == self::DRS)
-		{
-			return $this->get(self::DRS_DROPBOX_STRING);
-		}
-		//DRS2 dropbox
-		elseif ($this->get(self::DRS_VERSION) == self::DRS2)
-		{
-			return $this->get(self::DRS2_DROPBOX_STRING);
-		}
-		
+		return $this->get(self::DRS2_DROPBOX_STRING);		
 	}
 
 } /* end of class DRSDropperConfig */

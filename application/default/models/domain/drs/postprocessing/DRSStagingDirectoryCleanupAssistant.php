@@ -70,25 +70,16 @@ class DRSStagingDirectoryCleanupAssistant extends DRSService
     	$stagingdir = $this->getConfiguration()->getStagingFileDirectory();
     	foreach ($this->batchNames as $batchName)
     	{
-    		//All batches are in the same directory in DRS1
-    		if ($this->getConfiguration()->getDRSVersion() == DRSDropperConfig::DRS)
+    		$filesInBatch = FilesDAO::getFilesDAO()->getFilesInBatch($batchName);
+    		if (empty($filesInBatch))
     		{
-    			$projectPath = $stagingdir;
-    		}
-    		//In DRS2, each user has a separate project directory
-    		else
-    		{
-    			$filesInBatch = FilesDAO::getFilesDAO()->getFilesInBatch($batchName);
-    			if (empty($filesInBatch))
-    			{
-    				Logger::log("Could not determine userID for batch " . $batchName . ". Skipping directory deletion for batch.", Zend_Log::ERR);
-    				continue;
-	     		}
-    			$file = current($filesInBatch);
-    			$userid = $file->getEnteredBy()->getPrimaryKey();
-    			$projectName = "user" . $userid . "project";
-    			$projectPath = $stagingdir . "/" . $projectName;	
-    		}
+    			Logger::log("Could not determine userID for batch " . $batchName . ". Skipping directory deletion for batch.", Zend_Log::ERR);
+    			continue;
+	     	}
+    		$file = current($filesInBatch);
+    		$userid = $file->getEnteredBy()->getPrimaryKey();
+    		$projectName = "user" . $userid . "project";
+    		$projectPath = $stagingdir . "/" . $projectName;	
     		
     		$batchPath = $projectPath . "/" . $batchName;
     		
@@ -136,12 +127,8 @@ class DRSStagingDirectoryCleanupAssistant extends DRSService
 	private function removeLoadReportAndTransferFiles($batchName)
 	{
 		$success = TRUE;
-		$loadReport = $this->getConfiguration()->getStagingFileDirectory() . "/LOADREPORT_" . $batchName;
-		//All batches are in the same directory in DRS1
-		if ($this->getConfiguration()->getDRSVersion() == DRSDropperConfig::DRS2)
-		{
-			$loadReport .= ".txt";
-		}
+		$loadReport = $this->getConfiguration()->getStagingFileDirectory() . "/LOADREPORT_" . $batchName . ".txt";
+
 		$transferMarker = $this->getConfiguration()->getStagingFileDirectory() . "/TRANSFERRED_" . $batchName;
 		
 		if (file_exists($loadReport))

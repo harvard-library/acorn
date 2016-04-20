@@ -41,25 +41,8 @@ class DRSLoadReport
 	const BATCH_LOADING_START_TIME_PREFIX = "Loading start time:";
 	const BATCH_LOADING_END_TIME_PREFIX = "Loading end time:";
 	const OWNER_LINE_PREFIX = "Owner(s):";
-	const DRS_FILELIST_SECTION_LINE_PREFIX = "FILENAME";
 	const DRS2_FILELIST_SECTION_LINE_PREFIX = "OBJ-ID";
 	const RELATION_LIST_SECTION_LINE_PREFIX = "A_OBJECTID";
-	
-	//The column location of the fields in the report (DRS).
-	const DRS_FILE_PATH_INDEX = 0;
-	const DRS_OWNER_SUPPLIED_NAME_INDEX = 1;
-	const DRS_URN_INDEX = 2;
-	const DRS_OBJECT_ID_INDEX = 3;
-	const DRS_MIME_TYPE_INDEX = 4;
-	const DRS_FILE_SIZE_INDEX = 5;
-	const DRS_INSERTION_DATE_INDEX = 6;
-	const DRS_ROLE_INDEX = 7;
-	const DRS_PURPOSE_INDEX = 8;
-	const DRS_QUALITY_INDEX = 9;
-	const DRS_OWNER_INDEX = 10;
-	const DRS_ACCESS_FLAG_INDEX = 11;
-	const DRS_USAGE_CLASS_INDEX = 12;
-	const DRS_MD5_INDEX = 13;
 	
 	//The column location of the fields in the report (DRS2).
 	const DRS2_OBJECT_ID_INDEX = 0;
@@ -123,17 +106,10 @@ class DRSLoadReport
 	 */
     private $pathToReport;
     
-    /**
-     * The drs version of the report
-     * @var String
-     */
-    private $drsVersion;
-
-    
-    public function __construct($pathtoreport, $drsVersion = DRSDropperConfig::DRS)
+   
+    public function __construct($pathtoreport)
     {
     	$this->pathToReport = $pathtoreport;
-    	$this->drsVersion = $drsVersion;
     	$this->parseTextReport();
     }
     
@@ -189,7 +165,7 @@ class DRSLoadReport
                     	$owner = trim(substr($line, strlen(self::OWNER_LINE_PREFIX)));
                     	$this->setOwner($owner);
                 	} 
-                	elseif (strpos($line, $this->getFileListSectionPrefix()) === 0)
+                	elseif (strpos($line, self::DRS2_FILELIST_SECTION_LINE_PREFIX) === 0)
                 	{
                     	// done with batch summary section -
                     	// entering the file list section
@@ -213,14 +189,7 @@ class DRSLoadReport
                     	{
                     		if (!$this->isDescriptor($fields))
                     		{
-                    			if ($this->drsVersion == DRSDropperConfig::DRS)
-                    			{
-	                    			$reportFile = $this->getDRSLoadReportFile($fields);
-                    			}
-                    			else
-                    			{
-                    				$reportFile = $this->getDRS2LoadReportFile($fields);
-                    			}
+                    			$reportFile = $this->getDRS2LoadReportFile($fields);
 								$this->addFile($reportFile);
                     		}
                     	} 
@@ -243,33 +212,9 @@ class DRSLoadReport
      */
     private function isDescriptor(array $fields)
     {
-    	return $this->drsVersion == DRSDropperConfig::DRS2
-    	 && $fields[self::DRS2_FILE_ORIGINAL_PATH_INDEX] == 'descriptor.xml';	
+    	return $fields[self::DRS2_FILE_ORIGINAL_PATH_INDEX] == 'descriptor.xml';	
     }
-    
-    
-	/**
-	 * Populates the DRSLoadReportFile with the proper DRS fields
-	 * @param array - the values from the text report
-	 * @param DRSLoadReportFile
-	 */
-	private function getDRSLoadReportFile(array $fields)
-	{
-		$reportFile = new DRSLoadReportFile();
-		$reportFile->setFilePath($fields[self::DRS_FILE_PATH_INDEX]);
-		$reportFile->setOwnerSuppliedName($fields[self::DRS_OWNER_SUPPLIED_NAME_INDEX]);
-		$reportFile->setFileSize($fields[self::DRS_FILE_SIZE_INDEX]);
-		$reportFile->setFileType($fields[self::DRS_MIME_TYPE_INDEX]);
-		$reportFile->setInsertionDate($fields[self::DRS_INSERTION_DATE_INDEX]);
-		$reportFile->setMd5($fields[self::DRS_MD5_INDEX]);
-		$reportFile->setObjectID($fields[self::DRS_OBJECT_ID_INDEX]);
-		$reportFile->setOwner($fields[self::DRS_OWNER_INDEX]);
-		$reportFile->setPurpose($fields[self::DRS_PURPOSE_INDEX]);
-		$reportFile->setQuality($fields[self::DRS_QUALITY_INDEX]);
-		$reportFile->setRole($fields[self::DRS_ROLE_INDEX]);
-		$reportFile->setUrn($fields[self::DRS_URN_INDEX]);
-		return $reportFile;
-	}
+
 	
 	/**
 	 * Populates the DRSLoadReportFile with the proper DRS2 fields
@@ -291,21 +236,6 @@ class DRSLoadReport
 	}
 
     
-    /**
-     * Returns the section starter for the File List
-     * @return string
-     */
-    private function getFileListSectionPrefix()
-    {
-    	if ($this->drsVersion == DRSDropperConfig::DRS)
-    	{
-    		return self::DRS_FILELIST_SECTION_LINE_PREFIX;
-    	}
-    	else
-    	{
-    		return self::DRS2_FILELIST_SECTION_LINE_PREFIX;
-    	}
-    }
 	
 	/**
 	 * @return String

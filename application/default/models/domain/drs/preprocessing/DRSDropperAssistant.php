@@ -48,22 +48,14 @@ class DRSDropperAssistant extends DRSService
     {
     	$stagingfilesdir = $this->getConfiguration()->getStagingFileDirectory();
     	Logger::log('executing drs dropper ' . $stagingfilesdir);
-    	//For DRS1, all batches end up in one directory
-    	if ($this->getConfiguration()->getDRSVersion() == DRSDropperConfig::DRS)
+    	//each user has a separate project directory in which the batches are created
+    	$projectdirectories = scandir($stagingfilesdir);
+    	//Loop through all of the projects and send the batches to the DRS
+    	foreach ($projectdirectories as $projectDirectory)
     	{
-    		 $this->findDRSObjects($stagingfilesdir);
-    	}
-    	//For DRS2, each user has a separate project directory in which the batches are created
-    	else 
-    	{
-    		$projectdirectories = scandir($stagingfilesdir);
-    		//Loop through all of the projects and send the batches to the DRS
-    		foreach ($projectdirectories as $projectDirectory)
+    		if (is_dir($stagingfilesdir . "/" . $projectDirectory) && $projectDirectory != "." && $projectDirectory != "..")
     		{
-    			if (is_dir($stagingfilesdir . "/" . $projectDirectory) && $projectDirectory != "." && $projectDirectory != "..")
-    			{
-    				$this->findDRSObjects($stagingfilesdir . "/" . $projectDirectory);
-    			}
+    			$this->findDRSObjects($stagingfilesdir . "/" . $projectDirectory);
     		}
     	}
     	
