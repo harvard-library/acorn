@@ -426,43 +426,6 @@ class BatchBuilderAssistant
 		$projectconffile = str_replace(self::PROJECT_NAME_VARIABLE, $projectName, $projectconffile);
 		file_put_contents($projectConf, $projectconffile);
 	}
-	
-	/**
-	 * This creates the batch directory under the project directory
-	 * @param String $sourcePath
-	 * @param String $filename
-	 * @param String $batchnameforimages
-	 * @param DRSDropperConfig $config
-	 */
-	public static function createBB1DirectoryAndCopyFiles($sourcePath, $sourcefiles, $batchnameforimages, DRSDropperConfig $config)
-	{
-		
-		$targetpath = $config->getStagingFileDirectory() . "/" . $batchnameforimages . "/" . $config->getBatchType();
-		
-		//If the destination does not exist, make the directory
-		if (!file_exists($targetpath))
-		{
-			mkdir($targetpath, 0777, TRUE);
-		}
-		
-		foreach ($sourcefiles as $sourcefile => $destinationfilename)
-		{
-			copy($sourcePath . "/" . $sourcefile, $targetpath . "/" . $destinationfilename);
-		}
-		
-		$originalfiles = scandir($sourcePath);
-		$files = scandir($targetpath);
-		//Should be =
-		$success = count($originalfiles) == count($files);
-		
-		//Delete the source file if the copy was successful.
-		if ($success)
-		{
-			$success = self::deleteSourceFiles($sourcePath);
-		}
-		
-		return $success;
-	}
 
 
 } /* end of class BatchBuilderAssistant */
