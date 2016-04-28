@@ -122,7 +122,7 @@ class DRSReportProcesser extends DRSService
      		//Verify that the file is a LOADREPORT file.
      		if (strpos($filename, "LOADREPORT") === 0)
      		{
-     			$drsLoadReport = new DRSLoadReport($this->getConfiguration()->getStagingFileDirectory() . "/" . $filename, $this->getConfiguration()->getDRSVersion());
+     			$drsLoadReport = new DRSLoadReport($this->getConfiguration()->getStagingFileDirectory() . "/" . $filename);
      			$files = $drsLoadReport->getFiles();
      			$reportfiles = array_merge($reportfiles, $files);
      			array_push($reportbatchnames, $drsLoadReport->getBatchDirectoryName());

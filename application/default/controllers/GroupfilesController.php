@@ -210,7 +210,7 @@ class GroupfilesController extends Zend_Controller_Action
     	{
     		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
     		//BB will be used
-    		$this->batchBuilderAssistant = new BatchBuilderAssistant($projectDirectory, $config->getBbClientPath(), $config->getBbScriptName(), $config->getDRSVersion());
+    		$this->batchBuilderAssistant = new BatchBuilderAssistant($projectDirectory, $config->getBbClientPath(), $config->getBbScriptName());
     		//Get all of the emails that should receive ALL drs emails for ACORN
     		//$drsemails = PeopleDAO::getPeopleDAO()->getDRSEmails();
 	    	$drsemails = array();
@@ -321,19 +321,11 @@ class GroupfilesController extends Zend_Controller_Action
     		if ($filetype == "Image")
     		{
     			$path = $config->getStagingFileDirectory(TRUE);
-    			//The path of the image in DRS 1 is <staging>/<batchname>/<batchtype>
-    			if ($config->getDRSVersion() == DRSDropperConfig::DRS)
-    			{
-    				$path .= "/" . $batchnameforimages . "/" . $config->getBatchType() . "/" . $filename;
-    			}
-    			//The path of the temporary image in DRS2 is <staging>/<project>/<batchname>/<object>/<batchtype>
-    			else
-    			{
-    
-    				$projectDirectory = "/user" . $identity[PeopleDAO::PERSON_ID] . "project";
-    				$objectname = substr($filename, 0, strrpos($filename, "."));
-    				$path .= $projectDirectory . "/" . $batchnameforimages . "/" . $objectname . "/" . $config->getBatchType() . "/" . $filename;
-    			}
+    			
+    			$projectDirectory = "/user" . $identity[PeopleDAO::PERSON_ID] . "project";
+    			$objectname = substr($filename, 0, strrpos($filename, "."));
+    			$path .= $projectDirectory . "/" . $batchnameforimages . "/" . $objectname . "/" . $config->getBatchType() . "/" . $filename;
+
     			$newfile->setPath($config->getACORNUrl() . $path);
     			$newfile->setDrsStatus(FilesDAO::DRS_STATUS_PENDING);
     			$newfile->setDrsBatchName($batchnameforimages);
@@ -585,16 +577,10 @@ class GroupfilesController extends Zend_Controller_Action
     				 
     				try
     				{
-    					if ($config->getDRSVersion() == DRSDropperConfig::DRS2)
-    					{
-    						$projectDirectory .= "/" . $projectName;
-    						//BB2 requires the template directory to be set up.
-    						BatchBuilderAssistant::prepareTemplateDirectory($fulltemppath, $imagearray, $projectName, $config);
-    					}
-    					else
-    					{
-    						BatchBuilderAssistant::createBB1DirectoryAndCopyFiles($fulltemppath, $imagearray, $batchnameforimages, $config);
-    					}
+    					$projectDirectory .= "/" . $projectName;
+    					//BB2 requires the template directory to be set up.
+    					BatchBuilderAssistant::prepareTemplateDirectory($fulltemppath, $imagearray, $projectName, $config);
+
     					//Create the batch and descriptor files
     					$success = $this->getBatchBuilderAssistant($projectDirectory)->execute($batchnameforimages);
     					//If an error wasn't thrown but the batch.xml wasn't created, warn the user.
@@ -626,12 +612,10 @@ class GroupfilesController extends Zend_Controller_Action
     					$cleanupAssistant->runService();
     					FilesDAO::getFilesDAO()->deleteFilesInBatch($batchnameforimages);
     					BatchBuilderAssistant::deleteSourceFiles($fulltemppath);
+    					
     					//Delete the template directory files
-    					if ($config->getDRSVersion() == DRSDropperConfig::DRS2)
-    					{
-    						//BB2 requires the template directory to be set up.
-    						BatchBuilderAssistant::deleteProjectTemplateFiles($projectDirectory . "/" . BatchBuilderAssistant::PROJECT_TEMPLATE_IMAGE_DIR);
-    					}
+    					BatchBuilderAssistant::deleteProjectTemplateFiles($projectDirectory . "/" . BatchBuilderAssistant::PROJECT_TEMPLATE_IMAGE_DIR);
+
     					$originalgroup = GroupNamespace::getOriginalGroup();
     					GroupNamespace::setCurrentGroup($originalgroup);
     					$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), $message);

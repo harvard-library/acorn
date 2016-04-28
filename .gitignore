@@ -2,7 +2,9 @@
 .project
 .settings/
 application/config.ini
+application/dbconfig.ini
 acorn_sessions/sess_*
+bb2/*
 logs/*log*
 public/documentation
 public/drsstagingfiles

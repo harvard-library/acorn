@@ -1,3 +1,7 @@
+For Release 2.13.0 (04-25-2016) VC
+----------------------------------------------------
+* Removed BB1 functionality
+
 For Release 2.12.7 (12-14-2015) TE
 ----------------------------------------------------
 * Remove/hide 'Treatments of Note' from the Report screen (Bug 4202)

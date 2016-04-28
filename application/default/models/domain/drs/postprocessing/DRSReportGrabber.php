@@ -57,16 +57,9 @@ class DRSReportGrabber extends DRSReportProcesser
     private function getLoadReportsFromDropbox()
     {
     	$dropboxstring = $this->getConfiguration()->getDRSDropboxString();
-    	//In DRS1, the load reports are in the directories.
-    	if ($this->getConfiguration()->getDRSVersion() == DRSDropperConfig::DRS)
-    	{
-    		$command = "scp " . $dropboxstring . "/LOADREPORT* " . $this->getConfiguration()->getStagingFileDirectory() . "/.";
-    	}
-    	//In DRS2, the load reports are under the batch names.
-    	else
-    	{
-    		$command = "scp " . $dropboxstring . "/*/LOADREPORT* " . $this->getConfiguration()->getStagingFileDirectory() . "/.";
-    	}
+    	//the load reports are under the batch names.
+    	$command = "scp " . $dropboxstring . "/*/LOADREPORT* " . $this->getConfiguration()->getStagingFileDirectory() . "/.";
+
     	exec($command);
     	
     	$this->removeDropboxReports();
@@ -85,18 +78,11 @@ class DRSReportGrabber extends DRSReportProcesser
     		//Verify that the file is a LOADREPORT file.
     		if (strpos($filename, "LOADREPORT") === 0)
     		{
-    			//In DRS1, the load reports are in the directories.
-		    	if ($this->getConfiguration()->getDRSVersion() == DRSDropperConfig::DRS)
-		    	{
-		    		$command = "ssh " . $dropboxstringwithoutdirectory . " 'rm incoming/" . $filename . "'";
-		    	}
-		    	//In DRS2, the load reports are under the batch names.
-		    	else
-		    	{
-		    		$batchname = substr($filename, 11);
-		    		$batchname = str_replace(".txt", "", $batchname);
-		    		$command = "ssh " . $dropboxstringwithoutdirectory . " 'rm -r incoming/" . $batchname . "'";
-		    	}
+    			//the load reports are under the batch names.
+		    	$batchname = substr($filename, 11);
+		    	$batchname = str_replace(".txt", "", $batchname);
+		    	$command = "ssh " . $dropboxstringwithoutdirectory . " 'rm -r incoming/" . $batchname . "'";
+
 		    	Logger::log($command);
 		    	exec($command);	
     		}
