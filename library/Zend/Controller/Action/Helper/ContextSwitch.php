@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ContextSwitch.php,v 1.3 2013/09/10 14:36:09 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Zend/Controller/Action/Helper/Abstract.php';
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action_Helper_Abstract
@@ -1304,7 +1304,6 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
         if (null === $controller) {
             return array();
         }
-        $action     = (string) $action;
         $contextKey = $this->_contextKey;
 
         if (!isset($controller->$contextKey)) {
@@ -1312,6 +1311,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
         }
 
         if (null !== $action) {
+            $action = (string) $action;
             if (isset($controller->{$contextKey}[$action])) {
                 return $controller->{$contextKey}[$action];
             } else {

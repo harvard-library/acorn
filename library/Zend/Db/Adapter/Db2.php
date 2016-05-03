@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Db2.php,v 1.3 2013/09/10 14:37:01 vcrema Exp $
+ * @version    $Id$
  *
  */
 
@@ -39,7 +39,7 @@ require_once 'Zend/Db/Statement/Db2.php';
 
 /**
  * @package    Zend_Db
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -161,7 +161,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
                 $this->_config['driver_options']['i5_naming'] = DB2_I5_NAMING_OFF;
             }
         }
-        
+
         if ($this->_config['host'] !== 'localhost' && !$this->_isI5) {
             // if the host isn't localhost, use extended connection params
             $dbname = 'DRIVER={IBM DB2 ODBC DRIVER}' .

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Static.php,v 1.1 2013/09/10 14:36:37 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -33,7 +33,7 @@ require_once 'Zend/Cache/Backend.php';
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Backend_Static
@@ -47,16 +47,16 @@ class Zend_Cache_Backend_Static
      * @var array
      */
     protected $_options = array(
-        'public_dir'            => null,
-        'sub_dir'               => 'html',
-        'file_extension'        => '.html',
-        'index_filename'        => 'index',
-        'file_locking'          => true,
-        'cache_file_umask'      => 0600,
-        'cache_directory_umask' => 0700,
-        'debug_header'          => false,
-        'tag_cache'             => null,
-        'disable_caching'       => false
+        'public_dir'           => null,
+        'sub_dir'              => 'html',
+        'file_extension'       => '.html',
+        'index_filename'       => 'index',
+        'file_locking'         => true,
+        'cache_file_perm'      => 0600,
+        'cache_directory_perm' => 0700,
+        'debug_header'         => false,
+        'tag_cache'            => null,
+        'disable_caching'      => false
     );
 
     /**
@@ -85,6 +85,24 @@ class Zend_Cache_Backend_Static
         if ($name == 'tag_cache') {
             $this->setInnerCache($value);
         } else {
+            // See #ZF-12047 and #GH-91
+            if ($name == 'cache_file_umask') {
+                trigger_error(
+                    "'cache_file_umask' is deprecated -> please use 'cache_file_perm' instead",
+                    E_USER_NOTICE
+                );
+
+                $name = 'cache_file_perm';
+            }
+            if ($name == 'cache_directory_umask') {
+                trigger_error(
+                    "'cache_directory_umask' is deprecated -> please use 'cache_directory_perm' instead",
+                    E_USER_NOTICE
+                );
+
+                $name = 'cache_directory_perm';
+            }
+
             parent::setOption($name, $value);
         }
         return $this;
@@ -99,17 +117,13 @@ class Zend_Cache_Backend_Static
      */
     public function getOption($name)
     {
+        $name = strtolower($name);
+
         if ($name == 'tag_cache') {
             return $this->getInnerCache();
-        } else {
-            if (in_array($name, $this->_options)) {
-                return $this->_options[$name];
-            }
-            if ($name == 'lifetime') {
-                return parent::getLifetime();
-            }
-            return null;
         }
+
+        return parent::getOption($name);
     }
 
     /**
@@ -123,7 +137,7 @@ class Zend_Cache_Backend_Static
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
-        if (empty($id)) {
+        if (($id = (string)$id) === '') {
             $id = $this->_detectId();
         } else {
             $id = $this->_decodeId($id);
@@ -136,7 +150,7 @@ class Zend_Cache_Backend_Static
         }
 
         $fileName = basename($id);
-        if (empty($fileName)) {
+        if ($fileName === '') {
             $fileName = $this->_options['index_filename'];
         }
         $pathName = $this->_options['public_dir'] . dirname($id);
@@ -163,7 +177,7 @@ class Zend_Cache_Backend_Static
         }
 
         $fileName = basename($id);
-        if (empty($fileName)) {
+        if ($fileName === '') {
             $fileName = $this->_options['index_filename'];
         }
         if ($this->_tagged === null && $tagged = $this->getInnerCache()->load(self::INNER_CACHE_NAME)) {
@@ -211,14 +225,14 @@ class Zend_Cache_Backend_Static
         }
 
         clearstatcache();
-        if ($id === null || strlen($id) == 0) {
+        if (($id = (string)$id) === '') {
             $id = $this->_detectId();
         } else {
             $id = $this->_decodeId($id);
         }
 
         $fileName = basename($id);
-        if (empty($fileName)) {
+        if ($fileName === '') {
             $fileName = $this->_options['index_filename'];
         }
 
@@ -237,7 +251,7 @@ class Zend_Cache_Backend_Static
         } else {
             $result = file_put_contents($file, $data);
         }
-        @chmod($file, $this->_octdec($this->_options['cache_file_umask']));
+        @chmod($file, $this->_octdec($this->_options['cache_file_perm']));
 
         if ($this->_tagged === null && $tagged = $this->getInnerCache()->load(self::INNER_CACHE_NAME)) {
             $this->_tagged = $tagged;
@@ -263,7 +277,7 @@ class Zend_Cache_Backend_Static
     {
         if (!is_dir($path)) {
             $oldUmask = umask(0);
-            if ( !@mkdir($path, $this->_octdec($this->_options['cache_directory_umask']), true)) {
+            if ( !@mkdir($path, $this->_octdec($this->_options['cache_directory_perm']), true)) {
                 $lastErr = error_get_last();
                 umask($oldUmask);
                 Zend_Cache::throwException("Can't create directory: {$lastErr['message']}");
@@ -308,7 +322,7 @@ class Zend_Cache_Backend_Static
         } else {
             $extension = $this->_options['file_extension'];
         }
-        if (empty($fileName)) {
+        if ($fileName === '') {
             $fileName = $this->_options['index_filename'];
         }
         $pathName = $this->_options['public_dir'] . dirname($id);
@@ -333,7 +347,7 @@ class Zend_Cache_Backend_Static
             Zend_Cache::throwException('Invalid cache id: does not match expected public_dir path');
         }
         $fileName = basename($id);
-        if (empty($fileName)) {
+        if ($fileName === '') {
             $fileName = $this->_options['index_filename'];
         }
         $pathName  = $this->_options['public_dir'] . dirname($id);
@@ -343,14 +357,16 @@ class Zend_Cache_Backend_Static
             if (!is_writable($directory)) {
                 return false;
             }
-            foreach (new DirectoryIterator($directory) as $file) {
-                if (true === $file->isFile()) {
-                    if (false === unlink($file->getPathName())) {
-                        return false;
+            if (is_dir($directory)) {
+                foreach (new DirectoryIterator($directory) as $file) {
+                    if (true === $file->isFile()) {
+                        if (false === unlink($file->getPathName())) {
+                            return false;
+                        }
                     }
                 }
             }
-            rmdir(dirname($path));
+            rmdir($directory);
         }
         if (file_exists($file)) {
             if (!is_writable($file)) {
@@ -377,6 +393,7 @@ class Zend_Cache_Backend_Static
      * @param  string $mode Clean mode
      * @param  array  $tags Array of tags
      * @return boolean true if no problem
+     * @throws Zend_Exception
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
@@ -538,7 +555,7 @@ class Zend_Cache_Backend_Static
      * Detect an octal string and return its octal value for file permission ops
      * otherwise return the non-string (assumed octal or decimal int already)
      *
-     * @param $val The potential octal in need of conversion
+     * @param string $val The potential octal in need of conversion
      * @return int
      */
     protected function _octdec($val)
@@ -551,9 +568,12 @@ class Zend_Cache_Backend_Static
 
     /**
      * Decode a request URI from the provided ID
+     *
+     * @param string $id
+     * @return string
      */
     protected function _decodeId($id)
     {
-        return pack('H*', $id);;
+        return pack('H*', $id);
     }
 }

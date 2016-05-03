@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Atom.php,v 1.1 2013/09/10 14:37:01 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -26,10 +26,13 @@ require_once 'Zend/Feed/Writer/Renderer/RendererAbstract.php';
 
 require_once 'Zend/Feed/Writer/Renderer/Feed/Atom/Source.php';
 
+/** @see Zend_Xml_Security */
+require_once 'Zend/Xml/Security.php';
+
 /**
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Writer_Renderer_Entry_Atom
@@ -38,8 +41,8 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
 {
     /**
      * Constructor
-     * 
-     * @param  Zend_Feed_Writer_Entry $container 
+     *
+     * @param  Zend_Feed_Writer_Entry $container
      * @return void
      */
     public function __construct (Zend_Feed_Writer_Entry $container)
@@ -49,7 +52,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
 
     /**
      * Render atom entry
-     * 
+     *
      * @return Zend_Feed_Writer_Renderer_Entry_Atom
      */
     public function render()
@@ -58,7 +61,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $this->_dom->formatOutput = true;
         $entry = $this->_dom->createElementNS(Zend_Feed_Writer::NAMESPACE_ATOM_10, 'entry');
         $this->_dom->appendChild($entry);
-        
+
         $this->_setSource($this->_dom, $entry);
         $this->_setTitle($this->_dom, $entry);
         $this->_setDescription($this->_dom, $entry);
@@ -77,15 +80,15 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
             $ext->setDomDocument($this->getDomDocument(), $entry);
             $ext->render();
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Set entry title
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setTitle(DOMDocument $dom, DOMElement $root)
@@ -108,12 +111,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $cdata = $dom->createCDATASection($this->getDataContainer()->getTitle());
         $title->appendChild($cdata);
     }
-    
+
     /**
      * Set entry description
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setDescription(DOMDocument $dom, DOMElement $root)
@@ -129,12 +132,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         );
         $subtitle->appendChild($cdata);
     }
-    
+
     /**
      * Set date entry was modified
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setDateModified(DOMDocument $dom, DOMElement $root)
@@ -159,12 +162,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         );
         $updated->appendChild($text);
     }
-    
+
     /**
      * Set date entry was created
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setDateCreated(DOMDocument $dom, DOMElement $root)
@@ -179,12 +182,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         );
         $el->appendChild($text);
     }
-    
+
     /**
-     * Set entry authors 
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     * Set entry authors
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
@@ -218,12 +221,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
             }
         }
     }
-    
+
     /**
      * Set entry enclosure
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setEnclosure(DOMDocument $dom, DOMElement $root)
@@ -243,7 +246,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $enclosure->setAttribute('href', $data['uri']);
         $root->appendChild($enclosure);
     }
-    
+
     protected function _setLink(DOMDocument $dom, DOMElement $root)
     {
         if(!$this->getDataContainer()->getLink()) {
@@ -255,12 +258,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $link->setAttribute('type', 'text/html');
         $link->setAttribute('href', $this->getDataContainer()->getLink());
     }
-    
+
     /**
-     * Set entry identifier 
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     * Set entry identifier
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setId(DOMDocument $dom, DOMElement $root)
@@ -297,7 +300,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $text = $dom->createTextNode($this->getDataContainer()->getId());
         $id->appendChild($text);
     }
-    
+
     /**
      * Validate a URI using the tag scheme (RFC 4151)
      *
@@ -329,12 +332,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         }
         return false;
     }
-    
+
     /**
-     * Set entry content 
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     * Set entry content
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setContent(DOMDocument $dom, DOMElement $root)
@@ -364,7 +367,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $element->appendChild($xhtml);
         $root->appendChild($element);
     }
-    
+
     /**
      * Load a HTML string and attempt to normalise to XML
      */
@@ -386,19 +389,20 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
             $xhtml = $content;
         }
         $xhtml = preg_replace(array(
-            "/(<[\/]?)([a-zA-Z]+)/"   
+            "/(<[\/]?)([a-zA-Z]+)/"
         ), '$1xhtml:$2', $xhtml);
         $dom = new DOMDocument('1.0', $this->getEncoding());
-        $dom->loadXML('<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">'
-            . $xhtml . '</xhtml:div>');
+
+        $dom = Zend_Xml_Security::scan('<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+            . $xhtml . '</xhtml:div>', $dom);
         return $dom->documentElement;
     }
-    
+
     /**
-     * Set entry cateories 
-     * 
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     * Set entry cateories
+     *
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setCategories(DOMDocument $dom, DOMElement $root)
@@ -421,12 +425,12 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
             $root->appendChild($category);
         }
     }
-    
+
     /**
      * Append Source element (Atom 1.0 Feed Metadata)
      *
-     * @param  DOMDocument $dom 
-     * @param  DOMElement $root 
+     * @param  DOMDocument $dom
+     * @param  DOMElement $root
      * @return void
      */
     protected function _setSource(DOMDocument $dom, DOMElement $root)
@@ -439,6 +443,6 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         $renderer->setType($this->getType());
         $element = $renderer->render()->getElement();
         $imported = $dom->importNode($element, true);
-        $root->appendChild($imported); 
+        $root->appendChild($imported);
     }
 }

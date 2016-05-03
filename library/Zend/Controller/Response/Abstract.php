@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php,v 1.3 2013/09/10 14:37:02 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -26,7 +26,7 @@
  *
  * @package Zend_Controller
  * @subpackage Response
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Controller_Response_Abstract
@@ -257,7 +257,9 @@ abstract class Zend_Controller_Response_Abstract
         }
 
         $key = array_search($headerRaw, $this->_headersRaw);
-        unset($this->_headersRaw[$key]);
+        if ($key !== false) {
+            unset($this->_headersRaw[$key]);
+        }
 
         return $this;
     }

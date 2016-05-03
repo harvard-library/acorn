@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Oracle.php,v 1.3 2013/09/10 14:37:01 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -34,7 +34,7 @@ require_once 'Zend/Db/Statement/Oracle.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
@@ -147,8 +147,9 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     public function isConnected()
     {
         return ((bool) (is_resource($this->_connection)
-                     && get_resource_type($this->_connection) == 'oci8 connection'));
-    }
+                    && (get_resource_type($this->_connection) == 'oci8 connection'
+                     || get_resource_type($this->_connection) == 'oci8 persistent connection')));
+        }
 
     /**
      * Force the connection to close.

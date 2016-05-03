@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Document.php,v 1.3 2013/09/10 14:36:53 vcrema Exp $
+ * @version    $Id$
  */
 
 
@@ -31,7 +31,7 @@ require_once 'Zend/Search/Lucene/Field.php';
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Document
@@ -57,7 +57,7 @@ class Zend_Search_Lucene_Document
      * Proxy method for getFieldValue(), provides more convenient access to
      * the string value of a field.
      *
-     * @param  $offset
+     * @param  string $offset
      * @return string
      */
     public function __get($offset)

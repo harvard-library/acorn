@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php,v 1.1 2013/09/10 14:36:56 vcrema Exp $
+ * @version    $Id$
  */
 
 /** @see Zend_Log_Filter_Interface */
@@ -30,16 +30,16 @@ require_once 'Zend/Log/FactoryInterface.php';
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Filter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php,v 1.1 2013/09/10 14:36:56 vcrema Exp $
+ * @version    $Id$
  */
-abstract class Zend_Log_Filter_Abstract 
+abstract class Zend_Log_Filter_Abstract
     implements Zend_Log_Filter_Interface, Zend_Log_FactoryInterface
 {
     /**
      * Validate and optionally convert the config to array
-     * 
+     *
      * @param  array|Zend_Config $config Zend_Config or Array
      * @return array
      * @throws Zend_Log_Exception

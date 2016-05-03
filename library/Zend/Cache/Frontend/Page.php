@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Page.php,v 1.3 2013/09/10 14:37:04 vcrema Exp $
+ * @version    $Id$
  */
 
 
@@ -30,7 +30,7 @@ require_once 'Zend/Cache/Core.php';
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Frontend_Page extends Zend_Cache_Core
@@ -129,7 +129,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
      */
     public function __construct(array $options = array())
     {
-        while (list($name, $value) = each($options)) {
+        foreach ($options as $name => $value) {
             $name = strtolower($name);
             switch ($name) {
                 case 'regexps':
@@ -243,9 +243,11 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     {
         $this->_cancel = false;
         $lastMatchingRegexp = null;
-        foreach ($this->_specificOptions['regexps'] as $regexp => $conf) {
-            if (preg_match("`$regexp`", $_SERVER['REQUEST_URI'])) {
-                $lastMatchingRegexp = $regexp;
+        if (isset($_SERVER['REQUEST_URI'])) {
+            foreach ($this->_specificOptions['regexps'] as $regexp => $conf) {
+                if (preg_match("`$regexp`", $_SERVER['REQUEST_URI'])) {
+                    $lastMatchingRegexp = $regexp;
+                }
             }
         }
         $this->_activeOptions = $this->_specificOptions['default_options'];

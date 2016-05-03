@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Rename.php,v 1.3 2013/09/10 14:37:12 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -27,7 +27,7 @@ require_once 'Zend/Filter/Interface.php';
 /**
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Filter_File_Rename implements Zend_Filter_Interface
@@ -142,6 +142,11 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
     public function getNewName($value, $source = false)
     {
         $file = $this->_getFileName($value);
+        
+        if (!is_array($file) || !array_key_exists('source', $file) || !array_key_exists('target', $file)) {
+            return $value;
+        }
+        
         if ($file['source'] == $file['target']) {
             return $value;
         }

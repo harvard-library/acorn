@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Registry.php,v 1.3 2013/09/10 14:36:44 vcrema Exp $
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id$
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -34,7 +34,7 @@ require_once 'Zend/View/Helper/Placeholder/Container.php';
  *
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_Placeholder_Registry
@@ -85,7 +85,7 @@ class Zend_View_Helper_Placeholder_Registry
     {
         $key = (string) $key;
 
-        $this->_items[$key] = new $this->_containerClass(array());
+        $this->_items[$key] = new $this->_containerClass($value);
         return $this->_items[$key];
     }
 

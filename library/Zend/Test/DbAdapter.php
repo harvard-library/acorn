@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: DbAdapter.php,v 1.1 2013/09/10 14:36:54 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -41,7 +41,7 @@ require_once 'Zend/Db/Profiler.php';
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Test_DbAdapter extends Zend_Db_Adapter_Abstract
@@ -73,7 +73,7 @@ class Zend_Test_DbAdapter extends Zend_Db_Adapter_Abstract
 
     /**
      * @var string
-     */ 
+     */
     protected $_quoteIdentifierSymbol = '';
 
     /**
@@ -112,7 +112,7 @@ class Zend_Test_DbAdapter extends Zend_Db_Adapter_Abstract
 
     /**
      * @var string
-     */ 
+     */
     public function setQuoteIdentifierSymbol($symbol)
     {
         $this->_quoteIdentifierSymbol = $symbol;
