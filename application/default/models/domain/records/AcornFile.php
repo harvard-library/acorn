@@ -9,9 +9,8 @@ class AcornFile extends AcornClass
 	private $fileName = NULL;
 	private $dateEntered;
 	private $lastModified;
-	private $drsStatus = NULL;
+	private $uploadStatus = NULL;
 	private $enteredBy = NULL;
-	private $drsBatchName = NULL;
 	
 	//These are the only images supported by Batch Builder
 	private static $IMAGE_ARRAY = array("jp2", "gif", "tif", 
@@ -267,17 +266,17 @@ class AcornFile extends AcornClass
 	/**
 	 * @return string
 	 */
-	public function getDrsStatus()
+	public function getUploadStatus()
 	{
-		return $this->drsStatus;
+		return $this->uploadStatus;
 	}
 	
 	/**
-	 * @param string $drsStatus
+	 * @param string $uploadStatus
 	 */
-	public function setDrsStatus($drsStatus)
+	public function setUploadStatus($uploadStatus)
 	{
-		$this->drsStatus = $drsStatus;
+		$this->uploadStatus = $uploadStatus;
 	}
 	
 	/**
@@ -294,22 +293,6 @@ class AcornFile extends AcornClass
 	public function setEnteredBy($enteredBy)
 	{
 		$this->enteredBy = $enteredBy;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getDrsBatchName()
-	{
-		return $this->drsBatchName;
-	}
-	
-	/**
-	 * @param string $drsBatchName
-	 */
-	public function setDrsBatchName($drsBatchName)
-	{
-		$this->drsBatchName = $drsBatchName;
 	}
 
 	static function acornFilenameCompare($file1, $file2)

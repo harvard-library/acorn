@@ -270,18 +270,12 @@ function loadTableFormat(recordtype)
 
 function removeFile(fileID)
 {
-	var confirmed = window.confirm("WARNING: Deleting images here DOES NOT delete them from the DRS.\nYou must also use the DRS Web Admin to fully delete them from the DRS.\nClick OK to continue deleting the selected files from ACORN.");
-
-	if (confirmed)
-	{
-		var myAjax = new Ajax.Request(baseUrl + "groupfiles/removefile",
-			    {method: 'get', 
-					parameters: {fileID: fileID, recordtype: currentRecordType},
-					onComplete: function() {
-							loadTableFormat(currentRecordType);}
-					});
-	}
-
+	var myAjax = new Ajax.Request(baseUrl + "groupfiles/removefile",
+			{method: 'get', 
+			parameters: {fileID: fileID, recordtype: currentRecordType},
+			onComplete: function() {
+			loadTableFormat(currentRecordType);}
+			});
 }
 
 function initFileButtons()
@@ -289,17 +283,17 @@ function initFileButtons()
 	function onButtonsReady() {
 
 		//Makes the buttons YUI widgets for a nicer look.
-		var oSendToDRSButton = new YAHOO.widget.Button("sendtodrsbutton");
-		oSendToDRSButton.on('click', sendToDRS);
+		var ofileuploadButton = new YAHOO.widget.Button("fileuploadbutton");
+		ofileuploadButton.on('click', fileUpload);
 	}
 
     YAHOO.util.Event.onContentReady("filebuttons", onButtonsReady);
 }
 
-function sendToDRS()
+function fileUpload()
 {
 	var pkid = document.getElementById("hiddenfilepkid").value;
-	window.location = baseUrl + "groupfiles/sendtodrs/groupid/"+pkid;
+	window.location = baseUrl + "groupfiles/fileupload/groupid/"+pkid;
 }
 
 function updateFilesTable(event)

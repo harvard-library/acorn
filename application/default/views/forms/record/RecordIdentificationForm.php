@@ -63,10 +63,6 @@
     	$callnumbererrorhidden->setDecorators(Decorators::$ELEMENT_DECORATORS);
     	$this->addElement($callnumbererrorhidden);
 
-    	$hollisnumbererrorhidden = new Zend_Form_Element_Hidden('hollisnumbererrorhidden');
-    	$hollisnumbererrorhidden->setDecorators(Decorators::$ELEMENT_DECORATORS);
-    	$this->addElement($hollisnumbererrorhidden);
-    	 
     	$titleerrorhidden = new Zend_Form_Element_Hidden('titleerrorhidden');
     	$titleerrorhidden->setDecorators(Decorators::$ELEMENT_DECORATORS);
     	$this->addElement($titleerrorhidden);
@@ -142,10 +138,6 @@
      */
     private function populatePhysicalDescriptionElements()
     {
-    	$hollisinputform = new HOLLISInputForm();
-    	$hollisinputform->setName('hollisinputform');
-    	$this->addSubForm($hollisinputform, 'hollisinputform');
-    	
     	$collectionnameinput = new ACORNTextField('collectionnameinput');
 		$collectionnameinput->setLabel('Coll Name/Other ID');
 		$collectionnameinput->setName('collectionnameinput');
@@ -209,7 +201,7 @@
  		$item = RecordNamespace::getCurrentItem();
  		$olditem = RecordNamespace::getOriginalItem();
  		
- 		//The initial save checks whether the Call Numbers, Title, or HOLLIS Number
+ 		//The initial save checks whether the Call Numbers or Title,
  		//have been used by another item in the database.  If this is the second save,
  		//it is considered the override save so do not check the duplicate validators
  		//for those fields.
@@ -225,33 +217,7 @@
  			$isvalid = FALSE;
  			$this->getElement('workassignedtohidden')->addError('Please enter at least one Work Assigned To.');
  		}
- 		
- 		$oldhollisnum = NULL;
- 		if (isset($olditem))
- 		{
- 			$oldhollisnum = $olditem->getHOLLISNumber();
- 		}
- 		/*
- 		 * This checks towee that the HOLLIS number changed AND if it has not been overridden.
- 		 * If it changed and was not overridden, it then verifies
- 		 * that the HOLLIS number is not being used in another item before saving.
- 		 */
- 		if (!empty($values['hollisnumberinput']) 
- 				&& $oldhollisnum != $values['hollisnumberinput']
- 				&& $item->getDuplicateHOLLISNumber() != $values['hollisnumberinput'])
- 		{
- 			$hollisvalidator = new HOLLISNumberValidator($item->getItemID());
-
- 			if ($item->getDuplicateHOLLISNumber() != $values['hollisnumberinput']
- 					&& !$hollisvalidator->isValid($values['hollisnumberinput']))
- 			{
- 				$isvalid = FALSE;
- 				$messages = $hollisvalidator->getMessages();
- 				$this->getSubForm('hollisinputform')->getElement('hollisnumberinput')->addError(current($messages));
- 			}
- 				
- 		}
- 		
+ 		 		
  		$oldtitle = NULL;
  		if (isset($olditem))
  		{
@@ -287,7 +253,7 @@
  		$item = RecordNamespace::getCurrentItem();
  		$olditem = RecordNamespace::getOriginalItem();
  		
- 		//The initial save checks whether the Call Numbers, Title, or HOLLIS Number
+ 		//The initial save checks whether the Call Numbers or Title
  		//have been used by another item in the database.  If this is the second save,
  		//it is considered the override save so do not check the duplicate validators
  		//for those fields.
@@ -327,33 +293,7 @@
  			$isvalid = FALSE;
  			$this->getElement('workassignedtohidden')->addError('Please enter at least one Work Assigned To.');
  		}
- 		
- 		$oldhollisnum = NULL;
- 		if (isset($olditem))
- 		{
- 			$oldhollisnum = $olditem->getHOLLISNumber();
- 		}
- 		/*
- 		 * This checks towee that the HOLLIS number changed AND if it has not been overridden.
- 		 * If it changed and was not overridden, it then verifies
- 		 * that the HOLLIS number is not being used in another item before saving.
- 		 */
- 		if (!empty($values['hollisnumberinput']) 
- 				&& $oldhollisnum != $values['hollisnumberinput']
- 				&& $item->getDuplicateHOLLISNumber() != $values['hollisnumberinput'])
- 		{
- 			$hollisvalidator = new HOLLISNumberValidator($item->getItemID());
-
- 			if ($item->getDuplicateHOLLISNumber() != $values['hollisnumberinput']
- 					&& !$hollisvalidator->isValid($values['hollisnumberinput']))
- 			{
- 				$isvalid = FALSE;
- 				$messages = $hollisvalidator->getMessages();
- 				$this->getSubForm('hollisinputform')->getElement('hollisnumberinput')->addError(current($messages));
- 			}
- 				
- 		}
- 		
+ 		 		
  		$oldtitle = NULL;
  		if (isset($olditem))
  		{

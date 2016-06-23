@@ -412,7 +412,6 @@ abstract class Record extends AcornClass
     		{
     			$this->updateNamespaceRecord();
     		}
-    		$this->checkForDRSFileReports($linktype, $updateNamespace);
     		$this->files = AcornFile::getSortedFileNames($this->files);	
     	}
     	elseif (is_null($this->files))
@@ -553,54 +552,6 @@ abstract class Record extends AcornClass
     	$this->updateNamespaceRecord();
     }
     
-    private function checkForDRSFileReports($linktype, $updateNamespace)
-    {
-    	//First get the batchNames of any pending batch names
-   		$pendingBatchNames = array();
-   		foreach ($this->files as $file)
-   		{
-   			if ($file->getDrsStatus() == "Pending")
-   			{
-   				$pendingBatchNames[$file->getDrsBatchName()] = $file->getDrsBatchName();
-   			}
-   		}
-   		//If any of the files have a DRSStatus of pending, also see if the load has been completed.
-   		if (!empty($pendingBatchNames))
-   		{
-   			$drsReportProcesser = new DRSReportProcesser($pendingBatchNames);
-   			$drsReportProcesser->runService();
-   			$loadReports = $drsReportProcesser->getReports();
-   			//The files to update the DRS info
-   			$reportfiles = array();
-   			//The batch names for the reports.
-   			$reportbatchnames = array();
-   			//Put all of the load files into one array.
-   			foreach ($loadReports as $loadReport)
-   			{
-   				$files = $loadReport->getFiles();
-   				$reportfiles = array_merge($reportfiles, $files);
-   				array_push($reportbatchnames, $loadReport->getBatchDirectoryName());
-   			}
-   			
-   			$success = FilesDAO::getFilesDAO()->updateDRSInfo($reportfiles);
-   			//If the DRS info was updated properly, then run the cleanup assistant
-   			//to remove the directories from the staging file directory area.
-   			if ($success && count($reportbatchnames) > 0)
-   			{
-   				$cleanupAssistant = new DRSStagingDirectoryCleanupAssistant($reportbatchnames);
-   				$cleanupAssistant->runService();
-   				
-   				//Refresh the file data now that it has changed.
-   				$this->files = FilesDAO::getFilesDAO()->getFiles($this->getPrimaryKey(), $linktype);
-	    		if ($updateNamespace)
-	    		{
-	    			$this->updateNamespaceRecord();
-	    		}
-    		
-   			}
-   		}
-    }
-
     /**
      * @access public
      * @param  AcornFile file

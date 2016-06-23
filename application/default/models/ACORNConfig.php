@@ -28,19 +28,20 @@
  **********************************************************************/
 
 /**
- * The configuration file for the DRSDropper
+ * The configuration file for the filehander
  *
  * @access public
  * @author Valdeva Crema
  */
-class ACORNConfig extends DRSDropperConfig 
+class ACORNConfig extends Zend_Config_Ini 
 {
 	//Configuration variables
 	const ACORN_APPLICATION_DIRECTORY_NAME = 'appdirectory';
 	const ACORN_URL_NAME = 'acornurl';
 	const USER_REPORTS_DIRECTORY_NAME = 'userreportsdirectory';
 	const USER_FILES_DIRECTORY_NAME = 'userfilesdirectory';
-	const NRS_PATH = 'nrspath';
+	const FILE_UPLOAD_PATH = 'fileuploadpath';
+	const FILE_HANDLER = 'filehander';
 	
 	protected function verifyConfigSettings()
 	{
@@ -61,11 +62,14 @@ class ACORNConfig extends DRSDropperConfig
 		{
 			throw new DRSConfigException('Missing "' . self::USER_REPORTS_DIRECTORY_NAME . '" configuration setting.');
 		}
-		elseif (is_null($this->get(self::NRS_PATH))) 
+		elseif (is_null($this->get(self::FILE_UPLOAD_PATH))) 
 		{
-			throw new DRSConfigException('Missing "' . self::NRS_PATH . '" configuration setting.');
+			throw new DRSConfigException('Missing "' . self::FILE_UPLOAD_PATH . '" configuration setting.');
 		}
-		
+		elseif (is_null($this->get(self::FILE_HANDLER)))
+		{
+			throw new DRSConfigException('Missing "' . self::FILE_HANDLER . '" configuration setting.');
+		}
 	}
 	
 	/**
@@ -113,18 +117,6 @@ class ACORNConfig extends DRSDropperConfig
 			return $this->stripFullPath($this->get(self::USER_REPORTS_DIRECTORY_NAME));
 		}
 		return $this->get(self::USER_REPORTS_DIRECTORY_NAME);
-	}
-	
-	public function getNRSPath()
-	{
-		$url = $this->get(self::NRS_PATH);
-		$length = strlen($url);
-		//If the last character is not a "/", then append it.
-    	if (strrpos($url, "/") != $length-1)
-    	{
-    		$url .= "/";
-    	}
-		return $url;
 	}
 	
 	

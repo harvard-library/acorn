@@ -511,9 +511,9 @@ class GroupfilesController extends Zend_Controller_Action
     }
     
     /**
-     * Prepare the batch and send the items to the DRS
+     *
      */
-    public function sendtodrsAction()
+    public function fileuploadAction()
     {
     	$groupid = $this->getRequest()->getParam("groupid");
     	 
@@ -522,6 +522,8 @@ class GroupfilesController extends Zend_Controller_Action
     	 
     	//Get the config so the necessary variables and configs can be found
     	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
+    
+     	$filehandlername = Zend_Registry::getInstance()->get(ACORNConstants::FILE_HANDLER);
     
     	//Get the userid so the temp directory can be founds
     	$identity = Zend_Auth::getInstance()->getIdentity();

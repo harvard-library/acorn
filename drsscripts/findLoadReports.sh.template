@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# CD to the path where the DRSLoadReportScript.php file resides (eg /home/acorn/dev/public)
-cd <path to DRSLoadReportScript.php>
-
-#Set up the path to the php 5.3 version (sal = /usr/local/php-5.3.4)
-<path_to_php 5.3+ version>/bin/php DRSLoadReportScript.php 

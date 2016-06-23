@@ -18,16 +18,15 @@ class FilesDAO extends Zend_Db_Table
 	const LINK_TYPE = 'LinkType';
 	const DATE_ENTERED = 'DateEntered';
 	const LAST_MODIFIED = 'LastModified';
-	const DRS_STATUS = 'DRSStatus';
+	const UPLOAD_STATUS = 'UploadStatus';
 	const ENTERED_BY_ID = 'EnteredByID';
-	const DRS_BATCH_NAME = 'DRSBatchName';
 	
 	const LINK_TYPE_OSW = 'OSW';
 	const LINK_TYPE_ITEM = 'Item';
 	const LINK_TYPE_GROUP = 'Group';
 	
-	const DRS_STATUS_PENDING = 'Pending';
-	const DRS_STATUS_COMPLETE = 'Complete';
+	const UPLOAD_STATUS_PENDING = 'Pending';
+	const UPLOAD_STATUS_COMPLETE = 'Complete';
 	
     /* The name of the table */
 	protected $_name = "Files";
@@ -124,8 +123,7 @@ class FilesDAO extends Zend_Db_Table
     	$file->setFileType($values[self::FILE_TYPE]);
     	$file->setDateEntered($values[self::DATE_ENTERED]);
     	$file->setLastModified($values[self::LAST_MODIFIED]);
-    	$file->setDrsStatus($values[self::DRS_STATUS]);
-    	$file->setDrsBatchName($values[self::DRS_BATCH_NAME]);
+    	$file->setUploadStatusStatus($values[self::UPLOAD_STATUS]);
     	$enteredBy = NULL;
     	if (!is_null($values[self::ENTERED_BY_ID]))
     	{
@@ -134,33 +132,6 @@ class FilesDAO extends Zend_Db_Table
     	$file->setEnteredBy($enteredBy);
     	return $file;
     }
-    
-	/**
-     * Returns an array of files for the supplied batch
-     *
-     * @access public
-     * @param string batchName 
-     * @return array of AcornFile objects
-     */
-    public function getFilesInBatch($batchName)
-    {
-    	$select = $this->select();
-    	$batchName = $this->getAdapter()->quote($batchName);
-    	$select->where(self::DRS_BATCH_NAME . "=" . $batchName);
-    	Logger::log($select->__toString());
-    	$rows = $this->getAdapter()->fetchAssoc($select);
-    	$retval = array();
-    	if (!is_null($rows))
-    	{
-    		foreach($rows as $row)
-    		{
-    			$file = $this->buildAcornFile($row);
-    			$retval[$row[self::FILE_ID]] = $file;
-    		}
-    	}
-    	return $retval;
-    }
-   
     
 	public function removeAcornFile($fileid, $linktype)
     {
@@ -202,8 +173,7 @@ class FilesDAO extends Zend_Db_Table
     		self::PKID => $file->getRelatedPrimaryKeyID(),
     		self::LINK_TYPE => $file->getLinkType(),
     		self::LAST_MODIFIED => $zenddate->toString(ACORNConstants::$ZEND_INTERNAL_DATETIME_FORMAT),
-    		self::DRS_STATUS => $file->getDrsStatus(),
-    		self::DRS_BATCH_NAME => $file->getDrsBatchName()
+    		self::UPLOAD_STATUS => $file->getUploadStatus(),
     	);
     	
     	Logger::log($filearray);
@@ -246,96 +216,6 @@ class FilesDAO extends Zend_Db_Table
     	Logger::log($select->__toString());
     	$row = $this->fetchRow($select);
     	return $row->Count > 0;
-    }
-    
-	/**
-     * Updates the drs info for the given DRSLoadReportFiles.
-     * 
-     * @param array - an array of DRSLoadReportFiles.
-     * @param status - the status to update the batches to.
-     * @return  boolean - true if the update was successful.
-     */
-    public function updateDRSInfo(array $loadReportFiles)
-    {
-    	$db = $this->getAdapter();
-   		$db->beginTransaction();
-   		$success = TRUE;
-   		try {
-   			foreach ($loadReportFiles as $loadReportFile)
-   			{
-   				$this->updateDRSFile($loadReportFile, $db);
-   			}
-	        $db->commit();
-	    }
-   		catch (Exception $e)
-   		{
-   			Logger::log($e->getMessage(), Zend_Log::ERR);
-   			$db->rollBack();
-   			$success = FALSE;
-   		}
-   		return $success;
-    }
-    
-    private function updateDRSFile(DRSLoadReportFile $file, $db)
-    {
-    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-    	
-        $filename = substr($file->getFilePath(), strrpos($file->getFilePath(), "/") + 1);
-      	$extension = AcornFile::getFileExtension($filename);
-      	//if (in_array($extension, array('jpg', 'jp2', 'gif')))
-      	//{
-      		$path = $config->getNRSPath() . $file->getUrn();
-      	/*}
-      	else 
-      	{
-      		$path = $file->getFilePath();
-      	}*/
-      	$updatearray = array(self::PATH => $path, self::DRS_STATUS => self::DRS_STATUS_COMPLETE);
-      	Logger::log("Updating DRS file to complete: " . $filename . " with " . $path);
-    	$db->update('Files', $updatearray, self::FILE_NAME . " = '" . $filename . "'");
-    }
-    
-    public function deleteFilesInBatch($batchname)
-    {
-    	$db = $this->getAdapter();
-   		$db->beginTransaction();
-   		$batchname = $db->quote($batchname);
-   		$success = TRUE;
-   		try {
-   			$db->delete('Files', self::DRS_BATCH_NAME . " = " . $batchname);
-	        $db->commit();
-	    }
-   		catch (Exception $e)
-   		{
-   			Logger::log($e->getMessage(), Zend_Log::ERR);
-   			$db->rollBack();
-   			$success = FALSE;
-   		}
-   		return $success;
-    }
-    
-	/**
-     * Returns an array of files that are 'Pending' in the DB
-     *
-     * @access public
-     * @return array of AcornFile objects
-     */
-    public function getPendingDRSFiles()
-    {
-    	$select = $this->select();
-    	$select->where("DRSStatus='Pending'");
-    	Logger::log($select->__toString());
-    	$rows = $this->getAdapter()->fetchAssoc($select);
-    	$retval = array();
-    	if (!is_null($rows))
-    	{
-    		foreach($rows as $row)
-    		{
-    			$file = $this->buildAcornFile($row);
-    			$retval[$row[self::FILE_ID]] = $file;
-    		}
-    	}
-    	return $retval;
     }
 } 
 

@@ -148,10 +148,6 @@
 		$callnumbertoinput->addValidator(new Zend_Validate_GreaterThan(0));
 		$this->addElement($callnumbertoinput);
 		
-		$hollisinputform = new HOLLISInputForm();
-    	$hollisinputform->setName('hollisinputform');
-    	$this->addSubForm($hollisinputform, 'hollisinputform');
-    	
     	$collectionnameinput = new ACORNTextField('collectionnameinput');
 		$collectionnameinput->setLabel('Coll Name/Other ID');
 		$collectionnameinput->setName('collectionnameinput');

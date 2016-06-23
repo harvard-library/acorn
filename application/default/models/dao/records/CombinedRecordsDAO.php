@@ -272,7 +272,6 @@ class CombinedRecordsDAO extends Zend_Db_Table
     	$item->setPurposeID($values[PurposeDAO::PURPOSE_ID]);
     	$item->setStorage($values[ItemDAO::STORAGE]);
     	$item->setTitle($values[ItemDAO::TITLE]);
-    	$item->setHOLLISNumber($values[ItemDAO::HOLLIS_NUMBER]);
     	$item->setCollectionName($values[ItemDAO::COLLECTION_NAME]);
     	$item->setIsBeingEditedByID($values[ItemDAO::EDITED_BY_ID]);
     	$item->setRecordType($values[self::RECORD_TYPE]);

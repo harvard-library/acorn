@@ -10,7 +10,6 @@ class Person extends AcornClass
 	private $username = NULL;
 	private $initials = NULL;
 	private $emailAddress = NULL;
-	private $receiveDRSEmails = FALSE;
 	
 	/**
 	 * @return mixed
@@ -209,23 +208,6 @@ class Person extends AcornClass
     	return NULL;
     }
 	
-	/**
-	 * @return boolean
-	 */
-	public function getReceiveDRSEmails()
-	{
-		return $this->receiveDRSEmails;
-	}
-	
-	/**
-	 * @param boolean $receiveDRSEmails
-	 */
-	public function setReceiveDRSEmails($receiveDRSEmails)
-	{
-		$this->receiveDRSEmails = $receiveDRSEmails;
-	}
-
-
 	/**
      * @access public
      * @return mixed

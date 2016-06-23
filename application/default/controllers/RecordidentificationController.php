@@ -186,40 +186,7 @@ class RecordidentificationController extends Zend_Controller_Action
     	$this->getResponse()->setHeader('Content-Type', 'application/json')
     	->setBody($jsonstring);
     }
-    
-    /**
-     * If the HOLLIS number attempting to be saved exist in another item,
-     * the user can 'override' it so that it is still saved.  This method places
-     * the HOLLIS number into a variable that is stored in the Item record so that the
-     * validator ignores it on the next save.
-     */
-    public function overridehollisnumberAction()
-    {
-    	$this->_helper->viewRenderer->setNoRender();
-    	//Don't use the default layout since this isn't a view call
-    	$this->_helper->layout->disableLayout();
-    
-    	$hollisnumber = $this->getRequest()->getParam('hollisnumber');
-    	
-    	$item = RecordNamespace::getCurrentItem();
-    	
-    	
-    	$exclusionids = !is_null($item->getItemID()) ? array($item->getItemID()) : NULL;
-	    $itemid = ItemDAO::getItemDAO()->hollisNumberExists($hollisnumber, $exclusionids);
-    	if (!is_null($itemid))
-    	{
-    		//Add the hollis number to the Item so that the error messages will
-    		//be ignored when it is being saved.
-    		$item->setDuplicateHOLLISNumber($hollisnumber);
-    		$this->getRecordForm()->getSubForm('recordidentificationform')->getSubForm('hollisinputform')->getElement('hollisnumberinput')->clearErrorMessages();
-    	}
-    	 
-    	$data = array('Success' => TRUE);
-    	$jsonstring = Zend_Json::encode($data);
-    	$this->getResponse()->setHeader('Content-Type', 'application/json')
-    		->setBody($jsonstring);
-    }
-    
+     
     /**
      * If the title attempting to be saved exist in another item,
      * the user can 'override' it so that it is still saved.  This method places
@@ -286,21 +253,8 @@ class RecordidentificationController extends Zend_Controller_Action
     	$form = $this->getRecordForm();
 		//Populate the data with what the user
 		//gave but also display the error messages.
-    	$hollisnumbererrors = $form->getSubForm('recordidentificationform')->getSubForm('hollisinputform')->getElement('hollisnumberinput')->getMessages();
     	$titleerrors = $form->getSubForm('recordidentificationform')->getElement('titleinput')->getMessages();
-    	
-    	
-    	$formData['hollisnumbererrorhidden'] = FALSE;
-    	foreach ($hollisnumbererrors as $error)
-    	{
-    		//If the string is found in any of the messages, add it to the item.
-    		if (stripos($error, "exists in Acorn record") !== FALSE)
-    		{
-    			$formData['hollisnumbererrorhidden'] = TRUE;
-    			break;
-    		}
-    	}
-    	
+    	    	
     	$formData['titleerrorhidden'] = FALSE;
     	foreach ($titleerrors as $error)
     	{
@@ -314,8 +268,7 @@ class RecordidentificationController extends Zend_Controller_Action
     	
     	$form->populate($formData);
 		$this->view->form = $form;
-		
-		
+				
 		$item = RecordNamespace::getCurrentItem();
 		$recordnumberlabel = "Record #" . $item->getItemID();
 		$recordinfolabel = $item->getInfoForLabel();
@@ -352,7 +305,6 @@ class RecordidentificationController extends Zend_Controller_Action
     	$item->setFormatID($formvalues['formatselect']);
     	$item->setFundMemo($formvalues['repositorymemotextarea']);
     	$item->setGroupID($formvalues['groupselect']);
-    	$item->setHOLLISNumber($formvalues['hollisnumberinput']);
     	$item->setHomeLocationID($formvalues['repositoryselect']);
     	$item->setChargeToID($formvalues['chargetoselect']);
     	$item->setExpectedDateOfReturn($formvalues['expecteddateofreturninput']);

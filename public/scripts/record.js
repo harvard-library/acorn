@@ -246,18 +246,6 @@ function initRepository()
 		
 	document.getElementById("editprojectbutton").style.display = "none";
 	
-	function onHollisButtonReady() {
-
-		//Keep the hollis button enabled.
-		document.getElementById("gotohollisbutton").disabled = false;
-		
-    	//Makes the buttons YUI widgets for a nicer look.
-    	var oGoToHollisButton = new YAHOO.widget.Button("gotohollisbutton");
-    	oGoToHollisButton.on('click', goToHOLLIS);
-    }
-
-    YAHOO.util.Event.onContentReady("gotohollisbutton", onHollisButtonReady);
-    
     function onButtonsReady() {
 
 		var oViewProposalApproval = new YAHOO.widget.Button("viewproposalapprovalbutton");
@@ -305,30 +293,6 @@ function overrideDuplicateCallNumber()
 	        			document.getElementById('callnumberhidden').value = "";
 		        		
 		        		document.getElementById('idsavecallbuttondiv').style.display = "none";
-	        		}
-	        	}
-			}
-    		}
-		);
-}
-
-function overrideDuplicateHOLLLISNumber()
-{
-	var myAjax = new Ajax.Request(baseUrl + "recordidentification/overridehollisnumber",
-    		{method: 'get',
-			parameters: {hollisnumber: document.getElementById('hollisnumberinput').value},
-			onComplete: function(transport){
-				if (transport.responseJSON != null)
-	        	{
-					var val = JSON.parse(transport.responseText);
-	        		var success = val.Success;
-	        		if (success)
-	        		{
-		        		var hollisnumberdiv = document.getElementById('hollisnumberdiv');
-		        		var ul = hollisnumberdiv.getElementsByTagName('ul');
-		        		ul[0].style.display = "none";
-		        		
-		        		document.getElementById('idsavehollisbuttondiv').style.display = "none";
 	        		}
 	        	}
 			}
@@ -396,9 +360,6 @@ function initIdentificationButtons()
 		var oOverrideCallButton = new YAHOO.widget.Button("savecallnumberbutton");
 		oOverrideCallButton.on('click', overrideDuplicateCallNumber);
 		
-		var oOverrideHOLLISButton = new YAHOO.widget.Button("savehollisnumberbutton");
-		oOverrideHOLLISButton.on('click', overrideDuplicateHOLLLISNumber);
-		
 		var oOverrideTitleButton = new YAHOO.widget.Button("savetitlebutton");
 		oOverrideTitleButton.on('click', overrideDuplicateTitle);
 		
@@ -414,15 +375,6 @@ function initIdentificationButtons()
     }
 
     YAHOO.util.Event.onContentReady("editprojectbutton", onProjectButtonReady);
-    
-    function onHollisButtonReady() {
-
-    	//Makes the buttons YUI widgets for a nicer look.
-		var oGoToHollisButton3 = new YAHOO.widget.Button("gotohollisbutton");
-		oGoToHollisButton3.on('click', goToHOLLIS);
-    }
-
-    YAHOO.util.Event.onContentReady("gotohollisbutton", onHollisButtonReady);
     
     unlockChooser = new YAHOO.widget.Calendar("unlockChooser","unlockCalendarChooserContainer", { title:"Choose a date:", close:true, navigator:true } );
     unlockChooser.render();
@@ -466,14 +418,6 @@ function resetIdentification()
     		{method: 'get',
 			onComplete: loadRecordIdentificationIncludes}
 			);
-}
-
-
-function goToHOLLIS()
-{
-	var hollisNum = document.getElementById('hollisnumberinput').value;
-	while (hollisNum.length < 9) hollisNum = "0" + hollisNum;
-	window.open("http://id.lib.harvard.edu/aleph/" + hollisNum + "/catalog");
 }
 
 function editProject()
@@ -963,10 +907,6 @@ function initDuplicateOverrideButtons()
 	if (document.getElementById('callnumbererrorhidden').value)
 	{
 		document.getElementById('idsavecallbuttondiv').style.display = 'block';
-	}
-	if (document.getElementById('hollisnumbererrorhidden').value)
-	{
-		document.getElementById('idsavehollisbuttondiv').style.display = 'block';
 	}
 	if (document.getElementById('titleerrorhidden').value)
 	{

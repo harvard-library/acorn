@@ -60,10 +60,6 @@ padding-top: 4px;
 margin-top: 3px;
 }
 
-#hollisnumberinput {
-width: 30%;
-}
-
 #miscinfo {
 min-height: 130px; 
 height: 130px;
@@ -110,7 +106,7 @@ height: 125px;
 width: 85%;
 }
 
-#callnumberdiv ul, #titlediv ul, #hollisnumberdiv ul, #callnumbermessage {
+#callnumberdiv ul, #titlediv ul, #callnumbermessage {
  float: left;
   width: 60%;
   margin-bottom: 10px;

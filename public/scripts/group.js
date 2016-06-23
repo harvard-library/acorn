@@ -281,17 +281,7 @@ function initRepository()
 	document.getElementById("groupidentificationbuttons").style.display = "none";
 	document.getElementById("editprojectbutton").style.display = "none";
 	
-	function onHollisButtonReady() {
 
-		//Keep the hollis button enabled.
-		document.getElementById("gotohollisbutton").disabled = false;
-		
-    	//Makes the buttons YUI widgets for a nicer look.
-    	var oGoToHollisButton3 = new YAHOO.widget.Button("gotohollisbutton");
-    }
-
-    YAHOO.util.Event.onContentReady("gotohollisbutton", onHollisButtonReady);
-    
     returnDateChooser = new YAHOO.widget.Calendar("returnDateChooser","returnCalendarChooserContainer", { title:"Choose a date:", close:true, navigator:true } );
     returnDateChooser.render();
     returnDateChooser.selectEvent.subscribe(handleReturnDateSelect, returnDateChooser, true);
@@ -342,15 +332,6 @@ function initIdentificationButtons()
     }
 
     YAHOO.util.Event.onContentReady("savegroupbutton", onGroupButtonReady);
-    
-    function onHollisButtonReady() {
-
-    	//Makes the buttons YUI widgets for a nicer look.
-    	var oGoToHollisButton = new YAHOO.widget.Button("gotohollisbutton");
-    	oGoToHollisButton.on('click', goToHOLLIS);
-    }
-
-    YAHOO.util.Event.onContentReady("gotohollisbutton", onHollisButtonReady);
     
     unlockChooser = new YAHOO.widget.Calendar("unlockChooser","unlockCalendarChooserContainer", { title:"Choose a date:", close:true, navigator:true } );
     unlockChooser.render();
@@ -403,18 +384,10 @@ function unlockGroup()
 		);
 }
 
-function goToHOLLIS()
-{
-	var hollisNum = document.getElementById('hollisnumberinput').value;
-	while (hollisNum.length < 9) hollisNum = "0" + hollisNum;
-	window.open("http://id.lib.harvard.edu/aleph/" + hollisNum + "/catalog");
-}
-
 function editProject()
 {
 	window.open(baseUrl + 'admin/editlists');
 }
-
 
 function saveGroup()
 {

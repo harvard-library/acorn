@@ -20,7 +20,6 @@ class ItemDAO extends Zend_Db_Table
 	const FUND_MEMO = 'FundMemo';
 	const AUTHOR_ARTIST = 'AuthorArtist';
 	const DATE_OF_OBJECT = 'DateOfObject';
-	const HOLLIS_NUMBER = 'HOLLISNumber';
 	const COLLECTION_NAME = 'CollectionName';
 	const STORAGE = 'Storage';
 	const COMMENTS = 'Comments';
@@ -133,7 +132,6 @@ class ItemDAO extends Zend_Db_Table
     	$item->setPurposeID($values[PurposeDAO::PURPOSE_ID]);
     	$item->setStorage($values[self::STORAGE]);
     	$item->setTitle($values[self::TITLE]);
-    	$item->setHOLLISNumber($values[self::HOLLIS_NUMBER]);
     	$item->setCollectionName($values[self::COLLECTION_NAME]);
     	$item->setIsBeingEditedByID($values[self::EDITED_BY_ID]);
     	$item->setManuallyClosed($values[self::MANUALLY_CLOSED]);
@@ -1294,7 +1292,6 @@ class ItemDAO extends Zend_Db_Table
     		FormatDAO::FORMAT_ID => $item->getFormatID(),
     		self::EXPECTED_DATE_OF_RETURN => $returndate,
     		self::FUND_MEMO => $item->getFundMemo(),
-    		self::HOLLIS_NUMBER => $item->getHOLLISNumber(),
     		self::INSURANCE_VALUE => $item->getInsuranceValue(),
     		self::IS_NON_COLLECTION_MATERIAL => $item->isNonCollectionMaterial(),
     		self::STORAGE => $item->getStorage()
@@ -1663,39 +1660,7 @@ class ItemDAO extends Zend_Db_Table
     	}
     	return $retval;
     }
-    
-    /**
-     * Determines if the given HOLLIS number exists in the database for
-     * an Item.
-     * 
-     * @param $value - the Integer HOLLIS number to search for.
-     * @param $exclusionIDs OPTIONAL array - excludes the given IDs from the query.
-     * @return the ACORN # if the HOLLIS number exists, NULL otherwise.
-     */
-    public function hollisNumberExists($value, array $exclusionIDs = NULL)
-    {
-    	$select = $this->select();
-    	$select->from($this, array('ItemID'));
-    	$value = $this->getAdapter()->quote($value, 'INTEGER');
-    	$select->where('HOLLISNumber=' . $value);
-    	if (!empty($exclusionIDs))
-    	{
-    		$exclusionstring = implode(",", $exclusionIDs);
-    		if (!empty($exclusionstring))
-    		{
-    			$select->where('ItemID NOT IN (' . $exclusionstring . ')');
-    		}
-    	}
-    	$row = $this->fetchRow($select);
-    	if (!is_null($row))
-    	{
-    		return $row->ItemID;	
-    	}
-    	return NULL;
-    }
-    
-    
-    
+        
     /**
      * Determines if the given title exists in the database for
      * an Item.
@@ -1727,9 +1692,7 @@ class ItemDAO extends Zend_Db_Table
     		return $row->ItemID;
     	}
     	return NULL;
-    }
-    
-   
+    }  
 } 
 
 ?>

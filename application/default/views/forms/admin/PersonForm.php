@@ -73,12 +73,6 @@
     	$accesslevelselectform->setRequired(TRUE);
     	$this->addSubForm($accesslevelselectform, 'accesslevelselectform');
     	
-    	$drsemailscheckbox = new Zend_Form_Element_Checkbox('drsemailscheckbox');
-        $drsemailscheckbox->setLabel('Receive DRS Emails for all users');
-        $drsemailscheckbox->setAttribs(array('class' => 'checkboxinput'));
-        $drsemailscheckbox->setDecorators(Decorators::$CHECKBOX_DECORATORS);
-    	$this->addElement($drsemailscheckbox);
-    	
     	$newpassword = new Zend_Form_Element_Password('newpassword');
 		$newpassword->setLabel('New Password*');
 		$newpassword->setName('newpassword');

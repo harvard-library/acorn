@@ -22,7 +22,6 @@ class PeopleDAO extends Zend_Db_Table
 	const INITIALS = 'Initials';
 	const EMAIL_ADDRESS = 'EmailAddress';
 	const ROLE_TYPE = 'RoleType';
-	const RECEIVE_ALL_DRS_EMAIL = 'ReceiveAllDRSEmail';
 	
 	//Access levels
 	const ACCESS_LEVEL_ADMIN = 'Admin';
@@ -222,8 +221,7 @@ class PeopleDAO extends Zend_Db_Table
         	self::EMAIL_ADDRESS => $person->getEmailAddress(),
         	LocationDAO::LOCATION_ID => $person->getLocation(),
         	self::INACTIVE => $person->isInactive(),
-        	self::RECEIVE_ALL_DRS_EMAIL => $person->getReceiveDRSEmails()
-        );
+         );
         
         $db = $this->getAdapter();
 		$db->beginTransaction();
@@ -439,7 +437,6 @@ class PeopleDAO extends Zend_Db_Table
     	$person->setLocation($values[LocationDAO::LOCATION_ID]);
     	$person->setInitials($values[self::INITIALS]);
     	$person->setEmailAddress($values[self::EMAIL_ADDRESS]);
-    	$person->setReceiveDRSEmails($values[self::RECEIVE_ALL_DRS_EMAIL]);
     	return $person;
     }
 
@@ -456,22 +453,6 @@ class PeopleDAO extends Zend_Db_Table
     	$select->from('Roles', array('RoleType', 'RoleType'));
     	$select->where('PersonID=' . $personID);
     	Logger::log($select->__toString(), Zend_Log::DEBUG);
-    	$retval = $this->getAdapter()->fetchPairs($select);
-    	return $retval;
-    }
-    
-	/**
-     * Returns an array of emails that should receive all DRS email notifications
-     *
-     * @access public
-     * @return JSON ready array
-     */
-    public function getDRSEmails()
-    {
-    	$select = $this->select();
-    	$select->from($this, array(self::EMAIL_ADDRESS, self::EMAIL_ADDRESS));
-    	$select->where(self::RECEIVE_ALL_DRS_EMAIL . "=1 AND " . self::EMAIL_ADDRESS . " IS NOT NULL");
-    	$select->distinct();
     	$retval = $this->getAdapter()->fetchPairs($select);
     	return $retval;
     }

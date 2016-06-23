@@ -20,13 +20,11 @@ class Item extends Record
 	private $authorArtist = NULL;
 	private $dateOfObject = NULL;
 	private $counts = NULL;
-	private $hollisNumber = NULL;
 	private $collectionName = NULL;
 	private $currentLocation  = NULL;
 	private $isUnlocked = NULL;
 	
 	private $duplicateTitle = NULL;
-	private $duplicateHOLLISNumber = NULL;
 	
 	public function __construct($primaryKey = NULL, $isInactive = FALSE, $isBeingEdited = FALSE)
 	{
@@ -289,24 +287,6 @@ class Item extends Record
     	$this->counts = $counts;
     }
 
-	/**
-     * @access public
-     * @param  string hollisNumber
-     */
-    public function setHOLLISNumber($hollisNumber)
-    {
-    	$this->hollisNumber = $hollisNumber;
-    }
-    
-	/**
-     * @access public
-     * @return string
-     */
-    public function getHOLLISNumber()
-    {
-    	return $this->hollisNumber;
-    }
-    
 	/**
      * @access public
      * @param  string collectionName
@@ -661,7 +641,6 @@ class Item extends Record
     	$equal = $equal && $this->getExpectedDateOfReturn() == $record->getExpectedDateOfReturn();
     	$equal = $equal && $this->getFundMemo() == $record->getFundMemo();
     	$equal = $equal && $this->getGroupID() == $record->getGroupID();
-    	$equal = $equal && $this->getHOLLISNumber() == $record->getHOLLISNumber();
     	$equal = $equal && $this->getHomeLocationID() == $record->getHomeLocationID();
     	$equal = $equal && $this->getInsuranceValue() == $record->getInsuranceValue();
     	$equal = $equal && $this->getProjectID() == $record->getProjectID();
@@ -1043,33 +1022,7 @@ class Item extends Record
     	return $this->getFunctions()->getReport()->getActivity();
     }
     
-    
-    /**
-     * Returns the HOLLIS number that exists in the database in another item.
-     * This exists only for the HOLLIS number that is attempting to be added
-     * during this instance of the record identification.
-     * 
-     * @return string
-     */
-    public function getDuplicateHOLLISNumber()
-    {
-    	return $this->duplicateHOLLISNumber;
-    }
-    
-    /**
-     * Sets the HOLLIS number that exists in the database in another item.
-     * This exists only for the HOLLIS number that is attempting to be added
-     * during this instance of the record identification.
-     
-     * @param  string hollisNumber
-     */
-    public function setDuplicateHOLLISNumber($hollisNumber)
-    {
-    	$this->duplicateHOLLISNumber = $hollisNumber;
-    	$this->updateNamespaceRecord();
-    }
-    
-    
+        
     /**
      * Returns the title that exists in the database in another item.
      * This exists only for the title that is attempting to be added
@@ -1098,7 +1051,6 @@ class Item extends Record
     public function clearAllDuplicates()
     {
     	parent::clearAllDuplicates();
-    	$this->duplicateHOLLISNumber = NULL;
     	$this->duplicateTitle = NULL;
     }
     

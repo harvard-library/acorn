@@ -108,8 +108,7 @@ class PeopleController extends Zend_Controller_Action
     		'personidinput' => $person->getPrimaryKey(),
     		'initialsinput' => $person->getInitials(),
     		'inactivecheckbox' => $person->isInactive(),
-    		'emailinput' => $person->getEmailAddress(),
-    		'drsemailscheckbox' => $person->getReceiveDRSEmails()
+    		'emailinput' => $person->getEmailAddress()
     	);
     	return $formarray;
     }
@@ -265,7 +264,6 @@ class PeopleController extends Zend_Controller_Action
     	$person->setUsername($data['logininput']);
     	$person->setInactive($data['inactivecheckbox']);
     	$person->setEmailAddress($data['emailinput']);
-    	$person->setReceiveDRSEmails($data['drsemailscheckbox']);
     	
     	if (isset($data['repositoryselect']))
     	{
