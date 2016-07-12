@@ -123,7 +123,7 @@ class FilesDAO extends Zend_Db_Table
     	$file->setFileType($values[self::FILE_TYPE]);
     	$file->setDateEntered($values[self::DATE_ENTERED]);
     	$file->setLastModified($values[self::LAST_MODIFIED]);
-    	$file->setUploadStatusStatus($values[self::UPLOAD_STATUS]);
+    	$file->setUploadStatus($values[self::UPLOAD_STATUS]);
     	$enteredBy = NULL;
     	if (!is_null($values[self::ENTERED_BY_ID]))
     	{

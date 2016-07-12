@@ -201,37 +201,6 @@ class GroupfilesController extends Zend_Controller_Action
     }  
     
     /**
-     * Get the instance of the BatchBuilderAssistant
-     * @return BatchBuilderAssistant
-     */
-    private function getBatchBuilderAssistant($projectDirectory)
-    {
-    	if (is_null($this->batchBuilderAssistant))
-    	{
-    		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-    		//BB will be used
-    		$this->batchBuilderAssistant = new BatchBuilderAssistant($projectDirectory, $config->getBbClientPath(), $config->getBbScriptName());
-    		//Get all of the emails that should receive ALL drs emails for ACORN
-    		//$drsemails = PeopleDAO::getPeopleDAO()->getDRSEmails();
-	    	$drsemails = array();
-	    	
-    		$identity = Zend_Auth::getInstance()->getIdentity();
-    		$userid = $identity[PeopleDAO::PERSON_ID];
-    		$person = PeopleDAO::getPeopleDAO()->getPerson($userid);
-    		//If the person has a registered email address, then
-    		if (!is_null($person->getEmailAddress()))
-    		{
-    			array_push($drsemails, $person->getEmailAddress());
-    		}
-    		$drsemails = array_unique($drsemails);
-    		$this->batchBuilderAssistant->setSuccessEmails($drsemails);
-    		$this->batchBuilderAssistant->setFailEmails($drsemails);
-    	}
-    	return $this->batchBuilderAssistant;
-    	 
-    }
-	
-    /**
      * Adds a new file to the current user's temporary directory
      * @throws DRSServiceException
      */
@@ -291,69 +260,7 @@ class GroupfilesController extends Zend_Controller_Action
     	$this->view->placeholder("fileserrormessage")->set($message);
     	 
     	$this->renderScript('group/index.phtml');
-    }
-    
-    
-    private function updateItemWithNewFile($filetype, $filename, $batchnameforimages, DRSDropperConfig $config)
-    {
-    	$group = GroupNamespace::getCurrentGroup();
-    	 
-    	$fileid = "";
-    	$message = "Success";
-    	if (isset($group) && !is_null($group))
-    	{
-    		$files = $group->getFiles();
-    
-    		$fileid = count($files) * -1;
-    
-    		$newfile = new AcornFile();
-    		 
-    		$newfile->setRelatedPrimaryKeyID($group->getPrimaryKey());
-    		$newfile->setPrimaryKey($fileid);
-    		$newfile->setLinkType(FilesDAO::LINK_TYPE_GROUP);
-    		$newfile->setFileType($filetype);
-    		$newfile->setFileName($filename);
-    		$identity = Zend_Auth::getInstance()->getIdentity();
-    		$enteredby = PeopleDAO::getPeopleDAO()->getPerson($identity[PeopleDAO::PERSON_ID]);
-    		$newfile->setEnteredBy($enteredby);
-    
-    		//For the images, make them temporary.
-    		if ($filetype == "Image")
-    		{
-    			$path = $config->getStagingFileDirectory(TRUE);
-    			
-    			$projectDirectory = "/user" . $identity[PeopleDAO::PERSON_ID] . "project";
-    			$objectname = substr($filename, 0, strrpos($filename, "."));
-    			$path .= $projectDirectory . "/" . $batchnameforimages . "/" . $objectname . "/" . $config->getBatchType() . "/" . $filename;
-
-    			$newfile->setPath($config->getACORNUrl() . $path);
-    			$newfile->setDrsStatus(FilesDAO::DRS_STATUS_PENDING);
-    			$newfile->setDrsBatchName($batchnameforimages);
-    		}
-    		else
-    		{
-    			$newfile->setPath($config->getACORNUrl() . $config->getFilesDirectory(TRUE) . "/" . $filename);
-    		}
-    		$files[$fileid] = $newfile;
-    		$newfileid = FilesDAO::getFilesDAO()->saveAcornFile($newfile);
-    		if (!is_null($newfileid))
-    		{
-    			$files[$newfileid] = clone $files[$fileid];
-    			$files[$newfileid]->setPrimaryKey($newfileid);
-    			unset($files[$fileid]);
-    			$group->setFiles($files);
-    			GroupNamespace::setCurrentGroup($group);
-    			
-    			$message = "Success";
-    
-    		}
-    		else
-    		{
-    			$message = self::FILE_COPY_ERROR_MESSAGE;
-    		}
-    	}
-    	return $message;
-    }
+    }    
     
     private function formatGroupName($groupName)
     {
@@ -523,8 +430,10 @@ class GroupfilesController extends Zend_Controller_Action
     	//Get the config so the necessary variables and configs can be found
     	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
     
-     	$filehandlername = Zend_Registry::getInstance()->get(ACORNConstants::FILE_HANDLER);
-    
+     	$filehandlername = ACORNConfig.get(self::FILE_HANDLER);
+		$filehandler = new ReflectionClass($filehandlername);
+		$filehandler.processFiles($files); //You will have an array of files to pass it.  See the existing method
+
     	//Get the userid so the temp directory can be founds
     	$identity = Zend_Auth::getInstance()->getIdentity();
     	$userid = $identity[PeopleDAO::PERSON_ID];

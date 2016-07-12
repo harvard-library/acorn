@@ -53,13 +53,9 @@
  	{
  		if (is_array($message))
  		{
- 			//$keys = array_keys($message);
- 			//$values = array_values($message);
- 			//$value = current($values);
  			foreach ($message as $key => $value)
  			{
- 				self::getLogger()->getZendLogger()->log($key . ': ' . $value, $priority);
- 				//$value = next($values);
+ 				self::getLogger()->getZendLogger()->log(($key . ': ' . $value), $priority);
  			}
  		}
  		else

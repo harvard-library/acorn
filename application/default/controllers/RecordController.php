@@ -380,7 +380,6 @@ class RecordController extends Zend_Controller_Action
 	    		'repositoryselect' => $item->getHomeLocationID(),
 	    		'departmentselect' => $item->getDepartmentID(),
 	    		'chargetoselect' => $item->getChargeToID(),
-	    		'hollisnumberinput' => $item->getHOLLISNumber(),
 	    		'collectionnameinput' => $item->getCollectionName(),
 	    		'authorinput' => $item->getAuthorArtist(),
 	    		'titleinput' => $item->getTitle(),

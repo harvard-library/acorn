@@ -12,7 +12,7 @@ function loadTableFormat(recordtype)
 				var url = oRecord.getData("Path1");
 				var date = oRecord.getData("DateEntered1");
 				var filename = oRecord.getData("FileName1");
-				var html = "<div style='text-align: center'><a href=\"" + url + "\" target=\"_blank\" ><img class=\"drsimage\" src=\"" + oData + "\" alt=\"" + oData + "\"  /></a></div>";
+				var html = "<div style='text-align: center'><a href=\"" + url + "\" target=\"_blank\" ><img class=\"uploadedimage\" src=\"" + oData + "\" alt=\"" + oData + "\"  /></a></div>";
 				if (accesslevel != "Admin")
 				{
 					html += "<div class=\"filenamediv\">" + date;
@@ -60,7 +60,7 @@ function loadTableFormat(recordtype)
 				var url = oRecord.getData("Path2");
 				var date = oRecord.getData("DateEntered2");
 				var filename = oRecord.getData("FileName2");
-				var html = "<div style='text-align: center'><a href=\"" + url + "\" target=\"_blank\" ><img class=\"drsimage\" src=\"" + oData + "\" alt=\"" + oData + "\"  /></a></div>";
+				var html = "<div style='text-align: center'><a href=\"" + url + "\" target=\"_blank\" ><img class=\"uploadedimage\" src=\"" + oData + "\" alt=\"" + oData + "\"  /></a></div>";
 				if (accesslevel != "Admin")
 				{
 					html += "<div class=\"filenamediv\">" + date;
@@ -108,7 +108,7 @@ function loadTableFormat(recordtype)
 				var url = oRecord.getData("Path3");
 				var date = oRecord.getData("DateEntered3");
 				var filename = oRecord.getData("FileName3");
-				var html = "<div style='text-align: center'><a href=\"" + url + "\" target=\"_blank\" ><img class=\"drsimage\" src=\"" + oData + "\" alt=\"" + oData + "\"  /></a></div>";
+				var html = "<div style='text-align: center'><a href=\"" + url + "\" target=\"_blank\" ><img class=\"uploadedimage\" src=\"" + oData + "\" alt=\"" + oData + "\"  /></a></div>";
 				if (accesslevel != "Admin")
 				{
 					html += "<div class=\"filenamediv\">" + date;

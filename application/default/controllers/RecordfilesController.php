@@ -294,36 +294,7 @@ class RecordfilesController extends Zend_Controller_Action
     	}
     	return $id;
     }
-    
-    /**
-     * Get the instance of the BatchBuilderAssistant
-     * @return BatchBuilderAssistant
-     */
-    private function getBatchBuilderAssistant($projectDirectory)
-    {
-    	if (is_null($this->batchBuilderAssistant))
-    	{
-	    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-			//BB will be used
-			$this->batchBuilderAssistant = new BatchBuilderAssistant($projectDirectory, $config->getBbClientPath(), $config->getBbScriptName());
-	    	//Get all of the emails that should receive ALL drs emails for ACORN
-	    	$drsemails = PeopleDAO::getPeopleDAO()->getDRSEmails();
-	    	$identity = Zend_Auth::getInstance()->getIdentity();
-       	 	$userid = $identity[PeopleDAO::PERSON_ID];
-        	$person = PeopleDAO::getPeopleDAO()->getPerson($userid);
-	    	//If the person has a registered email address, then
-	    	if (!is_null($person->getEmailAddress()))
-	    	{
-	    		array_push($drsemails, $person->getEmailAddress());
-	    	}
-	    	$drsemails = array_unique($drsemails);
-	    	$this->batchBuilderAssistant->setSuccessEmails($drsemails);
-	    	$this->batchBuilderAssistant->setFailEmails($drsemails);
-    	}
-    	return $this->batchBuilderAssistant;
-    	
-    }
-    
+        
     public function addnewfileAction()
     {
     	//Don't display a new view
@@ -384,85 +355,6 @@ class RecordfilesController extends Zend_Controller_Action
     }
 
     
-    private function updateItemWithNewFile($recordtype, $filetype, $filename, $batchnameforimages, DRSDropperConfig $config)
-    {
-    	$item = NULL;
-    	$linktype = FilesDAO::LINK_TYPE_ITEM;
-    	if ($recordtype == "item")
-    	{
-    		$item = RecordNamespace::getCurrentItem();
-    		$linktype = FilesDAO::LINK_TYPE_ITEM;
-    	}
-    	elseif ($recordtype == "osw")
-    	{
-    		$item = RecordNamespace::getCurrentOSW();
-    		$linktype = FilesDAO::LINK_TYPE_OSW;
-    	}
-    	
-    	$fileid = "";
-		$message = "Success";
-    	if (isset($item) && !is_null($item))
-    	{
-    		$files = $item->getFiles();
-    		
-    		$fileid = count($files) * -1;
-    		
-    		$newfile = new AcornFile();
-    	
-	    	$newfile->setRelatedPrimaryKeyID($item->getPrimaryKey());
-	    	$newfile->setPrimaryKey($fileid);
-	    	$newfile->setLinkType($linktype);
-	    	$newfile->setFileType($filetype);
-	    	$newfile->setFileName($filename);
-	    	$identity = Zend_Auth::getInstance()->getIdentity();
-	    	$enteredby = PeopleDAO::getPeopleDAO()->getPerson($identity[PeopleDAO::PERSON_ID]);
-	    	$newfile->setEnteredBy($enteredby);
-	    	
-	    	//For the images, make them temporary.
-	    	if ($filetype == "Image")
-	    	{
-	    		$path = $config->getStagingFileDirectory(TRUE);
-	    		//The path of the temporary image in DRS2 is <staging>/<project>/<batchname>/<object>/<batchtype>
-	    		$projectDirectory = "/user" . $identity[PeopleDAO::PERSON_ID] . "project";
-        		$objectname = substr($filename, 0, strrpos($filename, "."));
-	    		$path .= $projectDirectory . "/" . $batchnameforimages . "/" . $objectname . "/" . $config->getBatchType() . "/" . $filename;
-
-	    		$newfile->setPath($config->getACORNUrl() . $path);
-	    		$newfile->setDrsStatus(FilesDAO::DRS_STATUS_PENDING);
-	    		$newfile->setDrsBatchName($batchnameforimages);
-	    	}
-	    	else
-	    	{
-	    		$newfile->setPath($config->getACORNUrl() . $config->getFilesDirectory(TRUE) . "/" . $filename);
-	    	}
-	    	$files[$fileid] = $newfile;
-	    	$newfileid = FilesDAO::getFilesDAO()->saveAcornFile($newfile);
-	    	if (!is_null($newfileid))
-	    	{
-	    		$files[$newfileid] = clone $files[$fileid];
-	    		$files[$newfileid]->setPrimaryKey($newfileid);
-	    		unset($files[$fileid]);
-	    		$item->setFiles($files);
-	    		if ($recordtype == "item")
-	    		{
-	    			RecordNamespace::setCurrentItem($item);
-	    		}
-	    		elseif ($recordtype == "osw")
-	    		{
-	    			RecordNamespace::setCurrentOSW($item);
-	    		}
-	    		 
-	    		$message = "Success";
-	    		 
-	    	}
-	    	else
-	    	{
-	    		$message = self::FILE_COPY_ERROR_MESSAGE;
-	    	}
-    	}
-    	return $message;
-    }
-    
     /**
      * Check to see if the filename already exists.  If so, then append a number (_1, _2, etc)
      * so that it has a unique filename.
@@ -518,8 +410,7 @@ class RecordfilesController extends Zend_Controller_Action
     }
     
     /**
-     * Remove a file from the Record.  This does NOT remove it from the DRS.  That has to be done manually
-     * via the DRS Web Admin.
+     * Remove a file from the Record.
      */
 	public function removefileAction()
     {
@@ -623,150 +514,6 @@ class RecordfilesController extends Zend_Controller_Action
     
     	$usertempdir = $config->getFilesDirectory() . "/temp" . $userid;
     	@unlink($usertempdir . '/' . $filename);
-    	
-    }
-    
-    /**
-     * Prepare the batch and send the items to the DRS
-     */
-    public function sendtodrsAction()
-    {
-    	$recordtype = $this->getRequest()->getParam("recordtype", "item");
-    	$pkid = $this->getRequest()->getParam("pkid");
-    	
-    	//Make sure that the file list that we are adding to is the one associated with the document in view
-    	$id = $this->verifyCurrentRecord($recordtype, $pkid);
-    	
-    	//Get the config so the necessary variables and configs can be found
-    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-    		
-    	//Get the userid so the temp directory can be founds
-    	$identity = Zend_Auth::getInstance()->getIdentity();
-    	$userid = $identity[PeopleDAO::PERSON_ID];
-    	
-    	$fulltemppath = $config->getFilesDirectory() . "/temp" . $userid;
-    	
-    	//Does the file exist?
-    	if (file_exists($fulltemppath))
-    	{
-    		//Get the list of files in the temp directory
-    		$filelist = scandir($fulltemppath);
-
-    		if (is_array($filelist))
-    		{
-    			//Determine the batch name for the image
-    			$batchnameforimages = date(ACORNConstants::$DATE_FILENAME_FORMAT_DRS) . "_" . $recordtype . "_" . $id;
-    			//Variable to determine if any images exist
-    			$imagesexist = false;
-    			//The existing images
-    			$imagearray = array();
-    	
-    			foreach ($filelist as $filename)
-    			{
-    				if (is_file($fulltemppath . "/" . $filename))
-    				{
-    					$filetype = AcornFile::parseFileType($filename);
-    					$filesdirectory = $config->getFilesDirectory();
-    					$newfilename = $this->processFilename($filename, $filesdirectory);
-    					 
-    					if ($filetype == "Image")
-    					{
-    						$imagearray[$filename] = $newfilename;
-    						$imagesexist = true;
-    					}
-    					//Non-image files are not saved to the DRS so copy it to the proper directory
-    					else
-    					{
-    						//Move the file to the proper destination.
-    						$moved = rename($fulltemppath . "/" . $filename, $filesdirectory . "/" . $newfilename);
-    					}
-    					$this->updateItemWithNewFile($recordtype, $filetype, $newfilename, $batchnameforimages, $config);
-    					 
-    				}
-    			}
-    	
-    			//If there are any image files, prepare them for BB
-    			if (count($imagearray) > 0)
-    			{
-    				//The project name is based on the user
-    				$projectName = "user" . $userid . "project";
-    				$projectDirectory = $config->getStagingFileDirectory();
-    	
-    				try
-    				{
-    					$projectDirectory .= "/" . $projectName;
-    					//BB2 requires the template directory to be set up.
-    					BatchBuilderAssistant::prepareTemplateDirectory($fulltemppath, $imagearray, $projectName, $config);
-
-    					//Create the batch and descriptor files
-    					$success = $this->getBatchBuilderAssistant($projectDirectory)->execute($batchnameforimages);
-    					//If an error wasn't thrown but the batch.xml wasn't created, warn the user.
-    					if (!$success)
-    					{
-    						$message = "There was a problem creating the batch file for the DRS.";
-    						throw new DRSServiceException($message);
-    					}
-    					
-    					if ($recordtype == "item")
-    					{
-    						$item = RecordNamespace::getCurrentItem();
-    						$action = "index";
-    						$itemid = $item->getItemID();
-    					}
-    					elseif ($recordtype == "osw")
-    					{
-    						$item = RecordNamespace::getCurrentOSW();
-    						$action = "osw";
-    						$itemid = $item->getOSWID();
-    					}
-    					
-    					RecordNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_SUCCESS);
-						RecordNamespace::setStatusMessage("Your files have been sent to the DRS.");
-    					$this->_helper->redirector($action, 'record', NULL, array('recordnumber' => $itemid));
-    	
-    				}
-    				catch (DRSServiceException $e)
-    				{
-    					//If an error was thrown, then the batch.xml wasn't created.
-    					$message = "There was a problem processing the batch for the DRS.\n";
-    					$message .= "The message generated was:\n" . $e->getMessage();
-    					Logger::log($e->getMessage(), Zend_Log::ERR);
-    	
-    					//Delete the batch directory.
-    					$cleanupAssistant = new DRSStagingDirectoryCleanupAssistant(array($batchnameforimages));
-    					$cleanupAssistant->runService();
-    					FilesDAO::getFilesDAO()->deleteFilesInBatch($batchnameforimages);
-    					BatchBuilderAssistant::deleteSourceFiles($fulltemppath);
-    					//Delete the template directory files
-    					BatchBuilderAssistant::deleteProjectTemplateFiles($projectDirectory . "/" . BatchBuilderAssistant::PROJECT_TEMPLATE_IMAGE_DIR);
-
-    					if ($recordtype == "item")
-    					{
-    						$originalitem = RecordNamespace::getOriginalItem();
-    						RecordNamespace::setCurrentItem($originalitem);
-    					}
-    					elseif ($recordtype == "osw")
-    					{
-    						$originalitem = RecordNamespace::getOriginalOSW();
-    						RecordNamespace::setCurrentOSW($originalitem);
-    					}
-    					$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), $message);
-    				}
-    				 
-    				 
-    			}
-    	
-    		}
-    		else
-    		{
-    			$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
-    		}
-    	}
-    	else
-    	{
-    		$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
-    	}
-    	
     	
     }
     
