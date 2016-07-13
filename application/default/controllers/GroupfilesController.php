@@ -9,7 +9,6 @@
  * Copyright 2009 The President and Fellows of Harvard College
  */
 	
-
 class GroupfilesController extends Zend_Controller_Action
 {
 	private $groupForm;
@@ -42,7 +41,6 @@ class GroupfilesController extends Zend_Controller_Action
         }
     }
   
-
 	/**
 	 * Finds a list of files for the current osw, group, or item
 	 */
@@ -202,7 +200,7 @@ class GroupfilesController extends Zend_Controller_Action
     
     /**
      * Adds a new file to the current user's temporary directory
-     * @throws DRSServiceException
+     * @throws FileUploadException
      */
     public function addnewfileAction()
     {
@@ -216,15 +214,16 @@ class GroupfilesController extends Zend_Controller_Action
     	$auth = Zend_Auth::getInstance();
     	$identity = $auth->getIdentity();
     	$userid = $identity[PeopleDAO::PERSON_ID];
+    	
+    	//If the temp directory doesn't exist, create it
+    	$tempfilepath = $_SERVER['DOCUMENT_ROOT'] . "/userfiles/temp" . $userid;
+    	if (!file_exists($tempfilepath))
+    	{
+    		mkdir($tempfilepath);
+    	}
     	 
     	foreach ($_FILES as $fieldName => $file)
     	{
-    		$tempfilepath = $_SERVER['DOCUMENT_ROOT'] . "/userfiles/temp" . $userid;
-    		//If the temp directory doesn't exist, create it
-    		if (!file_exists($tempfilepath))
-    		{
-    			mkdir($tempfilepath);
-    		}
     		$fullpath = $tempfilepath . "/" . $file['name'];
     		$fileuploaded = move_uploaded_file($file['tmp_name'], $fullpath);
     	
@@ -416,7 +415,7 @@ class GroupfilesController extends Zend_Controller_Action
     	@unlink($usertempdir . '/' . $filename);
     	 
     }
-    
+        
     /**
      *
      */
@@ -430,11 +429,7 @@ class GroupfilesController extends Zend_Controller_Action
     	//Get the config so the necessary variables and configs can be found
     	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
     
-     	$filehandlername = ACORNConfig.get(self::FILE_HANDLER);
-		$filehandler = new ReflectionClass($filehandlername);
-		$filehandler.processFiles($files); //You will have an array of files to pass it.  See the existing method
-
-    	//Get the userid so the temp directory can be founds
+    	//Get the userid so the temp directory can be found
     	$identity = Zend_Auth::getInstance()->getIdentity();
     	$userid = $identity[PeopleDAO::PERSON_ID];
     	 
@@ -446,97 +441,7 @@ class GroupfilesController extends Zend_Controller_Action
     		//Get the list of files in the temp directory
     		$filelist = scandir($fulltemppath);
     
-    		if (is_array($filelist))
-    		{
-    			//Determine the batch name for the image
-    			$batchnameforimages = date(ACORNConstants::$DATE_FILENAME_FORMAT_DRS) . "_group_" . $id;
-    			//Variable to determine if any images exist
-    			$imagesexist = false;
-    			//The existing images
-    			$imagearray = array();
-    			 
-    			foreach ($filelist as $filename)
-    			{
-    				if (is_file($fulltemppath . "/" . $filename))
-    				{
-    					$filetype = AcornFile::parseFileType($filename);
-    					$filesdirectory = $config->getFilesDirectory();
-    					$newfilename = $this->processFilename($filename, $filesdirectory);
-    
-    					if ($filetype == "Image")
-    					{
-    						$imagearray[$filename] = $newfilename;
-    						$imagesexist = true;
-    					}
-    					//Non-image files are not saved to the DRS so copy it to the proper directory
-    					else
-    					{
-    						//Move the file to the proper destination.
-    						$moved = rename($fulltemppath . "/" . $filename, $filesdirectory . "/" . $newfilename);
-    					}
-    					$this->updateItemWithNewFile($filetype, $newfilename, $batchnameforimages, $config);
-    
-    				}
-    			}
-    			 
-    			//If there are any image files, prepare them for BB
-    			if (count($imagearray) > 0)
-    			{
-    				//The project name is based on the user
-    				$projectName = "user" . $userid . "project";
-    				$projectDirectory = $config->getStagingFileDirectory();
-    				 
-    				try
-    				{
-    					$projectDirectory .= "/" . $projectName;
-    					//BB2 requires the template directory to be set up.
-    					BatchBuilderAssistant::prepareTemplateDirectory($fulltemppath, $imagearray, $projectName, $config);
-
-    					//Create the batch and descriptor files
-    					$success = $this->getBatchBuilderAssistant($projectDirectory)->execute($batchnameforimages);
-    					//If an error wasn't thrown but the batch.xml wasn't created, warn the user.
-    					if (!$success)
-    					{
-    						$message = "There was a problem creating the batch file for the DRS.";
-    						throw new DRSServiceException($message);
-    					}
-    						
-    					$group = GroupNamespace::getCurrentGroup();
-    					$action = "index";
-    					$groupid = $group->getPrimaryKey();
-    					
-    						
-    					GroupNamespace::setSaveStatus(GroupNamespace::SAVE_STATE_SUCCESS);
-    					GroupNamespace::setStatusMessage("Your files have been sent to the DRS.");
-    					$this->_helper->redirector($action, 'group', NULL, array('groupnumber' => $groupid));
-    					 
-    				}
-    				catch (DRSServiceException $e)
-    				{
-    					//If an error was thrown, then the batch.xml wasn't created.
-    					$message = "There was a problem processing the batch for the DRS.\n";
-    					$message .= "The message generated was:\n" . $e->getMessage();
-    					Logger::log($e->getMessage(), Zend_Log::ERR);
-    					 
-    					//Delete the batch directory.
-    					$cleanupAssistant = new DRSStagingDirectoryCleanupAssistant(array($batchnameforimages));
-    					$cleanupAssistant->runService();
-    					FilesDAO::getFilesDAO()->deleteFilesInBatch($batchnameforimages);
-    					BatchBuilderAssistant::deleteSourceFiles($fulltemppath);
-    					
-    					//Delete the template directory files
-    					BatchBuilderAssistant::deleteProjectTemplateFiles($projectDirectory . "/" . BatchBuilderAssistant::PROJECT_TEMPLATE_IMAGE_DIR);
-
-    					$originalgroup = GroupNamespace::getOriginalGroup();
-    					GroupNamespace::setCurrentGroup($originalgroup);
-    					$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), $message);
-    				}
-    					
-    					
-    			}
-    			 
-    		}
-    		else
+    		if (!is_array($filelist))
     		{
     			$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
     		}
@@ -544,10 +449,13 @@ class GroupfilesController extends Zend_Controller_Action
     	else
     	{
     		$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
-    	}
-    	 
-    	 
+    	}    	 
+
+	    $filehandlername = ACORNConfig.get(self::FILE_HANDLER);
+		$filehandler = new ReflectionClass($filehandlername);
+    	$filehandler.processFiles($filelist); //You will have an array of files to pass it.  See the existing method
     }
+
 }
 ?>
 

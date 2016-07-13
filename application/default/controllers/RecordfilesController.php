@@ -307,15 +307,19 @@ class RecordfilesController extends Zend_Controller_Action
 	   	$auth = Zend_Auth::getInstance();
     	$identity = $auth->getIdentity();
     	$userid = $identity[PeopleDAO::PERSON_ID];
+ 
+    	//Get the config so the necessary variables and configs can be found
+    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
     	
+    	//If the temp directory doesn't exist, create it
+    	$tempfilepath = $config->getFilesDirectory() . "/temp" . $userid;
+    	if (!file_exists($tempfilepath))
+    	{
+    		mkdir($tempfilepath);
+    	}
+    	 
 	   	foreach ($_FILES as $fieldName => $file)
 	   	{
-	   		$tempfilepath = $_SERVER['DOCUMENT_ROOT'] . "/userfiles/temp" . $userid;
-	   		//If the temp directory doesn't exist, create it
-	   		if (!file_exists($tempfilepath))
-	   		{
-	   			mkdir($tempfilepath);
-	   		}
 	   		$fullpath = $tempfilepath . "/" . $file['name'];
 	   		$fileuploaded = move_uploaded_file($file['tmp_name'], $fullpath);
 	   		
@@ -517,6 +521,52 @@ class RecordfilesController extends Zend_Controller_Action
     	
     }
     
+    /**
+     *
+     */
+    public function fileuploadAction()
+    {
+    	 
+  		//Make sure that the file list that we are adding to is the one associated with the document in view
+    	$recordtype = $this->getRequest()->getParam("recordtype", "item");
+    	$pkid = $this->getRequest()->getParam("pkid");
+    	$this->verifyCurrentRecord($recordtype, $pkid);
+    	
+    	//Get the config so the necessary variables and configs can be found
+    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
+    
+    	//Get the userid so the temp directory can be found
+    	$identity = Zend_Auth::getInstance()->getIdentity();
+    	$userid = $identity[PeopleDAO::PERSON_ID];
+    	 
+    	$fulltemppath = $config->getFilesDirectory() . "/temp" . $userid;
+    	 
+    	//Does the file exist?
+    	if (file_exists($fulltemppath))
+    	{
+    		//Get the list of files in the temp directory
+    		$filelist = scandir($fulltemppath);
+    
+    		if (!is_array($filelist))
+    		{
+    			$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
+    		}
+    	}
+    	else
+    	{
+    		$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
+    	}    	 
+
+//    	$filehandlername = '/Users/tme900/source_code/workspace/acorn-opensource/application/default/models/domain/records/' . $config->getFileHandler();
+    	$filehandlername = $config->getFileHandler();
+    	
+//		$filehandler = new ReflectionClass($filehandlername);
+//    	$filehandler.processFiles($filelist);
+		$reflectedClass = new ReflectionClass($filehandlername);
+		$filehandler = $reflectedClass->newInstance();
+    	$filehandler.processFiles($filelist);
+    }
 }
+
 ?>
 

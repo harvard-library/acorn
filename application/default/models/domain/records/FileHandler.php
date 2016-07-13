@@ -339,8 +339,7 @@ class FileHandler extends Zend_Controller_Action
 	   	$encoded = json_encode($response);
 	   	//header('Content-type: application/json');
 	   	echo $retval;
-     }
-    
+     }   
     
     private function displayFileErrors(array $formData, $message)
     {
@@ -352,9 +351,8 @@ class FileHandler extends Zend_Controller_Action
     	
     	$this->renderScript('record/index.phtml');
     }
-
     
-    private function updateItemWithNewFile($recordtype, $filetype, $filename, $batchnameforimages, DRSDropperConfig $config)
+    private function updateItemWithNewFile($recordtype, $filetype, $filename)
     {
     	$item = NULL;
     	$linktype = FilesDAO::LINK_TYPE_ITEM;
@@ -391,15 +389,9 @@ class FileHandler extends Zend_Controller_Action
 	    	//For the images, make them temporary.
 	    	if ($filetype == "Image")
 	    	{
-	    		$path = $config->getStagingFileDirectory(TRUE);
-	    		//The path of the temporary image in DRS2 is <staging>/<project>/<batchname>/<object>/<batchtype>
-	    		$projectDirectory = "/user" . $identity[PeopleDAO::PERSON_ID] . "project";
-        		$objectname = substr($filename, 0, strrpos($filename, "."));
-	    		$path .= $projectDirectory . "/" . $batchnameforimages . "/" . $objectname . "/" . $config->getBatchType() . "/" . $filename;
-
-	    		$newfile->setPath($config->getACORNUrl() . $path);
-	    		$newfile->setDrsStatus(FilesDAO::DRS_STATUS_PENDING);
-	    		$newfile->setDrsBatchName($batchnameforimages);
+	    		$path = $config->getFilesDirectory(TRUE) . '/' . $fileid;
+	    		$newfile->setUploadStatus(FilesDAO::UPLOAD_STATUS_COMPLETE);	    	
+	    		$newfile->setPath($config->getACORNUrl() . $config->getFilesDirectory(TRUE) . "/" . $filename);
 	    	}
 	    	else
 	    	{
@@ -422,8 +414,7 @@ class FileHandler extends Zend_Controller_Action
 	    			RecordNamespace::setCurrentOSW($item);
 	    		}
 	    		 
-	    		$message = "Success";
-	    		 
+	    		$message = "Success";	    		 
 	    	}
 	    	else
 	    	{
@@ -432,7 +423,7 @@ class FileHandler extends Zend_Controller_Action
     	}
     	return $message;
     }
-    
+        
     /**
      * Check to see if the filename already exists.  If so, then append a number (_1, _2, etc)
      * so that it has a unique filename.
@@ -542,11 +533,10 @@ class FileHandler extends Zend_Controller_Action
 		    }
     	}
     }
-    
-    
-    
+        
     /**
-     * 
+     * Moves the files from the temp directory to the file upload destination 
+     * @throws FileUploadException
      */
     public function processFiles(array $filelist)
     {
@@ -559,7 +549,7 @@ class FileHandler extends Zend_Controller_Action
     	//Get the config so the necessary variables and configs can be found
     	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
     		
-    	//Get the userid so the temp directory can be founds
+    	//Get the userid so the temp directory can be found
     	$identity = Zend_Auth::getInstance()->getIdentity();
     	$userid = $identity[PeopleDAO::PERSON_ID];
     	
@@ -568,17 +558,12 @@ class FileHandler extends Zend_Controller_Action
     	//Does the file exist?
     	if (file_exists($fulltemppath))
     	{
-    		//Get the list of files in the temp directory
-    		$filelist = scandir($fulltemppath);
+    		//Get the list of files in the temp directory  #- ???
+// #-    		$filelist = scandir($fulltemppath);
 
     		if (is_array($filelist))
     		{
-    			//Variable to determine if any images exist
-    			$imagesexist = false;
-    			//The existing images
-    			$imagearray = array();
-    	
-    			foreach ($filelist as $filename)
+                foreach ($filelist as $filename)
     			{
     				if (is_file($fulltemppath . "/" . $filename))
     				{
@@ -586,20 +571,10 @@ class FileHandler extends Zend_Controller_Action
     					$filesdirectory = $config->getFilesDirectory();
     					$newfilename = $this->processFilename($filename, $filesdirectory);
     					 
-    					if ($filetype == "Image")
-    					{
-    						$imagearray[$filename] = $newfilename;
-    						$imagesexist = true;
-    					}
-    					//Non-image files
-    					else
-    					{
-    						//Move the file to the proper destination.
-    						$moved = rename($fulltemppath . "/" . $filename, $filesdirectory . "/" . $newfilename);
-    					}
-    					$this->updateItemWithNewFile($recordtype, $filetype, $newfilename, $batchnameforimages, $config);
-    					 
-    				}
+   						//Move the file to the proper destination.
+   						$moved = rename($fulltemppath . "/" . $filename, $filesdirectory . "/" . $newfilename);
+    					$this->updateItemWithNewFile($recordtype, $filetype, $newfilename, $config);
+       				}
     			}    	
     		}
     		else
@@ -611,7 +586,7 @@ class FileHandler extends Zend_Controller_Action
     	{
     		$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
     	}    	
-    }
+    }    
     
 }
 ?>

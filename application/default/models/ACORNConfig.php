@@ -41,7 +41,7 @@ class ACORNConfig extends Zend_Config_Ini
 	const USER_REPORTS_DIRECTORY_NAME = 'userreportsdirectory';
 	const USER_FILES_DIRECTORY_NAME = 'userfilesdirectory';
 	const FILE_UPLOAD_PATH = 'fileuploadpath';
-	const FILE_HANDLER = 'filehander';
+	const FILE_HANDLER = 'filehandler';
 	const LOG_PATH_NAME = 'logpath';
 	const LOG_LEVEL_NAME = 'loglevel';
 	const ERROR_EMAILS_NAME = 'erroremails';
@@ -84,6 +84,24 @@ class ACORNConfig extends Zend_Config_Ini
 		elseif (is_null($this->get(self::ERROR_EMAILS_NAME)))
 		{
 		throw new AcornConfigException('Missing "' . self::ERROR_EMAILS_NAME . '" configuration setting.');
+		}
+	}
+
+	/**
+	 * @return String
+	 */
+	public function getFileHandler()
+	{
+
+	    $fileHandler = $this->get(self::FILE_HANDLER);
+	    
+	    if (is_null($fileHandler))
+		{
+			throw new AcornConfigException('Missing "' . self::FILE_HANDLER . '" configuration setting.');
+		}
+		else
+		{
+		    return $fileHandler;
 		}
 	}
 	
