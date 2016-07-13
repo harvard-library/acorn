@@ -92,7 +92,6 @@ class ACORNConfig extends Zend_Config_Ini
 	 */
 	public function getFileHandler()
 	{
-
 	    $fileHandler = $this->get(self::FILE_HANDLER);
 	    
 	    if (is_null($fileHandler))
