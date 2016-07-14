@@ -125,7 +125,6 @@ class GroupidentificationController extends Zend_Controller_Action
     	$item->setFormatID($formvalues['formatselect']);
     	$item->setFundMemo($formvalues['repositorymemotextarea']);
     	$item->setGroupID($group->getPrimaryKey());
-    	$item->setHOLLISNumber($formvalues['hollisnumberinput']);
     	$item->setHomeLocationID($formvalues['repositoryselect']);
     	$item->setChargeToID($formvalues['chargetoselect']);
     	$item->setExpectedDateOfReturn($formvalues['expecteddateofreturninput']);
@@ -307,10 +306,6 @@ class GroupidentificationController extends Zend_Controller_Action
     	if (isset($formvalues['repositorymemotextarea']))
     	{
     		$item->setFundMemo($formvalues['repositorymemotextarea']);
-    	}
-    	if (isset($formvalues['hollisnumberinput']))
-    	{
-    		$item->setHOLLISNumber($formvalues['hollisnumberinput']);
     	}
     	if (isset($formvalues['repositoryselect']))
     	{

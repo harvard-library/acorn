@@ -67,7 +67,7 @@ width: 55%;
 margin-right: 5px;	
 }
 
-#callnumberdiv ul, #titlediv ul, #hollisnumberdiv ul, #callnumbermessage {
+#callnumberdiv ul, #titlediv ul, #callnumbermessage {
  float: left;
   width: 60%;
   margin-bottom: 10px;

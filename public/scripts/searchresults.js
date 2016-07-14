@@ -131,7 +131,7 @@ function loadSearchResults(sortcol, dir)
                        'DepartmentName', 'Format', 'ItemCount', 'VolumeCount', 'SheetCount', 'PhotoCount', 'BoxCount', 'HousingCount',
                        'OSWStatus', 'ProposedBy', 'ProposalDate', 'ProposedHours','Purpose', 
                        'ReportBy', 'ReportDate', 'LogoutDate', 'Importances', 'Storage', 'TemporaryToLocation', 'TemporaryDate', 'TUB', 'WorkType',
-                       'WorkStartDate', 'WorkEndDate', 'WorkLocation', 'HOLLISNumber', 'Curator', 'InsuranceValue', 'Summary'];
+                       'WorkStartDate', 'WorkEndDate', 'WorkLocation', 'Curator', 'InsuranceValue', 'Summary'];
          
          for (var i = 0; i < fields.length; i++)
          {
@@ -437,9 +437,6 @@ function getResultColumnDef(key)
 		break;
 	case "WorkEndDate":
 		def = {key:"WorkEndDate", label: "OSW Work End", width: 50, resizeable: true};
-		break;
-	case "HOLLISNumber":
-		def = {key:"HOLLISNumber", label: "HOLLIS #", width: 50, resizeable: true};
 		break;
 	case "Curator":
 		def = {key:"Curator", label: "Curator", width: 75, resizeable: true};

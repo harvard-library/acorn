@@ -39,7 +39,6 @@ class Search
     		'DateOfObject' => 'DateOfObject',
     		'Format' => 'Format',
     		'GroupName' => 'GroupName',
-    		'HOLLISNumber' => 'HOLLISNumber',
     		'HousingCount' => 'HousingCount',
     		'InsuranceValue' => 'InsuranceValue',
     		'OSWStatus' => 'OSWStatus',

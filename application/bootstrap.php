@@ -14,9 +14,6 @@ set_include_path('.' . PATH_SEPARATOR . '../library'
 	. PATH_SEPARATOR . '../application/default/models/dao/records' 
 	. PATH_SEPARATOR . '../application/default/models/dao/reporting' 
 	. PATH_SEPARATOR . '../application/default/models/domain/custom'
-	. PATH_SEPARATOR . '../application/default/models/domain/drs'
-	. PATH_SEPARATOR . '../application/default/models/domain/drs/postprocessing'
-	. PATH_SEPARATOR . '../application/default/models/domain/drs/preprocessing'
 	. PATH_SEPARATOR . '../application/default/models/domain/functions'
 	. PATH_SEPARATOR . '../application/default/models/domain/locations'
 	. PATH_SEPARATOR . '../application/default/models/domain/people'
@@ -49,7 +46,7 @@ $loader->setFallbackAutoloader(true);
 // setup controller
 $frontController = Zend_Controller_Front::getInstance();
 
-$env = 'prod';
+$env = 'dev';
 // Change $env variable to 'prod' parameter under production environment
 $initializer = new Initializer($env);
 $frontController->registerPlugin($initializer);    

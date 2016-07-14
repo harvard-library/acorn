@@ -129,7 +129,6 @@ var advancedsearchDropdownOptions = [{Column: "", ColumnID: ""},
                                      {Column: 'FileName', ColumnID: 'Files.FileName'},
                                      {Column: 'Format', ColumnID: 'Items.FormatID'},
                                      {Column: 'Group', ColumnID: 'ItemIdentification.GroupID'},
-                                     {Column: 'HOLLIS Number', ColumnID: 'Items.HOLLISNumber'},
                                      {Column: 'Importance', ColumnID: 'ItemImportances.ImportanceID'},
                                      {Column: 'Login By', ColumnID: 'ItemLogin.LoginByID'},
                                      {Column: 'Login Date', ColumnID: 'ItemLogin.LoginDate'},
@@ -908,7 +907,7 @@ function isTextFieldSearch(columnname)
 {
 	return columnname == 'RecordID' || columnname == 'Items.AuthorArtist' || columnname == 'CallNumbers.CallNumber'
 		|| columnname == "Items.CollectionName" || columnname == "ItemIdentification.Comments" || columnname == "Items.DateOfObject"
-			|| columnname == "Items.HOLLISNumber" || columnname == "ItemLogin.LoginDate" || columnname == "ItemLogout.LogoutDate"
+			|| columnname == "ItemLogin.LoginDate" || columnname == "ItemLogout.LogoutDate"
 				|| columnname == "OSW.WorkStartDate" || columnname == "OSW.WorkEndDate" || columnname == "ItemConservators.DateCompleted"
 				|| columnname == "ItemProposal.Treatment" || columnname == "ItemReport.Treatment" || columnname == "ItemIdentification.Title"
 				|| columnname == "ItemProposal.Height" || columnname == "ItemProposal.Width" || columnname == "ItemProposal.Thickness"

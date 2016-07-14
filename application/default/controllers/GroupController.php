@@ -437,7 +437,6 @@ class GroupController extends Zend_Controller_Action
 				"OtherCount" => $other,
 				"BoxCount" => $boxes,
 				ItemDAO::COMMENTS => $record->getComments(),
-				ItemDAO::HOLLIS_NUMBER => $record->getHOLLISNumber(),
 				ProposalDAO::EXAM_DATE => $record->getFunctions()->getProposal()->getExamDate(),
 				ProposalDAO::DIMENSION_UNIT => $record->getFunctions()->getProposal()->getDimensions()->getUnit(),
 				ProposalDAO::HEIGHT => $record->getFunctions()->getProposal()->getDimensions()->getHeight(),
@@ -587,7 +586,6 @@ class GroupController extends Zend_Controller_Action
     		"OtherCount",
     		ItemDAO::COMMENTS,
     		ItemDAO::IDENTIFICATION_ID,
-    		ItemDAO::HOLLIS_NUMBER
     	));
     }
     
@@ -661,9 +659,6 @@ class GroupController extends Zend_Controller_Action
     			break;
     		case ItemDAO::COMMENTS:
     			$clonedrecord->setComments($newvalue);
-    			break;
-    		case ItemDAO::HOLLIS_NUMBER:
-    			$clonedrecord->setHOLLISNumber($newvalue);
     			break;
     		case ProposalDAO::EXAM_DATE:
     			$clonedrecord->getFunctions()->getProposal()->setExamDate($newvalue);

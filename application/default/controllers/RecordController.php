@@ -236,7 +236,7 @@ class RecordController extends Zend_Controller_Action
 	    	if (!empty($identificationdisabledmessage))
 			{
 				$recordidentificationform = $form->getSubForm('recordidentificationform');
-				$recordidentificationform->disable(array('unlockuntildateinput', 'gotohollisbutton'));
+				$recordidentificationform->disable(array('unlockuntildateinput'));
 			}
 			if (!empty($logindisabledmessage))
 			{

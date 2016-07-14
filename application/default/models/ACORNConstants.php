@@ -18,7 +18,6 @@
  	public static $DATABASE_DATETIME_FORMAT = 'Y-m-d H:i:s';
  	
  	public static $DATE_FILENAME_FORMAT = 'YmdHi';
- 	public static $DATE_FILENAME_FORMAT_DRS = 'YmdHis';
  	
  	public static $ZEND_DATE_FORMAT = 'MM-dd-yyyy';
  	public static $ZEND_INTERNAL_DATE_FORMAT = 'yyyy-MM-dd';

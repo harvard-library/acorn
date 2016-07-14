@@ -327,7 +327,6 @@ class SearchController extends Zend_Controller_Action
 	    	$results['Status'] = $record->getItemStatus();	
 	    	$results['Storage'] = $record->getStorage();
 	    	$results['CollectionName'] = $record->getCollectionName();
-	    	$results[ItemDAO::HOLLIS_NUMBER] = $record->getHOLLISNumber();
 	 		$results[ItemDAO::INSURANCE_VALUE] = $record->getInsuranceValue();
 	 		$report =$record->getFunctions()->getReport();
 	 		$counts = 0;
@@ -1376,9 +1375,6 @@ class SearchController extends Zend_Controller_Action
     					$workloc = LocationDAO::getLocationDAO()->getLocation($record->getFunctions()->getReport()->getWorkLocation())->getLocation();
     				}
     				$results['WorkLocation'] = $workloc;
-    				break;
-    			case ItemDAO::HOLLIS_NUMBER:
-    				$results[ItemDAO::HOLLIS_NUMBER] = $record->getHOLLISNumber();
     				break;
     			case "Curator":
     				$curator = NULL;

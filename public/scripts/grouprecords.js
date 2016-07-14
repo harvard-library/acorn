@@ -75,12 +75,11 @@ function loadGroupRecords(tabIndex)
               {key: "PhotoCount", label: "Ph",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
               {key: "BoxCount", label: "Bx",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
               {key: "OtherCount", label: "Oth",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
-              {key: "HOLLISNumber", label: "HOLLIS #",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 40},
               {key: "Comments", label: "Comments", editor: "textarea", width: 100}
               ];
 			
 			fieldList = ["ItemID", "CallNumbers", "Title", "AuthorArtist", "DateOfObject", 
-                     "VolumeCount", "SheetCount", "PhotoCount", "BoxCount", "OtherCount", "HOLLISNumber", "Comments"];
+                     "VolumeCount", "SheetCount", "PhotoCount", "BoxCount", "OtherCount", "Comments"];
 		}
 		else if (tabIndex == 2)
 		{
@@ -95,7 +94,6 @@ function loadGroupRecords(tabIndex)
               {key: "PhotoCount", label: "Ph",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
               {key: "BoxCount", label: "Bx",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
               {key: "OtherCount", label: "Oth",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
-              {key: "HOLLISNumber", label: "HOLLIS #",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 40},
               {key: "Comments", label: "Comments", editor: "textarea", width: 100},
               {key: "ExamDate", label: "Exam Date", formatter:YAHOO.widget.DataTable.formatDate, editor: new YAHOO.widget.DateCellEditor({disableBtns: true}), width: 100},
               {key: "DimensionUnit", label: "Unit", editor: new YAHOO.widget.DropdownCellEditor({dropdownOptions:['cm', 'in'],disableBtns:true}), width: 50},
@@ -105,7 +103,7 @@ function loadGroupRecords(tabIndex)
               ];
 			
 			fieldList = ["ItemID", "CallNumbers", "Title", "AuthorArtist", "DateOfObject", 
-	                     "VolumeCount", "SheetCount", "PhotoCount", "BoxCount", "OtherCount", "HOLLISNumber", "Comments", 
+	                     "VolumeCount", "SheetCount", "PhotoCount", "BoxCount", "OtherCount", "Comments", 
 	                     {key:"ExamDate", parser: dateParser}, "DimensionUnit", "Height", "Width", "Thickness"];
 		}
 		else if (tabIndex == 3)
@@ -121,7 +119,6 @@ function loadGroupRecords(tabIndex)
               {key: "PhotoCount", label: "Ph",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
               {key: "BoxCount", label: "Bx",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
               {key: "OtherCount", label: "Oth",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 10},
-              {key: "HOLLISNumber", label: "HOLLIS #",editor:new YAHOO.widget.TextboxCellEditor({validator:YAHOO.widget.DataTable.validateNumber}), width: 40},
               {key: "Comments", label: "Comments", editor: "textarea", width: 100},
               {key: "ReportDate", label: "Report Date", formatter:YAHOO.widget.DataTable.formatDate, editor: new YAHOO.widget.DateCellEditor({disableBtns: true}), width: 100},
               {key: "TotalHours", label: "Hours", width: 15},
@@ -138,7 +135,7 @@ function loadGroupRecords(tabIndex)
               ];
 			
 			fieldList = ["ItemID", "CallNumbers", "Title", "AuthorArtist", "DateOfObject", 
-	                     "VolumeCount", "SheetCount", "PhotoCount", "BoxCount", "OtherCount", "HOLLISNumber", "Comments",
+	                     "VolumeCount", "SheetCount", "PhotoCount", "BoxCount", "OtherCount", "Comments",
 	                     {key:"ReportDate", parser: dateParser}, "TotalHours", "ReportUnit", "ReportHeight", "ReportWidth", "ReportThickness", 
 	                     "FinalVolumeCount", "FinalSheetCount", "FinalPhotoCount", "FinalBoxCount", "FinalOtherCount", "FinalHousingCount"];
 		}

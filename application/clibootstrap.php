@@ -36,9 +36,6 @@ set_include_path('.' . PATH_SEPARATOR . '../library'
 	. PATH_SEPARATOR . '../application/default/models/dao/records' 
 	. PATH_SEPARATOR . '../application/default/models/dao/reporting' 
 	. PATH_SEPARATOR . '../application/default/models/domain/custom'
-	. PATH_SEPARATOR . '../application/default/models/domain/drs'
-	. PATH_SEPARATOR . '../application/default/models/domain/drs/postprocessing'
-	. PATH_SEPARATOR . '../application/default/models/domain/drs/preprocessing'
 	. PATH_SEPARATOR . '../application/default/models/domain/functions'
 	. PATH_SEPARATOR . '../application/default/models/domain/locations'
 	. PATH_SEPARATOR . '../application/default/models/domain/people'
@@ -54,13 +51,11 @@ require_once "Zend/Loader/Autoloader.php";
 $loader = Zend_Loader_Autoloader::getInstance();
 $loader->setFallbackAutoloader(true);
 
-$env = 'prod';
+$env = 'dev';
 // Change $env variable to 'prod' parameter under production environment
 $initializer = new CLIInitializer($env);
 
 //Start session
 Zend_Session::start();
 
-//$assistant = new ACORNDRSCleanupAssistant();
-//$assistant->runService();
 ?>

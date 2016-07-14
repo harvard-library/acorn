@@ -21,7 +21,6 @@ class CombinedRecord extends Record
 	private $dateOfObject = NULL;
 	private $callNumbers = NULL;
 	private $counts = NULL;
-	private $hollisNumber = NULL;
 	private $collectionName = NULL;
 	private $currentLocation  = NULL;
 	private $isUnlocked = NULL;
@@ -332,24 +331,6 @@ class CombinedRecord extends Record
     public function setInitialCounts(Counts $counts)
     {
     	$this->counts = $counts;
-    }
-
-	/**
-     * @access public
-     * @param  string hollisNumber
-     */
-    public function setHOLLISNumber($hollisNumber)
-    {
-    	$this->hollisNumber = $hollisNumber;
-    }
-    
-	/**
-     * @access public
-     * @return string
-     */
-    public function getHOLLISNumber()
-    {
-    	return $this->hollisNumber;
     }
     
 	/**
