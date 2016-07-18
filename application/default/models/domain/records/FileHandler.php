@@ -8,9 +8,9 @@
  *
  * Copyright 2016 The President and Fellows of Harvard College
  */
-	
 
-class FileHandler extends Zend_Controller_Action
+
+class FileHandler
 {
 	private $oswForm;
 	private $recordForm;
@@ -43,8 +43,7 @@ class FileHandler extends Zend_Controller_Action
 		}
 		return $this->recordForm;
 	}
-	
-	
+		
 	private function getAcornRedirector()
 	{
 		if (is_null($this->acornRedirector))

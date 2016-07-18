@@ -564,8 +564,11 @@ class RecordfilesController extends Zend_Controller_Action
 //    	$filehandler.processFiles($filelist);
 //		$reflectedClass = new ReflectionClass($filehandlername);
 //		$filehandler = $reflectedClass->newInstance();
-        $filehandler = new $filehandlername();
-    	$filehandler->processFiles($filelist);
+//        $filehandler = new $filehandlername();
+//        $filehandler = new FileHandler();
+		$filehandler = self::getInstance($filehandlername);
+//        $filehandler = new FileHandler();
+		$filehandler->processFiles($filelist);
     }
 }
 
