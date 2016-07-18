@@ -557,17 +557,9 @@ class RecordfilesController extends Zend_Controller_Action
     		$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
     	}    	 
 
-//    	$filehandlername = '/Users/tme900/source_code/workspace/acorn-opensource/application/default/models/domain/records/' . $config->getFileHandler();
-    	$filehandlername = $config->getFileHandler();
-    	
-//		$filehandler = new ReflectionClass($filehandlername);
-//    	$filehandler.processFiles($filelist);
-//		$reflectedClass = new ReflectionClass($filehandlername);
-//		$filehandler = $reflectedClass->newInstance();
-//        $filehandler = new $filehandlername();
-//        $filehandler = new FileHandler();
-		$filehandler = self::getInstance($filehandlername);
-//        $filehandler = new FileHandler();
+    	$filehandlername = $config->getFileHandler();    	
+		$filehandler = new ReflectionClass($filehandlername);
+        $filehandler = new FileHandler();
 		$filehandler->processFiles($filelist);
     }
 }
