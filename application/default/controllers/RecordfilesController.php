@@ -526,6 +526,11 @@ class RecordfilesController extends Zend_Controller_Action
      */
     public function fileuploadAction()
     {
+    	//Don't display a new view
+    	$this->_helper->viewRenderer->setNoRender();
+    	
+    	//Don't use the default layout since this isn't a view call
+    	$this->_helper->layout->disableLayout();
     	 
   		//Make sure that the file list that we are adding to is the one associated with the document in view
     	$recordtype = $this->getRequest()->getParam("recordtype", "item");
@@ -560,7 +565,7 @@ class RecordfilesController extends Zend_Controller_Action
     	$filehandlername = $config->getFileHandler();    	
 		$filehandler = new ReflectionClass($filehandlername);
         $filehandler = new FileHandler();
-		$filehandler->processFiles($filelist);
+		$filehandler->processFiles($recordtype, $pkid, $filelist);
     }
 }
 
