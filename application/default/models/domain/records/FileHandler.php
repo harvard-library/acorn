@@ -11,28 +11,10 @@
 
 class FileHandler
 {
-	private $oswForm;
 	private $recordForm;
-	private $acornRedirector;
-	
-	/**
-	 * 
-	 * @var BatchBuilderAssistant
-	 */
 	
 	const DB_ERROR_MESSAGE = "There was a problem saving the file information to the database. Please try again or contact an administrator if the problem continues.";
 	const FILE_COPY_ERROR_MESSAGE = "There was a problem saving the file to the file server. Please try again or contact an administrator if the problem continues.";
-
-	const THUMBNAIL_COLUMN_COUNT = 3;
-	
-	private function getOswForm()
-	{
-		if (is_null($this->oswForm))
-		{
-			$this->oswForm = new OswForm();
-		}
-		return $this->oswForm;
-	}
 	
 	private function getRecordForm()
 	{
@@ -43,27 +25,6 @@ class FileHandler
 		return $this->recordForm;
 	}
 		
-	private function getAcornRedirector()
-	{
-		if (is_null($this->acornRedirector))
-		{
-			$this->acornRedirector = new AcornRedirector();
-		}
-		return $this->acornRedirector;
-	}
-	
-	public function preDispatch()
-    {
-    	if (!Zend_Auth::getInstance()->hasIdentity()) 
-        {
-        	if ($this->getRequest()->getActionName() != 'findfiles')
-        	{
-            	$this->_helper->redirector('index', 'index');
-        	}
-        }
-        
-    }
-        
     private function verifyCurrentRecord($recordtype, $pkid)
     {
     	$id = 0;
@@ -102,18 +63,7 @@ class FileHandler
     	return $id;
     }    
     
-    private function displayFileErrors(array $formData, $message)
-    {
-    	$form = $this->getRecordForm();
-		$form->populate($formData);
-    	$this->view->form = $form;
-    	
-    	$this->view->placeholder("fileserrormessage")->set($message);
-    	
-    	$this->renderScript('record/index.phtml');
-    }
-    
-    private function updateItemWithNewFile($recordtype, $filetype, $filename, $config)
+    private function updateItemWithNewFile($recordtype, $pkid, $filetype, $filename, $config)
     {
     	$item = NULL;
     	$linktype = FilesDAO::LINK_TYPE_ITEM;
@@ -146,11 +96,10 @@ class FileHandler
 	    	$identity = Zend_Auth::getInstance()->getIdentity();
 	    	$enteredby = PeopleDAO::getPeopleDAO()->getPerson($identity[PeopleDAO::PERSON_ID]);
 	    	$newfile->setEnteredBy($enteredby);
-	    	
-	   		$newfile->setPath($config->getACORNUrl() . $config->getFilesDirectory(TRUE) . "/" . $filename);
-	
+	   		$newfile->setPath($config->getACORNUrl() . $config->getFilesDirectory(TRUE) . '/' . $pkid . '/' . $filename);  	
 	   		$files[$fileid] = $newfile;
 	    	$newfileid = FilesDAO::getFilesDAO()->saveAcornFile($newfile);
+
 	    	if (!is_null($newfileid))
 	    	{
 	    		$files[$newfileid] = clone $files[$fileid];
@@ -230,8 +179,16 @@ class FileHandler
     	$identity = Zend_Auth::getInstance()->getIdentity();
     	$userid = $identity[PeopleDAO::PERSON_ID];
     	
-    	$fulltemppath = $config->getFilesDirectory() . "/temp" . $userid;
-    	
+    	$filesdirectory  = $config->getFilesDirectory();
+    	$fulltemppath    = $filesdirectory . "/temp" . $userid;
+    	$filesdirectory .= '/' . $pkid;
+
+    	// Create files directory for record if it doesn't exist
+    	if (!file_exists($filesdirectory))
+    	{
+    		mkdir($filesdirectory);
+    	}
+    	 
     	//Does the file exist?
     	if (file_exists($fulltemppath))
     	{
@@ -242,26 +199,25 @@ class FileHandler
     				if (is_file($fulltemppath . "/" . $filename))
     				{
     					$filetype = AcornFile::parseFileType($filename);
-    					$filesdirectory = $config->getFilesDirectory();
     					$newfilename = $this->processFilename($filename, $filesdirectory);
     					 
    						//Move the file to the proper destination.
    						$moved = rename($fulltemppath . "/" . $filename, $filesdirectory . "/" . $newfilename);
-    					$this->updateItemWithNewFile($recordtype, $filetype, $newfilename, $config);
+    					$this->updateItemWithNewFile($recordtype, $pkid, $filetype, $newfilename, $config);
     				}
     			}    	
     		}
     		else
     		{
-    			$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
+    			return self::FILE_COPY_ERROR_MESSAGE;
     		}
     	}
     	else
     	{
-    		$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), self::FILE_COPY_ERROR_MESSAGE);
+    		return self::FILE_COPY_ERROR_MESSAGE;
     	}    	
-    }    
-    
+		return TRUE;
+    }
 }
 ?>
 

@@ -13,12 +13,6 @@ class GroupfilesController extends Zend_Controller_Action
 {
 	private $groupForm;
 	
-	/**
-	 *
-	 * @var BatchBuilderAssistant
-	 */
-	private $batchBuilderAssistant;
-	
 	const DB_ERROR_MESSAGE = "There was a problem saving the file information to the database. Please try again or contact an administrator if the problem continues.";
 	const FILE_COPY_ERROR_MESSAGE = "There was a problem saving the file to the file server. Please try again or contact an administrator if the problem continues.";
    	
@@ -349,34 +343,6 @@ class GroupfilesController extends Zend_Controller_Action
     	}
     }
     
-	/**
-     * Clears out the files that were saved in the user's temporary directory.
-     * (DOCUMENT_ROOT/userfiles/temp<userid>)
-     *
-     */
-    public function cleartemporaryfilesAction()
-    {
-    	//Don't display a new view
-		$this->_helper->viewRenderer->setNoRender();
-		//Don't use the default layout since this isn't a view call
-		$this->_helper->layout->disableLayout();
-		
-		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-        	
-        $identity = Zend_Auth::getInstance()->getIdentity();
-        $userid = $identity[PeopleDAO::PERSON_ID];
-        
-        $usertempdir = $config->getFilesDirectory() . "/temp" . $userid;
-		$handle=opendir($usertempdir);
-
-		while (($file = readdir($handle))!==false) 
-		{
-			@unlink($usertempdir.'/'.$file);
-		}
-
-		closedir($handle);
-    }
-    
     private function verifyCurrentGroup($pkid)
     {
     	$group = GroupNamespace::getCurrentGroup();
@@ -392,30 +358,6 @@ class GroupfilesController extends Zend_Controller_Action
     	return $group->getPrimaryKey();
     }
     
-    /**
-     * Clears out the files that were saved in the user's temporary directory.
-     * (DOCUMENT_ROOT/userfiles/temp<userid>)
-     *
-     */
-    public function removefromtemporaryfilesAction()
-    {
-    	//Don't display a new view
-    	$this->_helper->viewRenderer->setNoRender();
-    	//Don't use the default layout since this isn't a view call
-    	$this->_helper->layout->disableLayout();
-    
-    	$filename = $this->getRequest()->getParam("filename");
-    	 
-    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-    
-    	$identity = Zend_Auth::getInstance()->getIdentity();
-    	$userid = $identity[PeopleDAO::PERSON_ID];
-    
-    	$usertempdir = $config->getFilesDirectory() . "/temp" . $userid;
-    	@unlink($usertempdir . '/' . $filename);
-    	 
-    }
-        
     /**
      *
      */

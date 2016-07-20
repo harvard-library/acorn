@@ -8,20 +8,13 @@
  *
  * Copyright 2009 The President and Fellows of Harvard College
  */
-	
 
 class RecordfilesController extends Zend_Controller_Action
 {
 	private $oswForm;
 	private $recordForm;
 	private $acornRedirector;
-	
-	/**
-	 * 
-	 * @var BatchBuilderAssistant
-	 */
-	private $batchBuilderAssistant;
-	
+		
 	const DB_ERROR_MESSAGE = "There was a problem saving the file information to the database. Please try again or contact an administrator if the problem continues.";
 	const FILE_COPY_ERROR_MESSAGE = "There was a problem saving the file to the file server. Please try again or contact an administrator if the problem continues.";
 
@@ -274,8 +267,7 @@ class RecordfilesController extends Zend_Controller_Action
     				RecordNamespace::setOriginalItem(ItemDAO::getItemDAO()->getItem($id));
     			}
     		}
-    		$id = $item->getItemID();
-    			
+    		$id = $item->getItemID();    			
     	}
     	else 
     	{
@@ -470,58 +462,6 @@ class RecordfilesController extends Zend_Controller_Action
     }
     
     /**
-     * Clears out the files that were saved in the user's temporary directory.
-     * (DOCUMENT_ROOT/userfiles/temp<userid>)
-     *
-     */
-    public function cleartemporaryfilesAction()
-    {
-    	//Don't display a new view
-		$this->_helper->viewRenderer->setNoRender();
-		//Don't use the default layout since this isn't a view call
-		$this->_helper->layout->disableLayout();
-		
-		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-        	
-        $identity = Zend_Auth::getInstance()->getIdentity();
-        $userid = $identity[PeopleDAO::PERSON_ID];
-        
-        $usertempdir = $config->getFilesDirectory() . "/temp" . $userid;
-		$handle=opendir($usertempdir);
-
-		while (($file = readdir($handle))!==false) 
-		{
-			@unlink($usertempdir.'/'.$file);
-		}
-
-		closedir($handle);
-    }
-    
-    /**
-     * Clears out the files that were saved in the user's temporary directory.
-     * (DOCUMENT_ROOT/userfiles/temp<userid>)
-     *
-     */
-    public function removefromtemporaryfilesAction()
-    {
-    	//Don't display a new view
-    	$this->_helper->viewRenderer->setNoRender();
-    	//Don't use the default layout since this isn't a view call
-    	$this->_helper->layout->disableLayout();
-    
-    	$filename = $this->getRequest()->getParam("filename");
-    	
-    	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-    	 
-    	$identity = Zend_Auth::getInstance()->getIdentity();
-    	$userid = $identity[PeopleDAO::PERSON_ID];
-    
-    	$usertempdir = $config->getFilesDirectory() . "/temp" . $userid;
-    	@unlink($usertempdir . '/' . $filename);
-    	
-    }
-    
-    /**
      *
      */
     public function fileuploadAction()
@@ -535,7 +475,7 @@ class RecordfilesController extends Zend_Controller_Action
   		//Make sure that the file list that we are adding to is the one associated with the document in view
     	$recordtype = $this->getRequest()->getParam("recordtype", "item");
     	$pkid = $this->getRequest()->getParam("pkid");
-    	$this->verifyCurrentRecord($recordtype, $pkid);
+    	$itemid = $this->verifyCurrentRecord($recordtype, $pkid);
     	
     	//Get the config so the necessary variables and configs can be found
     	$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
@@ -565,7 +505,19 @@ class RecordfilesController extends Zend_Controller_Action
     	$filehandlername = $config->getFileHandler();    	
 		$filehandler = new ReflectionClass($filehandlername);
         $filehandler = new FileHandler();
-		$filehandler->processFiles($recordtype, $pkid, $filelist);
+		$retval = $filehandler->processFiles($recordtype, $pkid, $filelist);
+
+		//If the files processed properly in the file handler, notify the user of the success
+		if ($retval === TRUE) {
+			RecordNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_SUCCESS);
+			RecordNamespace::setStatusMessage("Your files have been uploaded.");
+		
+			$this->_helper->redirector('index', 'record', NULL, array('recordnumber' => $itemid));
+		}
+		//Otherwise display an error messag
+		else {
+			$this->displayFileErrors(array('hiddenfilepkid'=>$pkid), $retval);
+		}
     }
 }
 
