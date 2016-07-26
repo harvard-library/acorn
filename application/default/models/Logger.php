@@ -55,7 +55,17 @@
  		{
  			foreach ($message as $key => $value)
  			{
- 				self::getLogger()->getZendLogger()->log(($key . ': ' . $value), $priority);
+				
+				if (is_array($value))
+				{
+					$logentry = $key . ': ' . implode($value);
+				}
+				else			
+				{
+					$logentry = $key . ': ' . $value;
+				}
+				
+ 				self::getLogger()->getZendLogger()->log($logentry, $priority);
  			}
  		}
  		else
