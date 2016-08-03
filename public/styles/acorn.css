@@ -169,8 +169,10 @@ line-height: 1;
 }
 
 .fullbuttonfooter {
-width: 100%;
+width: 99%;
 text-align: right;
+padding-bottom: 5px;
+padding-right: 10px;
 }
 
 .shortbuttonfooter {
@@ -179,6 +181,23 @@ margin-right: 5%;
 margin-bottom: 5px;
 text-align: right;
 
+}
+
+#transferlistarea {
+background-color: rgb(237, 245, 255);
+border-left: 1px solid;
+border-right: 1px solid;
+border-bottom: 1px solid;
+}
+
+#transferlisttitle {
+padding-left: 10px;
+padding-top: 10px;
+}
+
+#transferlist {
+padding-left: 10px;
+padding-right: 10px;
 }
 
 .transferbuttonfooter {
