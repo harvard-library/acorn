@@ -289,4 +289,3 @@ class GroupproposalController extends Zend_Controller_Action
     }    */
 }
 ?>
-

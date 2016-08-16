@@ -266,4 +266,3 @@ class RecordlogoutController extends Zend_Controller_Action
     
 }
 ?>
-

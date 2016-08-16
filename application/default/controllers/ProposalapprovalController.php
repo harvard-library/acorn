@@ -1087,4 +1087,3 @@ class ProposalapprovalController extends Zend_Controller_Action
     }
 }
 ?>
-

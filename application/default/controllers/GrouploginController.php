@@ -174,4 +174,3 @@ class GrouploginController extends Zend_Controller_Action
     }    
 }
 ?>
-

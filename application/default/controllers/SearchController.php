@@ -453,18 +453,18 @@ class SearchController extends Zend_Controller_Action
     	return $results;
     }
     
-	public function fallbackAction()
+    public function fallbackAction()
     {
     }
     
-	public function savedsearchesAction()
+    public function savedsearchesAction()
     {
     	//No form since it is just a Javascript data list and button.
     }
     
     public function findrecordAction()
     {
-   		$this->_helper->viewRenderer->setNoRender();
+   	$this->_helper->viewRenderer->setNoRender();
     	
     	$formData = $this->getRequest()->getParams();
     	$form = $this->getSearchForm();
@@ -472,17 +472,17 @@ class SearchController extends Zend_Controller_Action
     	
     	if ($form->isValidPartial(array($formData['recordnumberinput'])))
     	{
-    		$itemid = $formData['recordnumberinput'];
-    		$this->_helper->redirector('index', 'record', NULL, array('recordnumber' => $itemid));
-    	}
+            $itemid = $formData['recordnumberinput'];
+            $this->_helper->redirector('index', 'record', NULL, array('recordnumber' => $itemid));
+        }
     	else
-		{
-			//Populate the data with what the user
-			//gave but also display the error messages.
-			$form->populate($formData);
-			$this->view->form = $form;
-			$this->render('searchrecord');
-		}	
+	{
+            //Populate the data with what the user
+            //gave but also display the error messages.
+            $form->populate($formData);
+            $this->view->form = $form;
+            $this->render('searchrecord');
+	}	
     }
     
     public function findoswAction()
@@ -1481,4 +1481,3 @@ class SearchController extends Zend_Controller_Action
 	}
 }
 ?>
-
