@@ -280,4 +280,3 @@ class OswController extends Zend_Controller_Action
     }
 }
 ?>
-

@@ -174,4 +174,3 @@ class GrouplogoutController extends Zend_Controller_Action
   
 }
 ?>
-

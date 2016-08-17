@@ -1,5 +1,6 @@
 .buildpath
 .cache/
+.DS_Store
 .project
 .settings/
 application/config.ini
@@ -7,6 +8,7 @@ application/dbconfig.ini
 acorn_sessions/sess_*
 bb2/*
 logs/*log*
+nbproject/
 public/documentation
 public/drsstagingfiles
 public/userfiles/*

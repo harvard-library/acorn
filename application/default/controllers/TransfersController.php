@@ -772,4 +772,3 @@ class TransfersController extends Zend_Controller_Action
     }
 }
 ?>
-

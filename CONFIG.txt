@@ -20,8 +20,8 @@ Create the /home/acorn/<instance>/application/config.ini - basic configuration f
 
 Create the /home/acorn/<instance>/application/dbconfig.ini - database configuration file - a template is provided
 
-Place the /conf directory into /home/acorn/conf - This directory holds the virtual host configuration.  This must be included in the /etc/httpd/conf/httpd.conf file 
-	and apache restarted for it to have any effect.
+Place the /conf directory into /home/acorn/conf - This directory holds the virtual host configuration.
+This must be included in the /etc/httpd/conf/httpd.conf file and apache restarted for it to have any effect.
 	
 /home/acorn/public/scripts/acorn.js - Make sure the correct baseURL variable is set at the top of this file
 

@@ -1028,4 +1028,3 @@ class GroupController extends Zend_Controller_Action
     }
 }
 ?>
-
