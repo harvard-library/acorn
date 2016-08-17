@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Navigation
  * @subpackage Page
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Uri.php,v 1.1 2013/09/10 14:37:04 vcrema Exp $
  */
 
 /**
@@ -31,7 +31,7 @@ require_once 'Zend/Navigation/Page.php';
  * @category   Zend
  * @package    Zend_Navigation
  * @subpackage Page
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
@@ -79,18 +79,7 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
      */
     public function getHref()
     {
-        $uri = $this->getUri();
-        
-        $fragment = $this->getFragment();       
-        if (null !== $fragment) {
-            if ('#' == substr($uri, -1)) {
-                return $uri . $fragment;
-            } else {                
-                return $uri . '#' . $fragment;
-            }
-        }
-        
-        return $uri;
+        return $this->getUri();
     }
 
     // Public methods:

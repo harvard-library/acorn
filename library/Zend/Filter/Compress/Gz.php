@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Gz.php,v 1.1 2013/09/10 14:36:57 vcrema Exp $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Filter/Compress/CompressAbstract.php';
  *
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Filter_Compress_Gz extends Zend_Filter_Compress_CompressAbstract
@@ -182,11 +182,11 @@ class Zend_Filter_Compress_Gz extends Zend_Filter_Compress_CompressAbstract
     {
         $archive = $this->getArchive();
         $mode    = $this->getMode();
-        if (@file_exists($content)) {
+        if (file_exists($content)) {
             $archive = $content;
         }
 
-        if (@file_exists($archive)) {
+        if (file_exists($archive)) {
             $handler = fopen($archive, "rb");
             if (!$handler) {
                 require_once 'Zend/Filter/Exception.php';

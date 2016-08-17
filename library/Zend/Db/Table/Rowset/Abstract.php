@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Table
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Abstract.php,v 1.3 2013/09/10 14:37:00 vcrema Exp $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Table
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Countable, ArrayAccess
@@ -205,7 +205,6 @@ abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Counta
                 $this->_connected = true;
             }
         }
-        $this->rewind();
         return $this->_connected;
     }
 
@@ -246,8 +245,20 @@ abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Counta
             return null;
         }
 
+        // do we already have a row object for this position?
+        if (empty($this->_rows[$this->_pointer])) {
+            $this->_rows[$this->_pointer] = new $this->_rowClass(
+                array(
+                    'table'    => $this->_table,
+                    'data'     => $this->_data[$this->_pointer],
+                    'stored'   => $this->_stored,
+                    'readOnly' => $this->_readOnly
+                )
+            );
+        }
+
         // return the row object
-        return $this->_loadAndReturnRow($this->_pointer);
+        return $this->_rows[$this->_pointer];
     }
 
     /**
@@ -379,17 +390,17 @@ abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Counta
      */
     public function getRow($position, $seek = false)
     {
+        $key = $this->key();
         try {
-            $row = $this->_loadAndReturnRow($position);
+            $this->seek($position);
+            $row = $this->current();
         } catch (Zend_Db_Table_Rowset_Exception $e) {
             require_once 'Zend/Db/Table/Rowset/Exception.php';
             throw new Zend_Db_Table_Rowset_Exception('No row could be found at position ' . (int) $position, 0, $e);
         }
-
-        if ($seek == true) {
-            $this->seek($position);
+        if ($seek == false) {
+            $this->seek($key);
         }
-
         return $row;
     }
 
@@ -408,41 +419,6 @@ abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Counta
             $this->_data[$i] = $row->toArray();
         }
         return $this->_data;
-    }
-
-    protected function _loadAndReturnRow($position)
-    {
-        if (!isset($this->_data[$position])) {
-            require_once 'Zend/Db/Table/Rowset/Exception.php';
-            throw new Zend_Db_Table_Rowset_Exception("Data for provided position does not exist");
-        }
-
-        // do we already have a row object for this position?
-        if (empty($this->_rows[$position])) {
-            $this->_rows[$position] = new $this->_rowClass(
-                array(
-                    'table'    => $this->_table,
-                    'data'     => $this->_data[$position],
-                    'stored'   => $this->_stored,
-                    'readOnly' => $this->_readOnly
-                )
-            );
-
-            if ( $this->_table instanceof Zend_Db_Table_Abstract ) {
-                $info = $this->_table->info();
-
-                if ( $this->_rows[$position] instanceof Zend_Db_Table_Row_Abstract ) {
-                    if ($info['cols'] == array_keys($this->_data[$position])) {
-                        $this->_rows[$position]->setTable($this->getTable());
-                    }
-                }
-            } else {
-                $this->_rows[$position]->setTable(null);
-            }
-        }
-
-        // return the row object
-        return $this->_rows[$position];
     }
 
 }

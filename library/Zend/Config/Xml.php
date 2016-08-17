@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Config
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id$
+ * @version   $Id: Xml.php,v 1.3 2013/09/10 14:36:52 vcrema Exp $
  */
 
 /**
@@ -24,18 +24,12 @@
  */
 require_once 'Zend/Config.php';
 
-/** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
-
-/** @see Zend_Xml_Exception */
-require_once 'Zend/Xml/Exception.php';
-
 /**
  * XML Adapter for Zend_Config
  *
  * @category  Zend
  * @package   Zend_Config
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Config_Xml extends Zend_Config
@@ -64,20 +58,10 @@ class Zend_Config_Xml extends Zend_Config
      *
      * Note that the keys in $section will override any keys of the same
      * name in the sections that have been included via "extends".
-     * 
-     * The $options parameter may be provided as either a boolean or an array.
-     * If provided as a boolean, this sets the $allowModifications option of
-     * Zend_Config. If provided as an array, there are two configuration
-     * directives that may be set. For example:
      *
-     * $options = array(
-     *     'allowModifications' => false,
-     *     'skipExtends'        => false
-     *      );
-     *
-     * @param  string        $xml     XML file or string to process
-     * @param  mixed         $section Section to process
-     * @param  array|boolean $options 
+     * @param  string  $xml     XML file or string to process
+     * @param  mixed   $section Section to process
+     * @param  boolean $options Whether modifications are allowed at runtime
      * @throws Zend_Config_Exception When xml is not set or cannot be loaded
      * @throws Zend_Config_Exception When section $sectionName cannot be found in $xml
      */
@@ -102,21 +86,9 @@ class Zend_Config_Xml extends Zend_Config
 
         set_error_handler(array($this, '_loadFileErrorHandler')); // Warnings and errors are suppressed
         if (strstr($xml, '<?xml')) {
-            $config = Zend_Xml_Security::scan($xml);
+            $config = simplexml_load_string($xml);
         } else {
-            try {
-                if (!$config = Zend_Xml_Security::scanFile($xml)) {
-                    require_once 'Zend/Config/Exception.php';
-                    throw new Zend_Config_Exception(
-                        "Error failed to load $xml file"
-                    );
-                }
-            } catch (Zend_Xml_Exception $e) {
-                require_once 'Zend/Config/Exception.php';
-                throw new Zend_Config_Exception(
-                    $e->getMessage()
-                );
-            }
+            $config = simplexml_load_file($xml);
         }
 
         restore_error_handler();

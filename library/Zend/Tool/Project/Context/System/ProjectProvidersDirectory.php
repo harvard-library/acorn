@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: ProjectProvidersDirectory.php,v 1.1 2013/09/10 14:37:10 vcrema Exp $
  */
 
 /**
@@ -43,7 +43,7 @@ require_once 'Zend/Tool/Project/Context/System/NotOverwritable.php';
  *
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Context_System_ProjectProvidersDirectory
@@ -66,13 +66,13 @@ class Zend_Tool_Project_Context_System_ProjectProvidersDirectory
     {
         return 'ProjectProvidersDirectory';
     }
-
+    
     public function loadProviders(Zend_Tool_Framework_Registry_Interface $registry)
     {
         if (file_exists($this->getPath())) {
 
             $providerRepository = $registry->getProviderRepository();
-
+            
             foreach (new DirectoryIterator($this->getPath()) as $item) {
                 if ($item->isFile() && (($suffixStart = strpos($item->getFilename(), 'Provider.php')) !== false)) {
                     $className = substr($item->getFilename(), 0, $suffixStart+8);

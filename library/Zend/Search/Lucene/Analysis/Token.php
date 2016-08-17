@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Analysis
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Token.php,v 1.3 2013/09/10 14:36:51 vcrema Exp $
  */
 
 
@@ -25,7 +25,7 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Analysis
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Analysis_Token
@@ -122,18 +122,6 @@ class Zend_Search_Lucene_Analysis_Token
     public function getTermText()
     {
         return $this->_termText;
-    }
-    
-    /**
-     * Sets the Token's term text.
-     * 
-     * @param string $text
-     * @return this
-     */
-    public function setTermText($text)
-    {
-        $this->_termText = $text;
-        return $this;
     }
 
     /**

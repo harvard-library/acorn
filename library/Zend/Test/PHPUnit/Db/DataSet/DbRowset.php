@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: DbRowset.php,v 1.1 2013/09/10 14:36:57 vcrema Exp $
  */
 
 /**
@@ -26,13 +26,18 @@
 require_once "Zend/Db/Table/Rowset/Abstract.php";
 
 /**
+ * @see PHPUnit_Extensions_Database_DataSet_AbstractTable
+ */
+require_once "PHPUnit/Extensions/Database/DataSet/AbstractTable.php";
+
+/**
  * Use a Zend_Db Rowset as a datatable for assertions with other PHPUnit Database extension tables.
  *
  * @uses       PHPUnit_Extensions_Database_DataSet_AbstractTable
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Test_PHPUnit_Db_DataSet_DbRowset extends PHPUnit_Extensions_Database_DataSet_AbstractTable

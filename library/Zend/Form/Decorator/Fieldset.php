@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -26,14 +26,13 @@ require_once 'Zend/Form/Decorator/Abstract.php';
  * Zend_Form_Decorator_Fieldset
  *
  * Any options passed will be used as HTML attributes of the fieldset tag.
- * 
  *
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Fieldset.php,v 1.3 2013/09/10 14:36:04 vcrema Exp $
  */
 class Zend_Form_Decorator_Fieldset extends Zend_Form_Decorator_Abstract
 {
@@ -47,7 +46,6 @@ class Zend_Form_Decorator_Fieldset extends Zend_Form_Decorator_Abstract
         'helper',
         'method',
         'name',
-        'accept-charset',
     );
 
     /**
@@ -74,7 +72,7 @@ class Zend_Form_Decorator_Fieldset extends Zend_Form_Decorator_Abstract
         $options = parent::getOptions();
         if (null !== ($element = $this->getElement())) {
             $attribs = $element->getAttribs();
-            $options = array_merge($attribs, $options);
+            $options = array_merge($options, $attribs);
             $this->setOptions($options);
         }
         return $options;
@@ -133,7 +131,7 @@ class Zend_Form_Decorator_Fieldset extends Zend_Form_Decorator_Abstract
         $name    = $element->getFullyQualifiedName();
         $id      = (string)$element->getId();
 
-        if ((!array_key_exists('id', $attribs) || $attribs['id'] == $id) && '' !== $id) {
+        if (!array_key_exists('id', $attribs) && '' !== $id) {
             $attribs['id'] = 'fieldset-' . $id;
         }
 

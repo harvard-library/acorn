@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Test.php,v 1.1 2013/09/10 14:36:25 vcrema Exp $
  */
 
 /**
@@ -33,7 +33,7 @@ require_once 'Zend/Tool/Project/Provider/Exception.php';
 /**
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Provider_Test extends Zend_Tool_Project_Provider_Abstract
@@ -55,21 +55,6 @@ class Zend_Tool_Project_Provider_Test extends Zend_Tool_Project_Provider_Abstrac
         return $testsDirectory->isEnabled();
     }
 
-    public static function isPHPUnitAvailable()
-    {
-        if (class_exists('PHPUnit_Runner_Version', false)) {
-            return true;
-        }
-        
-        $included = @include 'PHPUnit/Runner/Version.php';
-        
-        if ($included === false) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    
     /**
      * createApplicationResource()
      *
@@ -91,32 +76,22 @@ class Zend_Tool_Project_Provider_Test extends Zend_Tool_Project_Provider_Abstrac
 
         $testsDirectoryResource = $profile->search('testsDirectory');
 
-        // parentOfController could either be application/ or a particular module folder, which is why we use this name
-        if (($testParentOfControllerDirectoryResource = $testsDirectoryResource->search('testApplicationDirectory')) === false) {
-            $testParentOfControllerDirectoryResource = $testsDirectoryResource->createResource('testApplicationDirectory');
+        if (($testAppDirectoryResource = $testsDirectoryResource->search('testApplicationDirectory')) === false) {
+            $testAppDirectoryResource = $testsDirectoryResource->createResource('testApplicationDirectory');
         }
 
         if ($moduleName) {
-            if (($testAppModulesDirectoryResource = $testParentOfControllerDirectoryResource->search('testApplicationModulesDirectory')) === false) {
-                $testAppModulesDirectoryResource = $testParentOfControllerDirectoryResource->createResource('testApplicationModulesDirectory');
-            }
-            
-            if (($testAppModuleDirectoryResource = $testAppModulesDirectoryResource->search(array('testApplicationModuleDirectory' => array('forModuleName' => $moduleName)))) === false) {
-                $testAppModuleDirectoryResource = $testAppModulesDirectoryResource->createResource('testApplicationModuleDirectory', array('forModuleName' => $moduleName));
-            }
-            
-            $testParentOfControllerDirectoryResource = $testAppModuleDirectoryResource;
+            //@todo $moduleName
+            $moduleName = '';
         }
 
-        if (($testAppControllerDirectoryResource = $testParentOfControllerDirectoryResource->search('testApplicationControllerDirectory', 'testApplicationModuleDirectory')) === false) {
-            $testAppControllerDirectoryResource = $testParentOfControllerDirectoryResource->createResource('testApplicationControllerDirectory');
+        if (($testAppControllerDirectoryResource = $testAppDirectoryResource->search('testApplicationControllerDirectory')) === false) {
+            $testAppControllerDirectoryResource = $testAppDirectoryResource->createResource('testApplicationControllerDirectory');
         }
 
-        if (($testAppControllerFileResource = $testAppControllerDirectoryResource->search(array('testApplicationControllerFile' => array('forControllerName' => $controllerName)))) === false) {
-            $testAppControllerFileResource = $testAppControllerDirectoryResource->createResource('testApplicationControllerFile', array('forControllerName' => $controllerName));
-        }
-        
-        return $testAppControllerFileResource->createResource('testApplicationActionMethod', array('forActionName' => $actionName));
+        $testAppControllerFileResource = $testAppControllerDirectoryResource->createResource('testApplicationControllerFile', array('forControllerName' => $controllerName));
+
+        return $testAppControllerFileResource;
     }
 
     /**
@@ -145,6 +120,7 @@ class Zend_Tool_Project_Provider_Test extends Zend_Tool_Project_Provider_Abstrac
                     $currentDirectoryResource = $libraryDirectoryResource;
                 }
 
+
             } else {
 
                 if (($libraryFileResource = $currentDirectoryResource->search(array('TestLibraryFile' => array('forClassName' => $libraryClassName)))) === false) {
@@ -171,7 +147,7 @@ class Zend_Tool_Project_Provider_Test extends Zend_Tool_Project_Provider_Abstrac
     /**
      * create()
      *
-     * @param string $libraryClassName
+     * @param unknown_type $libraryClassName
      */
     public function create($libraryClassName)
     {

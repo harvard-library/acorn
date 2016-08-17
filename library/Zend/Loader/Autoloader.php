@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_Loader
  * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Autoloader.php,v 1.1 2013/09/10 14:37:12 vcrema Exp $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -29,7 +29,7 @@ require_once 'Zend/Loader.php';
  * @uses       Zend_Loader_Autoloader
  * @package    Zend_Loader
  * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Loader_Autoloader
@@ -335,10 +335,9 @@ class Zend_Loader_Autoloader
                 continue;
             }
             if (0 === strpos($class, $ns)) {
-                if ((false === $namespace) || (strlen($ns) > strlen($namespace))) {
-                    $namespace = $ns;
-                    $autoloaders = $this->getNamespaceAutoloaders($ns);
-                }
+                $namespace   = $ns;
+                $autoloaders = $autoloaders + $this->getNamespaceAutoloaders($ns);
+                break;
             }
         }
 
@@ -352,13 +351,7 @@ class Zend_Loader_Autoloader
         }
 
         // Add non-namespaced autoloaders
-        $autoloadersNonNamespace = $this->getNamespaceAutoloaders('');
-        if (count($autoloadersNonNamespace)) {
-            foreach ($autoloadersNonNamespace as $ns) {
-                $autoloaders[] = $ns;
-            }
-            unset($autoloadersNonNamespace);
-        }
+        $autoloaders = $autoloaders + $this->getNamespaceAutoloaders('');
 
         // Add fallback autoloader
         if (!$namespace && $this->isFallbackAutoloader()) {

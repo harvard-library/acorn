@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Ini.php,v 1.3 2013/09/10 14:36:52 vcrema Exp $
  */
 
 
@@ -29,7 +29,7 @@ require_once 'Zend/Config.php';
 /**
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Config_Ini extends Zend_Config
@@ -83,17 +83,16 @@ class Zend_Config_Ini extends Zend_Config
      *
      * The $options parameter may be provided as either a boolean or an array.
      * If provided as a boolean, this sets the $allowModifications option of
-     * Zend_Config. If provided as an array, there are three configuration
+     * Zend_Config. If provided as an array, there are two configuration
      * directives that may be set. For example:
      *
      * $options = array(
      *     'allowModifications' => false,
-     *     'nestSeparator'      => ':',
-     *     'skipExtends'        => false,
+     *     'nestSeparator'      => '->'
      *      );
      *
      * @param  string        $filename
-     * @param  mixed         $section
+     * @param  string|null   $section
      * @param  boolean|array $options
      * @throws Zend_Config_Exception
      * @return void
@@ -158,11 +157,11 @@ class Zend_Config_Ini extends Zend_Config
 
         $this->_loadedSection = $section;
     }
-
+    
     /**
      * Load the INI file from disk using parse_ini_file(). Use a private error
      * handler to convert any loading errors into a Zend_Config_Exception
-     *
+     * 
      * @param string $filename
      * @throws Zend_Config_Exception
      * @return array
@@ -172,7 +171,7 @@ class Zend_Config_Ini extends Zend_Config
         set_error_handler(array($this, '_loadFileErrorHandler'));
         $iniArray = parse_ini_file($filename, true); // Warnings and errors are suppressed
         restore_error_handler();
-
+        
         // Check if there was a error while loading file
         if ($this->_loadFileErrorStr !== null) {
             /**
@@ -181,7 +180,7 @@ class Zend_Config_Ini extends Zend_Config
             require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception($this->_loadFileErrorStr);
         }
-
+        
         return $iniArray;
     }
 

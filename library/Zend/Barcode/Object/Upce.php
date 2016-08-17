@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Barcode
  * @subpackage Object
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Upce.php,v 1.1 2013/09/10 14:36:05 vcrema Exp $
  */
 
 /**
@@ -35,7 +35,7 @@ require_once 'Zend/Validate/Barcode.php';
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Barcode_Object_Upce extends Zend_Barcode_Object_Ean13
@@ -188,10 +188,8 @@ class Zend_Barcode_Object_Upce extends Zend_Barcode_Object_Ean13
     /**
      * Particular validation for Upce barcode objects
      * (to suppress checksum character substitution)
-     *
      * @param string $value
      * @param array  $options
-     * @throws Zend_Barcode_Object_Exception
      */
     protected function _validateText($value, $options = array())
     {

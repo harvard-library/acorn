@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_S3
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Stream.php,v 1.1 2013/09/10 14:37:14 vcrema Exp $
  */
 
 /**
@@ -31,7 +31,7 @@ require_once 'Zend/Service/Amazon/S3.php';
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_S3
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Amazon_S3_Stream
@@ -140,7 +140,8 @@ class Zend_Service_Amazon_S3_Stream
             $this->_writeBuffer = true;
             $this->_getS3Client($path);
             return true;
-        } else {
+        }
+        else {
             // Otherwise, just see if the file exists or not
             $info = $this->_getS3Client($path)->getInfo($name);
             if ($info) {
@@ -174,9 +175,9 @@ class Zend_Service_Amazon_S3_Stream
     /**
      * Read from the stream
      *
-     * http://bugs.php.net/21641 - stream_read() is always passed PHP's
-     * internal read buffer size (8192) no matter what is passed as $count
-     * parameter to fread().
+     * http://bugs.php.net/21641 - stream_read() is always passed PHP's 
+     * internal read buffer size (8192) no matter what is passed as $count 
+     * parameter to fread(). 
      *
      * @param  integer $count
      * @return string
@@ -193,12 +194,14 @@ class Zend_Service_Amazon_S3_Stream
         }
 
         $range_start = $this->_position;
-        $range_end   = $this->_position + $count - 1;
+        $range_end = $this->_position+$count;
 
         // Only fetch more data from S3 if we haven't fetched any data yet (postion=0)
-        // OR, the range end position plus 1 is greater than the size of the current
-        // object buffer
-        if ($this->_objectBuffer === null  ||  $range_end >= strlen($this->_objectBuffer)) {
+        // OR, the range end position is greater than the size of the current object
+        // buffer AND if the range end position is less than or equal to the object's
+        // size returned by S3
+        if (($this->_position == 0) || (($range_end > strlen($this->_objectBuffer)) && ($range_end <= $this->_objectSize))) {
+
             $headers = array(
                 'Range' => "bytes=$range_start-$range_end"
             );

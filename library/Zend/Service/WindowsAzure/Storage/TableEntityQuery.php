@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: TableEntityQuery.php,v 1.1 2013/09/10 14:36:10 vcrema Exp $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_WindowsAzure_Storage_TableEntityQuery
@@ -129,7 +129,7 @@ class Zend_Service_WindowsAzure_Storage_TableEntityQuery
 	{
 	    $condition = $this->_replaceOperators($condition);
 	    
-	    if (!is_null($value)) {
+	    if ($value !== null) {
 	        $condition = $this->_quoteInto($condition, $value);
 	    }
 	    
@@ -211,7 +211,7 @@ class Zend_Service_WindowsAzure_Storage_TableEntityQuery
 			$query[] = '$orderby=' . ($urlEncode ? self::encodeQuery($orderBy) : $orderBy);
 		}
 		
-		if (!is_null($this->_top)) {
+		if ($this->_top !== null) {
 			$query[] = '$top=' . $this->_top;
 		}
 		
@@ -234,16 +234,16 @@ class Zend_Service_WindowsAzure_Storage_TableEntityQuery
 	    if ($includeParentheses) {
 	        $identifier .= '(';
 	        
-	        if (!is_null($this->_partitionKey)) {
-	            $identifier .= 'PartitionKey=\'' . self::encodeQuery($this->_partitionKey) . '\'';
+	        if ($this->_partitionKey !== null) {
+	            $identifier .= 'PartitionKey=\'' . $this->_partitionKey . '\'';
 	        }
 	            
-	        if (!is_null($this->_partitionKey) && !is_null($this->_rowKey)) {
+	        if ($this->_partitionKey !== null && $this->_rowKey !== null) {
 	            $identifier .= ', ';
 	        }
 	            
-	        if (!is_null($this->_rowKey)) {
-	            $identifier .= 'RowKey=\'' . self::encodeQuery($this->_rowKey) . '\'';
+	        if ($this->_rowKey !== null) {
+	            $identifier .= 'RowKey=\'' . $this->_rowKey . '\'';
 	        }
 	            
 	        $identifier .= ')';
@@ -331,9 +331,8 @@ class Zend_Service_WindowsAzure_Storage_TableEntityQuery
 		$query = str_replace('+', '%2B', $query);
 		$query = str_replace(',', '%2C', $query);
 		$query = str_replace('$', '%24', $query);
-		$query = str_replace('{', '%7B', $query);
-		$query = str_replace('}', '%7D', $query);
-
+		
+		
 		$query = str_replace(' ', '%20', $query);
 		
 		return $query;

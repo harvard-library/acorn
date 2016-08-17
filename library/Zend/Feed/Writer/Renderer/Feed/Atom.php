@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Atom.php,v 1.1 2013/09/10 14:36:40 vcrema Exp $
  */
 
 /** @see Zend_Feed_Writer_Feed */
@@ -42,7 +42,7 @@ require_once 'Zend/Feed/Writer/Renderer/Feed/Atom/AtomAbstract.php';
 /**
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Writer_Renderer_Feed_Atom
@@ -51,8 +51,8 @@ class Zend_Feed_Writer_Renderer_Feed_Atom
 {
     /**
      * Constructor
-     *
-     * @param  Zend_Feed_Writer_Feed $container
+     * 
+     * @param  Zend_Feed_Writer_Feed $container 
      * @return void
      */
     public function __construct (Zend_Feed_Writer_Feed $container)
@@ -62,7 +62,7 @@ class Zend_Feed_Writer_Renderer_Feed_Atom
 
     /**
      * Render Atom feed
-     *
+     * 
      * @return Zend_Feed_Writer_Renderer_Feed_Atom
      */
     public function render()
@@ -93,14 +93,14 @@ class Zend_Feed_Writer_Renderer_Feed_Atom
         $this->_setCopyright($this->_dom, $root);
         $this->_setCategories($this->_dom, $root);
         $this->_setHubs($this->_dom, $root);
-
+        
         foreach ($this->_extensions as $ext) {
             $ext->setType($this->getType());
             $ext->setRootElement($this->getRootElement());
             $ext->setDomDocument($this->getDomDocument(), $root);
             $ext->render();
         }
-
+        
         foreach ($this->_container as $entry) {
             if ($this->getDataContainer()->getEncoding()) {
                 $entry->setEncoding($this->getDataContainer()->getEncoding());

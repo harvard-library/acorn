@@ -14,15 +14,15 @@
  *
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: ConfigInterface.php,v 1.1 2013/09/10 14:37:00 vcrema Exp $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_Oauth_Config_ConfigInterface
@@ -72,8 +72,4 @@ interface Zend_Oauth_Config_ConfigInterface
     public function setToken(Zend_Oauth_Token $token);
 
     public function getToken();
-
-    public function setRealm($realm);
-
-    public function getRealm();
 }

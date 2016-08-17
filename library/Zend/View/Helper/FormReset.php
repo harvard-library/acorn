@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: FormReset.php,v 1.3 2013/09/10 14:36:13 vcrema Exp $
  */
 
 
@@ -33,7 +33,7 @@ require_once 'Zend/View/Helper/FormElement.php';
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_FormReset extends Zend_View_Helper_FormElement
@@ -64,6 +64,12 @@ class Zend_View_Helper_FormReset extends Zend_View_Helper_FormElement
             $disabled = ' disabled="disabled"';
         }
 
+        // get closing tag
+        $endTag = '>';
+        if ($this->view->doctype()->isXhtml()) {
+            $endTag = ' />';
+        }
+
         // Render button
         $xhtml = '<input type="reset"'
                . ' name="' . $this->view->escape($name) . '"'
@@ -76,7 +82,7 @@ class Zend_View_Helper_FormReset extends Zend_View_Helper_FormElement
         }
 
         // add attributes, close, and return
-        $xhtml .= $this->_htmlAttribs($attribs) . $this->getClosingBracket();
+        $xhtml .= $this->_htmlAttribs($attribs) . $endTag;
         return $xhtml;
     }
 }

@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: HeadTitle.php,v 1.3 2013/09/10 14:36:13 vcrema Exp $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -29,7 +29,7 @@ require_once 'Zend/View/Helper/Placeholder/Container/Standalone.php';
  * @uses       Zend_View_Helper_Placeholder_Container_Standalone
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_HeadTitle extends Zend_View_Helper_Placeholder_Container_Standalone
@@ -65,14 +65,15 @@ class Zend_View_Helper_HeadTitle extends Zend_View_Helper_Placeholder_Container_
      *
      * @param  string $title
      * @param  string $setType
+     * @param  string $separator
      * @return Zend_View_Helper_HeadTitle
      */
     public function headTitle($title = null, $setType = null)
     {
-        if (null === $setType) {
-            $setType = (null === $this->getDefaultAttachOrder())
-                     ? Zend_View_Helper_Placeholder_Container_Abstract::APPEND
-                     : $this->getDefaultAttachOrder();
+        if ($setType === null && $this->getDefaultAttachOrder() === null) {
+            $setType = Zend_View_Helper_Placeholder_Container_Abstract::APPEND;
+        } elseif ($setType === null && $this->getDefaultAttachOrder() !== null) {
+            $setType = $this->getDefaultAttachOrder();
         }
         $title = (string) $title;
         if ($title !== '') {
@@ -139,7 +140,7 @@ class Zend_View_Helper_HeadTitle extends Zend_View_Helper_Placeholder_Container_
         return $this;
     }
 
-    /**
+    /*
      * Retrieve translation object
      *
      * If none is currently registered, attempts to pull it from the registry

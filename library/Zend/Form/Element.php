@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Form
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -36,9 +36,9 @@ require_once 'Zend/Validate/Abstract.php';
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Element.php,v 1.3 2013/09/10 14:37:00 vcrema Exp $
  */
 class Zend_Form_Element implements Zend_Validate_Interface
 {
@@ -227,13 +227,6 @@ class Zend_Form_Element implements Zend_Validate_Interface
     protected $_isPartialRendering = false;
 
     /**
-     * Use one error message for array elements with concatenated values
-     *
-     * @var bool
-     */
-    protected $_concatJustValuesInErrorMessage = false;
-
-    /**
      * Constructor
      *
      * $spec may be:
@@ -322,29 +315,17 @@ class Zend_Form_Element implements Zend_Validate_Interface
 
         $decorators = $this->getDecorators();
         if (empty($decorators)) {
+            $getId = create_function('$decorator',
+                                     'return $decorator->getElement()->getId()
+                                             . "-element";');
             $this->addDecorator('ViewHelper')
                  ->addDecorator('Errors')
                  ->addDecorator('Description', array('tag' => 'p', 'class' => 'description'))
-                 ->addDecorator('HtmlTag', array(
-                     'tag' => 'dd',
-                     'id'  => array('callback' => array(get_class($this), 'resolveElementId'))
-                 ))
+                 ->addDecorator('HtmlTag', array('tag' => 'dd',
+                                                 'id'  => array('callback' => $getId)))
                  ->addDecorator('Label', array('tag' => 'dt'));
         }
         return $this;
-    }
-
-    /**
-     * Used to resolve and return an element ID
-     *
-     * Passed to the HtmlTag decorator as a callback in order to provide an ID.
-     * 
-     * @param  Zend_Form_Decorator_Interface $decorator 
-     * @return string
-     */
-    public static function resolveElementId(Zend_Form_Decorator_Interface $decorator)
-    {
-        return $decorator->getElement()->getId() . '-element';
     }
 
     /**
@@ -911,7 +892,6 @@ class Zend_Form_Element implements Zend_Validate_Interface
     public function getAttribs()
     {
         $attribs = get_object_vars($this);
-        unset($attribs['helper']);
         foreach ($attribs as $key => $value) {
             if ('_' == substr($key, 0, 1)) {
                 unset($attribs[$key]);
@@ -919,28 +899,6 @@ class Zend_Form_Element implements Zend_Validate_Interface
         }
 
         return $attribs;
-    }
-
-    /**
-     * Use one error message for array elements with concatenated values
-     *
-     * @param boolean $concatJustValuesInErrorMessage
-     * @return Zend_Form_Element
-     */
-    public function setConcatJustValuesInErrorMessage($concatJustValuesInErrorMessage)
-    {
-        $this->_concatJustValuesInErrorMessage = $concatJustValuesInErrorMessage;
-        return $this;
-    }
-
-    /**
-     * Use one error message for array elements with concatenated values
-     *
-     * @return boolean
-     */
-    public function getConcatJustValuesInErrorMessage()
-    {
-        return $this->_concatJustValuesInErrorMessage;
     }
 
     /**
@@ -1100,13 +1058,14 @@ class Zend_Form_Element implements Zend_Validate_Interface
                 $loader->addPrefixPath($prefix, $path);
                 return $this;
             case null:
-                $nsSeparator = (false !== strpos($prefix, '\\'))?'\\':'_';
-                $prefix = rtrim($prefix, $nsSeparator) . $nsSeparator;
-                $path   = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                $prefix = rtrim($prefix, '_');
+                $path   = rtrim($path, DIRECTORY_SEPARATOR);
                 foreach (array(self::DECORATOR, self::FILTER, self::VALIDATE) as $type) {
                     $cType        = ucfirst(strtolower($type));
+                    $pluginPath   = $path . DIRECTORY_SEPARATOR . $cType . DIRECTORY_SEPARATOR;
+                    $pluginPrefix = $prefix . '_' . $cType;
                     $loader       = $this->getPluginLoader($type);
-                    $loader->addPrefixPath($prefix . $cType, $path . $cType . DIRECTORY_SEPARATOR);
+                    $loader->addPrefixPath($pluginPrefix, $pluginPath);
                 }
                 return $this;
             default:
@@ -1418,14 +1377,7 @@ class Zend_Form_Element implements Zend_Validate_Interface
             if ($isArray && is_array($value)) {
                 $messages = array();
                 $errors   = array();
-                if (empty($value)) {
-                    if ($this->isRequired()
-                        || (!$this->isRequired() && !$this->getAllowEmpty())
-                    ) {
-                        $value = '';
-                    }
-                }
-                foreach ((array)$value as $val) {
+                foreach ($value as $val) {
                     if (!$validator->isValid($val, $context)) {
                         $result = false;
                         if ($this->_hasErrorMessages()) {
@@ -2271,19 +2223,14 @@ class Zend_Form_Element implements Zend_Validate_Interface
             if (null !== $translator) {
                 $message = $translator->translate($message);
             }
-            if ($this->isArray() || is_array($value)) {
+            if (($this->isArray() || is_array($value))
+                && !empty($value)
+            ) {
                 $aggregateMessages = array();
                 foreach ($value as $val) {
                     $aggregateMessages[] = str_replace('%value%', $val, $message);
                 }
-                if (count($aggregateMessages)) {
-                    if ($this->_concatJustValuesInErrorMessage) {
-                        $values = implode($this->getErrorMessageSeparator(), $value);
-                        $messages[$key] = str_replace('%value%', $values, $message);
-                    } else {
-                        $messages[$key] = implode($this->getErrorMessageSeparator(), $aggregateMessages);
-                    }
-                }
+                $messages[$key] = implode($this->getErrorMessageSeparator(), $aggregateMessages);
             } else {
                 $messages[$key] = str_replace('%value%', $value, $message);
             }

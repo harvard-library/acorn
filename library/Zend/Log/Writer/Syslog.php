@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Syslog.php,v 1.1 2013/09/10 14:36:38 vcrema Exp $
  */
 
 /** Zend_Log */
@@ -32,14 +32,13 @@ require_once 'Zend/Log/Writer/Abstract.php';
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
 {
     /**
      * Maps Zend_Log priorities to PHP's syslog priorities
-     *
      * @var array
      */
     protected $_priorities = array(
@@ -55,41 +54,36 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
 
     /**
      * The default log priority - for unmapped custom priorities
-     *
      * @var string
      */
     protected $_defaultPriority = LOG_NOTICE;
 
     /**
      * Last application name set by a syslog-writer instance
-     *
      * @var string
      */
     protected static $_lastApplication;
 
     /**
      * Last facility name set by a syslog-writer instance
-     *
      * @var string
      */
     protected static $_lastFacility;
 
     /**
      * Application name used by this syslog-writer instance
-     *
      * @var string
      */
     protected $_application = 'Zend_Log';
 
     /**
      * Facility used by this syslog-writer instance
-     *
      * @var int
      */
     protected $_facility = LOG_USER;
 
     /**
-     * Types of program available to logging of message
+     * _validFacilities
      *
      * @var array
      */
@@ -98,7 +92,7 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
     /**
      * Class constructor
      *
-     * @param  array $params Array of options; may include "application" and "facility" keys
+     * @param  array $options Array of options; may include "application" and "facility" keys
      * @return void
      */
     public function __construct(array $params = array())
@@ -109,7 +103,7 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
 
         $runInitializeSyslog = true;
         if (isset($params['facility'])) {
-            $this->setFacility($params['facility']);
+            $this->_facility = $this->setFacility($params['facility']);
             $runInitializeSyslog = false;
         }
 
@@ -123,6 +117,7 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
      *
      * @param  array|Zend_Config $config
      * @return Zend_Log_Writer_Syslog
+     * @throws Zend_Log_Exception
      */
     static public function factory($config)
     {
@@ -181,7 +176,7 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
      * Set syslog facility
      *
      * @param  int $facility Syslog facility
-     * @return Zend_Log_Writer_Syslog
+     * @return void
      * @throws Zend_Log_Exception for invalid log facility
      */
     public function setFacility($facility)
@@ -215,7 +210,7 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
      * Set application name
      *
      * @param  string $application Application name
-     * @return Zend_Log_Writer_Syslog
+     * @return void
      */
     public function setApplicationName($application)
     {
@@ -240,7 +235,7 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
     /**
      * Write a message to syslog.
      *
-     * @param  array $event event data
+     * @param  array $event  event data
      * @return void
      */
     protected function _write($event)
@@ -257,11 +252,6 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
             $this->_initializeSyslog();
         }
 
-        $message = $event['message'];
-        if ($this->_formatter instanceof Zend_Log_Formatter_Interface) {
-            $message = $this->_formatter->format($event);
-        }
-
-        syslog($priority, $message);
+        syslog($priority, $event['message']);
     }
 }

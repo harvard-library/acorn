@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Project.php,v 1.1 2013/09/10 14:36:24 vcrema Exp $
  */
 
 /**
@@ -28,7 +28,7 @@ require_once 'Zend/Tool/Project/Provider/Abstract.php';
 /**
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Provider_Project
@@ -91,18 +91,13 @@ class Zend_Tool_Project_Provider_Project
         $newProfile->loadFromData();
 
         $response = $this->_registry->getResponse();
-
+        
         $response->appendContent('Creating project at ' . $path);
         $response->appendContent('Note: ', array('separator' => false, 'color' => 'yellow'));
         $response->appendContent(
             'This command created a web project, '
             . 'for more information setting up your VHOST, please see docs/README');
 
-        if (!Zend_Tool_Project_Provider_Test::isPHPUnitAvailable()) {
-            $response->appendContent('Testing Note: ', array('separator' => false, 'color' => 'yellow'));
-            $response->appendContent('PHPUnit was not found in your include_path, therefore no testing actions will be created.');
-        }
-            
         foreach ($newProfile->getIterator() as $resource) {
             $resource->create();
         }
@@ -125,19 +120,13 @@ class Zend_Tool_Project_Provider_Project
 
     protected function _getDefaultProfile()
     {
-        $testAction = '';
-        if (Zend_Tool_Project_Provider_Test::isPHPUnitAvailable()) {
-            $testAction = '                    	<testApplicationActionMethod forActionName="index" />';
-        }
-        
-        $version = Zend_Version::VERSION;
-
         $data = <<<EOS
 <?xml version="1.0" encoding="UTF-8"?>
-<projectProfile type="default" version="$version">
+<projectProfile type="default" version="1.10">
     <projectDirectory>
         <projectProfileFile />
         <applicationDirectory>
+            <apisDirectory enabled="false" />
             <configsDirectory>
                 <applicationConfigFile type="ini" />
             </configsDirectory>
@@ -151,7 +140,6 @@ class Zend_Tool_Project_Provider_Project
             <layoutsDirectory enabled="false" />
             <modelsDirectory />
             <modulesDirectory enabled="false" />
-            <servicesDirectory enabled="false" />
             <viewsDirectory>
                 <viewScriptsDirectory>
                     <viewControllerScriptsDirectory forControllerName="Index">
@@ -191,22 +179,19 @@ class Zend_Tool_Project_Provider_Project
         <temporaryDirectory enabled="false" />
         <testsDirectory>
             <testPHPUnitConfigFile />
-            <testPHPUnitBootstrapFile />
             <testApplicationDirectory>
-                <testApplicationControllerDirectory>
-                    <testApplicationControllerFile filesystemName="IndexControllerTest.php" forControllerName="Index">
-$testAction
-                    </testApplicationControllerFile>
-                </testApplicationControllerDirectory>
-      	    </testApplicationDirectory>
-            <testLibraryDirectory />
+                <testApplicationBootstrapFile />
+            </testApplicationDirectory>
+            <testLibraryDirectory>
+                <testLibraryBootstrapFile />
+            </testLibraryDirectory>
         </testsDirectory>
     </projectDirectory>
 </projectProfile>
 EOS;
         return $data;
     }
-
+    
     public static function getDefaultReadmeContents($caller = null)
     {
         $projectDirResource = $caller->getResource()->getProfile()->search('projectDirectory');
@@ -216,13 +201,13 @@ EOS;
         } else {
             $path = '/path/to/public';
         }
-
+        
         return <<< EOS
 README
 ======
 
 This directory should be used to place project specfic documentation including
-but not limited to project notes, generated API/phpdoc documentation, or
+but not limited to project notes, generated API/phpdoc documentation, or 
 manual files generated or hand written.  Ideally, this directory would remain
 in your development environment only and should not be deployed with your
 application to it's final production location.
@@ -239,14 +224,14 @@ The following is a sample VHOST you might want to consider for your project.
 
    # This should be omitted in the production environment
    SetEnv APPLICATION_ENV development
-
+    
    <Directory "$path">
        Options Indexes MultiViews FollowSymLinks
        AllowOverride All
        Order allow,deny
        Allow from all
    </Directory>
-
+    
 </VirtualHost>
 
 EOS;

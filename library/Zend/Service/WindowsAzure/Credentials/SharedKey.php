@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: SharedKey.php,v 1.1 2013/09/10 14:37:11 vcrema Exp $
  */
 
 /**
@@ -25,9 +25,24 @@
 require_once 'Zend/Service/WindowsAzure/Credentials/CredentialsAbstract.php';
 
 /**
+ * @see Zend_Service_WindowsAzure_Storage
+ */
+require_once 'Zend/Service/WindowsAzure/Storage.php';
+
+/**
+ * @see Zend_Http_Client
+ */
+require_once 'Zend/Http/Client.php';
+
+/**
+ * @see Zend_Service_WindowsAzure_Credentials_Exception
+ */
+require_once 'Zend/Service/WindowsAzure/Credentials/Exception.php';
+
+/**
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */ 
 class Zend_Service_WindowsAzure_Credentials_SharedKey
@@ -76,7 +91,6 @@ class Zend_Service_WindowsAzure_Credentials_SharedKey
 
 		// Table storage?
 		if ($forTableStorage) {
-			require_once 'Zend/Service/WindowsAzure/Credentials/Exception.php';
 			throw new Zend_Service_WindowsAzure_Credentials_Exception('The Windows Azure SDK for PHP does not support SharedKey authentication on table storage. Use SharedKeyLite authentication instead.');
 		}
 		
@@ -101,7 +115,7 @@ class Zend_Service_WindowsAzure_Credentials_SharedKey
 		}
 		
 		// Build canonicalized headers
-		if (!is_null($headers)) {
+		if ($headers !== null) {
 			foreach ($headers as $header => $value) {
 				if (is_bool($value)) {
 					$value = $value === true ? 'True' : 'False';
@@ -124,7 +138,7 @@ class Zend_Service_WindowsAzure_Credentials_SharedKey
 		if ($queryString !== '') {
 		    $queryStringItems = $this->_makeArrayOfQueryString($queryString);
 		    foreach ($queryStringItems as $key => $value) {
-		    	$canonicalizedResource .= "\n" . strtolower($key) . ':' . urldecode($value);
+		    	$canonicalizedResource .= "\n" . strtolower($key) . ':' . $value;
 		    }
 		}
 		
@@ -135,7 +149,7 @@ class Zend_Service_WindowsAzure_Credentials_SharedKey
 			 && strtoupper($httpVerb) != Zend_Http_Client::HEAD) {
 			$contentLength = 0;
 			
-			if (!is_null($rawData)) {
+			if ($rawData !== null) {
 				$contentLength = strlen($rawData);
 			}
 		}

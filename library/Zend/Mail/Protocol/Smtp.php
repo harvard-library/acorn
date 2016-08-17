@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Smtp.php,v 1.3 2013/09/10 14:37:07 vcrema Exp $
  */
 
 
@@ -42,7 +42,7 @@ require_once 'Zend/Mail/Protocol/Abstract.php';
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
@@ -327,7 +327,7 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
 
 
     /**
-     * Issues the RSET command and validates answer
+     * Issues the RSET command end validates answer
      *
      * Can be used to restore a clean smtp communication state when a transaction has been cancelled or commencing a new transaction.
      *
@@ -346,7 +346,7 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
 
 
     /**
-     * Issues the NOOP command and validates answer
+     * Issues the NOOP command end validates answer
      *
      * Not used by Zend_Mail, could be used to keep a connection alive or check if it is still open.
      *
@@ -360,7 +360,7 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
 
 
     /**
-     * Issues the VRFY command and validates answer
+     * Issues the VRFY command end validates answer
      *
      * Not used by Zend_Mail.
      *

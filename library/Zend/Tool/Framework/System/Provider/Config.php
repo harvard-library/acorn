@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -46,9 +46,9 @@ require_once "Zend/Loader.php";
  * @package    Zend_Tool
  * @package    Framework
  * @uses       Zend_Tool_Framework_Provider_Abstract
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Config.php,v 1.1 2013/09/10 14:36:41 vcrema Exp $
  */
 class Zend_Tool_Framework_System_Provider_Config extends Zend_Tool_Framework_Provider_Abstract
 {
@@ -59,11 +59,11 @@ class Zend_Tool_Framework_System_Provider_Config extends Zend_Tool_Framework_Pro
 
     /**
      * array of specialties handled by this provider
-     *
+     * 
      * @var array
      */
     protected $_specialties = array('Manifest', 'Provider');
-
+    
     /**
      * @param string $type
      */

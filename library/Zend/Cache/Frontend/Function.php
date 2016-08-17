@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Function.php,v 1.3 2013/09/10 14:37:04 vcrema Exp $
  */
 
 
@@ -30,7 +30,7 @@ require_once 'Zend/Cache/Core.php';
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Frontend
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Frontend_Function extends Zend_Cache_Core
@@ -63,7 +63,7 @@ class Zend_Cache_Frontend_Function extends Zend_Cache_Core
      */
     public function __construct(array $options = array())
     {
-        foreach ($options as $name => $value) {
+        while (list($name, $value) = each($options)) {
             $this->setOption($name, $value);
         }
         $this->setOption('automatic_serialization', true);
@@ -104,7 +104,8 @@ class Zend_Cache_Frontend_Function extends Zend_Cache_Core
             ob_start();
             ob_implicit_flush(false);
             $return = call_user_func_array($callback, $parameters);
-            $output = ob_get_clean();
+            $output = ob_get_contents();
+            ob_end_clean();
             $data = array($output, $return);
             $this->save($data, $id, $tags, $specificLifetime, $priority);
         }

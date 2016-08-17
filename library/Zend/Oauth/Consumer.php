@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Consumer.php,v 1.1 2013/09/10 14:37:10 vcrema Exp $
  */
 
 /** Zend_Oauth */
@@ -43,7 +43,7 @@ require_once 'Zend/Oauth/Config.php';
 /**
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Oauth_Consumer extends Zend_Oauth
@@ -182,9 +182,9 @@ class Zend_Oauth_Consumer extends Zend_Oauth
      * @throws Zend_Oauth_Exception on invalid authorization token, non-matching response authorization token, or unprovided authorization token
      */
     public function getAccessToken(
-        $queryData,
+        $queryData, 
         Zend_Oauth_Token_Request $token,
-        $httpMethod = null,
+        $httpMethod = null, 
         Zend_Oauth_Http_AccessToken $request = null
     ) {
         $authorizedToken = new Zend_Oauth_Token_AuthorizedRequest($queryData);

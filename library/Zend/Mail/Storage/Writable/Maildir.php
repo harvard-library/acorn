@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Maildir.php,v 1.3 2013/09/10 14:36:45 vcrema Exp $
  */
 
 
@@ -36,7 +36,7 @@ require_once 'Zend/Mail/Storage/Writable/Interface.php';
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Maildir
@@ -105,7 +105,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      * Additional parameters are (see parent for more):
      *   - create if true a new maildir is create if none exists
      *
-     * @param array $params mail reader specific parameters
+     * @param  $params array mail reader specific parameters
      * @throws Zend_Mail_Storage_Exception
      */
     public function __construct($params) {

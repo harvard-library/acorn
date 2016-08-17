@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Captcha
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -35,9 +35,9 @@ require_once 'Zend/Service/ReCaptcha.php';
  * @category   Zend
  * @package    Zend_Captcha
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: ReCaptcha.php,v 1.3 2013/09/10 14:36:36 vcrema Exp $
  */
 class Zend_Captcha_ReCaptcha extends Zend_Captcha_Base
 {
@@ -135,7 +135,8 @@ class Zend_Captcha_ReCaptcha extends Zend_Captcha_Base
     /**
      * Constructor
      *
-     * @param array|Zend_Config $options
+     * @param  array|Zend_Config $options
+     * @return void
      */
     public function __construct($options = null)
     {
@@ -214,8 +215,7 @@ class Zend_Captcha_ReCaptcha extends Zend_Captcha_Base
      * Validate captcha
      *
      * @see    Zend_Validate_Interface::isValid()
-     * @param  mixed      $value
-     * @param  array|null $context
+     * @param  mixed $value
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -261,20 +261,6 @@ class Zend_Captcha_ReCaptcha extends Zend_Captcha_Base
      */
     public function render(Zend_View_Interface $view = null, $element = null)
     {
-        $name = null;
-        if ($element instanceof Zend_Form_Element) {
-            $name = $element->getBelongsTo();
-        }
-        return $this->getService()->getHTML($name);
-    }
-
-    /**
-     * Get captcha decorator
-     *
-     * @return string
-     */
-    public function getDecorator()
-    {
-        return "Captcha_ReCaptcha";
+        return $this->getService()->getHTML();
     }
 }

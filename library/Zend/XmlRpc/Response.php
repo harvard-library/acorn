@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,12 +28,6 @@ require_once 'Zend/XmlRpc/Value.php';
  */
 require_once 'Zend/XmlRpc/Fault.php';
 
-/** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
-
-/** @see Zend_Xml_Exception */
-require_once 'Zend/Xml/Exception.php';
-
 /**
  * XmlRpc Response
  *
@@ -41,9 +35,9 @@ require_once 'Zend/Xml/Exception.php';
  *
  * @category Zend
  * @package  Zend_XmlRpc
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version $Id$
+ * @version $Id: Response.php,v 1.3 2013/09/10 14:36:07 vcrema Exp $
  */
 class Zend_XmlRpc_Response
 {
@@ -183,8 +177,11 @@ class Zend_XmlRpc_Response
         }
 
         try {
-            $xml = Zend_Xml_Security::scan($response);
-        } catch (Zend_Xml_Exception $e) {    
+            $useInternalXmlErrors = libxml_use_internal_errors(true);
+            $xml = new SimpleXMLElement($response);
+            libxml_use_internal_errors($useInternalXmlErrors);
+        } catch (Exception $e) {
+            libxml_use_internal_errors($useInternalXmlErrors);
             // Not valid XML
             $this->_fault = new Zend_XmlRpc_Fault(651);
             $this->_fault->setEncoding($this->getEncoding());
@@ -208,7 +205,6 @@ class Zend_XmlRpc_Response
 
         try {
             if (!isset($xml->params) || !isset($xml->params->param) || !isset($xml->params->param->value)) {
-                require_once 'Zend/XmlRpc/Value/Exception.php';
                 throw new Zend_XmlRpc_Value_Exception('Missing XML-RPC value in XML');
             }
             $valueXml = $xml->params->param->value->asXML();

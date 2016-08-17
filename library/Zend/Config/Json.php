@@ -16,7 +16,7 @@
  * @package   Zend_Config
  * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id$
+ * @version   $Id: Json.php,v 1.1 2013/09/10 14:36:52 vcrema Exp $
  */
 
 /**
@@ -30,7 +30,7 @@ require_once 'Zend/Config.php';
 require_once 'Zend/Json.php';
 
 /**
- * JSON Adapter for Zend_Config
+ * XML Adapter for Zend_Config
  *
  * @category  Zend
  * @package   Zend_Config
@@ -47,9 +47,9 @@ class Zend_Config_Json extends Zend_Config
     /**
      * Whether or not to ignore constants in the JSON string
      *
-     * Note: if you do not have constant names in quotations in your JSON
+     * Note: if you do not have constant names in quotations in your JSON 
      * string, they may lead to syntax errors when parsing.
-     *
+     * 
      * @var bool
      */
     protected $_ignoreConstants = false;
@@ -128,9 +128,9 @@ class Zend_Config_Json extends Zend_Config
         }
 
         // Parse/decode
-        try {
-            $config = Zend_Json::decode($json);
-        } catch (Zend_Json_Exception $e) {
+        $config = Zend_Json::decode($json);
+        
+        if (null === $config) {
             // decode failed
             require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception("Error parsing JSON data");
@@ -212,17 +212,15 @@ class Zend_Config_Json extends Zend_Config
 
     /**
      * Replace any constants referenced in a string with their values
-     *
-     * @param  string $value
+     * 
+     * @param  string $value 
      * @return string
      */
     protected function _replaceConstants($value)
     {
         foreach ($this->_getConstants() as $constant) {
             if (strstr($value, $constant)) {
-                // handle backslashes that may represent windows path names for instance
-                $replacement = str_replace('\\', '\\\\', constant($constant));
-                $value = str_replace($constant, $replacement, $value);
+                $value = str_replace($constant, constant($constant), $value);
             }
         }
         return $value;
@@ -230,7 +228,7 @@ class Zend_Config_Json extends Zend_Config
 
     /**
      * Get (reverse) sorted list of defined constant names
-     *
+     * 
      * @return array
      */
     protected function _getConstants()

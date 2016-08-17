@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Version
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Version.php,v 1.3 2013/09/10 14:36:16 vcrema Exp $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category   Zend
  * @package    Zend_Version
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 final class Zend_Version
@@ -32,14 +32,14 @@ final class Zend_Version
     /**
      * Zend Framework version identification - see compareVersion()
      */
-    const VERSION = '1.12.18';
+    const VERSION = '1.11.0';
 
     /**
      * The latest stable version Zend Framework available
-     *
+     * 
      * @var string
      */
-    protected static $_latestVersion;
+    protected static $_lastestVersion;
 
     /**
      * Compare the specified Zend Framework version string $version
@@ -60,22 +60,22 @@ final class Zend_Version
 
     /**
      * Fetches the version of the latest stable release
-     *
+     * 
      * @link http://framework.zend.com/download/latest
      * @return string
      */
     public static function getLatest()
     {
-        if (null === self::$_latestVersion) {
-            self::$_latestVersion = 'not available';
+        if (null === self::$_lastestVersion) {
+            self::$_lastestVersion = 'not available';
 
-            $handle = fopen('http://framework.zend.com/api/zf-version', 'r');
+            $handle = fopen('http://framework.zend.com/api/zf-version', 'r');        
             if (false !== $handle) {
-                self::$_latestVersion = stream_get_contents($handle);
+                self::$_lastestVersion = stream_get_contents($handle);
                 fclose($handle);
             }
         }
 
-        return self::$_latestVersion;
+        return self::$_lastestVersion;
     }
 }

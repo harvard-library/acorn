@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Json
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Response.php,v 1.3 2013/09/10 14:36:44 vcrema Exp $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Json
  * @subpackage Server
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Json_Server_Response
@@ -144,14 +144,13 @@ class Zend_Json_Server_Response
      */
     public function setVersion($version)
     {
-        $version = is_array($version)
-            ? implode(' ', $version)
-            : $version;
-        if ((string)$version == '2.0') {
+        $version = (string) $version;
+        if ('2.0' == $version) {
             $this->_version = '2.0';
         } else {
             $this->_version = null;
         }
+
         return $this;
     }
 
@@ -174,6 +173,7 @@ class Zend_Json_Server_Response
     {
         if ($this->isError()) {
             $response = array(
+                'result' => null,
                 'error'  => $this->getError()->toArray(),
                 'id'     => $this->getId(),
             );
@@ -181,6 +181,7 @@ class Zend_Json_Server_Response
             $response = array(
                 'result' => $this->getResult(),
                 'id'     => $this->getId(),
+                'error'  => null,
             );
         }
 

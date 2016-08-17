@@ -15,15 +15,10 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: FormFile.php,v 1.1 2013/09/10 14:36:07 vcrema Exp $
  */
-
-/**
- * @see Zend_Tool_Project_Context_Zf_AbstractClassFile
- */
-require_once 'Zend/Tool/Project/Context/Zf/AbstractClassFile.php';
 
 /**
  * This class is the front most class for utilizing Zend_Tool_Project
@@ -33,7 +28,7 @@ require_once 'Zend/Tool/Project/Context/Zf/AbstractClassFile.php';
  *
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf_AbstractClassFile
@@ -43,12 +38,12 @@ class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf
      * @var string
      */
     protected $_formName = 'Base';
-
+    
     /**
      * @var string
      */
     protected $_filesystemName = 'formName';
-
+    
     /**
      * init()
      *
@@ -71,7 +66,7 @@ class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf
             'formName' => $this->getFormName()
             );
     }
-
+    
     /**
      * getName()
      *
@@ -86,12 +81,12 @@ class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf
     {
         return $this->_formName;
     }
-
+    
     public function getContents()
     {
-
+        
         $className = $this->getFullClassName($this->_formName, 'Form');
-
+        
         $codeGenFile = new Zend_CodeGenerator_Php_File(array(
             'fileName' => $this->getPath(),
             'classes' => array(
@@ -104,7 +99,7 @@ class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf
                             'body' => '/* Form Elements & Other Definitions Here ... */',
                             ))
                         )
-
+                
                     ))
                 )
             ));

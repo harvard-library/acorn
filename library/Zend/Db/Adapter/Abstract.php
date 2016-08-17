@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Abstract.php,v 1.3 2013/09/10 14:37:01 vcrema Exp $
  */
 
 
@@ -37,7 +37,7 @@ require_once 'Zend/Db/Select.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Db_Adapter_Abstract
@@ -156,7 +156,6 @@ abstract class Zend_Db_Adapter_Abstract
      * persistent     => (boolean) Whether to use a persistent connection or not, defaults to false
      * protocol       => (string) The network protocol, defaults to TCPIP
      * caseFolding    => (int) style of case-alteration used for identifiers
-     * socket         => (string) The socket or named pipe that should be used
      *
      * @param  array|Zend_Config $config An array or instance of Zend_Config having configuration data
      * @throws Zend_Db_Adapter_Exception
@@ -532,7 +531,6 @@ abstract class Zend_Db_Adapter_Abstract
      * @param mixed $table The table to insert data into.
      * @param array $bind Column-value pairs.
      * @return int The number of affected rows.
-     * @throws Zend_Db_Adapter_Exception
      */
     public function insert($table, array $bind)
     {
@@ -585,7 +583,6 @@ abstract class Zend_Db_Adapter_Abstract
      * @param  array        $bind  Column-value pairs.
      * @param  mixed        $where UPDATE WHERE clause(s).
      * @return int          The number of affected rows.
-     * @throws Zend_Db_Adapter_Exception
      */
     public function update($table, array $bind, $where = '')
     {
@@ -746,7 +743,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param string|Zend_Db_Select $sql An SQL SELECT statement.
      * @param mixed $bind Data to bind into SELECT placeholders.
      * @param mixed                 $fetchMode Override current fetch mode.
-     * @return mixed Array, object, or scalar depending on fetch mode.
+     * @return array
      */
     public function fetchRow($sql, $bind = array(), $fetchMode = null)
     {
@@ -930,7 +927,13 @@ abstract class Zend_Db_Adapter_Abstract
         if ($count === null) {
             return str_replace('?', $this->quote($value, $type), $text);
         } else {
-            return implode($this->quote($value, $type), explode('?', $text, $count + 1));
+            while ($count > 0) {
+                if (strpos($text, '?') !== false) {
+                    $text = substr_replace($text, $this->quote($value, $type), strpos($text, '?'), 1);
+                }
+                --$count;
+            }
+            return $text;
         }
     }
 
@@ -1121,15 +1124,10 @@ abstract class Zend_Db_Adapter_Abstract
         if ($this->_allowSerialization == false) {
             /** @see Zend_Db_Adapter_Exception */
             require_once 'Zend/Db/Adapter/Exception.php';
-            throw new Zend_Db_Adapter_Exception(
-                get_class($this) . ' is not allowed to be serialized'
-            );
+            throw new Zend_Db_Adapter_Exception(get_class($this) ." is not allowed to be serialized");
         }
-        $this->_connection = null;
-
-        return array_keys(
-            array_diff_key(get_object_vars($this), array('_connection' => null))
-        );
+        $this->_connection = false;
+        return array_keys(array_diff_key(get_object_vars($this), array('_connection'=>false)));
     }
 
     /**

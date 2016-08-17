@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Attribute.php,v 1.1 2013/09/10 14:36:55 vcrema Exp $
  */
 
 /**
@@ -24,15 +24,12 @@
  */
 require_once 'Zend/Ldap/Converter.php';
 
-/** @see Zend_Crypt_Math */
-require_once 'Zend/Crypt/Math.php';
-
 /**
  * Zend_Ldap_Attribute is a collection of LDAP attribute related functions.
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Ldap_Attribute
@@ -217,9 +214,9 @@ class Zend_Ldap_Attribute
     /**
      * Converts a PHP data type into its LDAP representation
      *
-     * @deprected    use Zend_Ldap_Converter instead
-     * @param          mixed $value
-     * @return         string|null - null if the PHP data type cannot be converted.
+     * @deprected	use Zend_Ldap_Converter instead
+     * @param  		mixed $value
+     * @return 		string|null - null if the PHP data type cannot be converted.
      */
     public static function convertToLdapValue($value)
     {
@@ -229,9 +226,9 @@ class Zend_Ldap_Attribute
     /**
      * Converts an LDAP value into its PHP data type
      *
-     * @deprected    use Zend_Ldap_Converter instead
-     * @param          string $value
-     * @return         mixed
+     * @deprected	use Zend_Ldap_Converter instead
+     * @param  		string $value
+     * @return 		mixed
      */
     public static function convertFromLdapValue($value)
     {
@@ -314,7 +311,7 @@ class Zend_Ldap_Attribute
                 }
                 return $password;
             case self::PASSWORD_HASH_SSHA:
-                $salt    = Zend_Crypt_Math::randBytes(4);
+                $salt    = substr(sha1(uniqid(mt_rand(), true), true), 0, 4);
                 $rawHash = sha1($password . $salt, true) . $salt;
                 $method  = '{SSHA}';
                 break;
@@ -323,7 +320,7 @@ class Zend_Ldap_Attribute
                 $method  = '{SHA}';
                 break;
             case self::PASSWORD_HASH_SMD5:
-                $salt    = Zend_Crypt_Math::randBytes(4);
+                $salt    = substr(sha1(uniqid(mt_rand(), true), true), 0, 4);
                 $rawHash = md5($password . $salt, true) . $salt;
                 $method  = '{SMD5}';
                 break;
@@ -395,9 +392,9 @@ class Zend_Ldap_Attribute
             }
         }
         else {
-            $newVal = self::_valueFromLdapDateTime($values);
-            if ($newVal !== null) $values = $newVal;
-        }
+			$newVal = self::_valueFromLdapDateTime($values);
+			if ($newVal !== null) $values = $newVal;
+		}
         return $values;
     }
 

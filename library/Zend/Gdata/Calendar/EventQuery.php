@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Calendar
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: EventQuery.php,v 1.3 2013/09/10 14:37:00 vcrema Exp $
  */
 
 /**
@@ -39,13 +39,13 @@ require_once('Zend/Gdata/Query.php');
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Calendar
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
 {
 
-    const CALENDAR_FEED_URI = 'https://www.google.com/calendar/feeds';
+    const CALENDAR_FEED_URI = 'http://www.google.com/calendar/feeds';
 
     /**
      * The default URI used for feeds.
@@ -91,9 +91,9 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     /**
      * Create Gdata_Calendar_EventQuery object.  If a URL is provided,
      * it becomes the base URL, and additional URL components may be
-     * appended.  For instance, if $url is 'https://www.google.com/calendar',
+     * appended.  For instance, if $url is 'http://www.google.com/calendar',
      * the default URL constructed will be
-     * 'https://www.google.com/calendar/default/public/full'.
+     * 'http://www.google.com/calendar/default/public/full'.
      *
      * If the URL already contains a calendar ID, projection, visibility,
      * event ID, or comment ID, you will need to set these fields to null

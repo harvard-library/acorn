@@ -14,15 +14,15 @@
  *
  * @category   Zend
  * @package    Zend_Cache
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Core.php,v 1.3 2013/09/10 14:37:12 vcrema Exp $
  */
 
 
 /**
  * @package    Zend_Cache
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Core
@@ -143,7 +143,7 @@ class Zend_Cache_Core
             Zend_Cache::throwException("Options passed were not an array"
             . " or Zend_Config instance.");
         }
-        foreach ($options as $name => $value) {
+        while (list($name, $value) = each($options)) {
             $this->setOption($name, $value);
         }
         $this->_loggerSanity();
@@ -158,7 +158,7 @@ class Zend_Cache_Core
     public function setConfig(Zend_Config $config)
     {
         $options = $config->toArray();
-        foreach ($options as $name => $value) {
+        while (list($name, $value) = each($options)) {
             $this->setOption($name, $value);
         }
         return $this;
@@ -211,7 +211,7 @@ class Zend_Cache_Core
     public function setOption($name, $value)
     {
         if (!is_string($name)) {
-            Zend_Cache::throwException("Incorrect option name!");
+            Zend_Cache::throwException("Incorrect option name : $name");
         }
         $name = strtolower($name);
         if (array_key_exists($name, $this->_options)) {
@@ -235,18 +235,17 @@ class Zend_Cache_Core
      */
     public function getOption($name)
     {
-        $name = strtolower($name);
-
-        if (array_key_exists($name, $this->_options)) {
-            // This is a Core option
-            return $this->_options[$name];
+        if (is_string($name)) {
+            $name = strtolower($name);
+            if (array_key_exists($name, $this->_options)) {
+                // This is a Core option
+                return $this->_options[$name];
+            }
+            if (array_key_exists($name, $this->_specificOptions)) {
+                // This a specic option of this frontend
+                return $this->_specificOptions[$name];
+            }
         }
-
-        if (array_key_exists($name, $this->_specificOptions)) {
-            // This a specic option of this frontend
-            return $this->_specificOptions[$name];
-        }
-
         Zend_Cache::throwException("Incorrect option name : $name");
     }
 
@@ -300,9 +299,7 @@ class Zend_Cache_Core
         }
         $id = $this->_id($id); // cache id may need prefix
         $this->_lastId = $id;
-        $this->_validateIdOrTag($id);
-
-        $this->_log("Zend_Cache_Core: load item '{$id}'", 7);
+        self::_validateIdOrTag($id);
         $data = $this->_backend->load($id, $doNotTestCacheValidity);
         if ($data===false) {
             // no cache available
@@ -327,10 +324,8 @@ class Zend_Cache_Core
             return false;
         }
         $id = $this->_id($id); // cache id may need prefix
-        $this->_validateIdOrTag($id);
+        self::_validateIdOrTag($id);
         $this->_lastId = $id;
-
-        $this->_log("Zend_Cache_Core: test item '{$id}'", 7);
         return $this->_backend->test($id);
     }
 
@@ -355,8 +350,8 @@ class Zend_Cache_Core
         } else {
             $id = $this->_id($id);
         }
-        $this->_validateIdOrTag($id);
-        $this->_validateTagsArray($tags);
+        self::_validateIdOrTag($id);
+        self::_validateTagsArray($tags);
         if ($this->_options['automatic_serialization']) {
             // we need to serialize datas before storing them
             $data = serialize($data);
@@ -365,22 +360,27 @@ class Zend_Cache_Core
                 Zend_Cache::throwException("Datas must be string or set automatic_serialization = true");
             }
         }
-
         // automatic cleaning
         if ($this->_options['automatic_cleaning_factor'] > 0) {
             $rand = rand(1, $this->_options['automatic_cleaning_factor']);
             if ($rand==1) {
-                //  new way                 || deprecated way
-                if ($this->_extendedBackend || method_exists($this->_backend, 'isAutomaticCleaningAvailable')) {
-                    $this->_log("Zend_Cache_Core::save(): automatic cleaning running", 7);
-                    $this->clean(Zend_Cache::CLEANING_MODE_OLD);
+                if ($this->_extendedBackend) {
+                    // New way
+                    if ($this->_backendCapabilities['automatic_cleaning']) {
+                        $this->clean(Zend_Cache::CLEANING_MODE_OLD);
+                    } else {
+                        $this->_log('Zend_Cache_Core::save() / automatic cleaning is not available/necessary with this backend');
+                    }
                 } else {
-                    $this->_log("Zend_Cache_Core::save(): automatic cleaning is not available/necessary with current backend", 4);
+                    // Deprecated way (will be removed in next major version)
+                    if (method_exists($this->_backend, 'isAutomaticCleaningAvailable') && ($this->_backend->isAutomaticCleaningAvailable())) {
+                        $this->clean(Zend_Cache::CLEANING_MODE_OLD);
+                    } else {
+                        $this->_log('Zend_Cache_Core::save() / automatic cleaning is not available/necessary with this backend');
+                    }
                 }
             }
         }
-
-        $this->_log("Zend_Cache_Core: save item '{$id}'", 7);
         if ($this->_options['ignore_user_abort']) {
             $abort = ignore_user_abort(true);
         }
@@ -392,23 +392,22 @@ class Zend_Cache_Core
         if ($this->_options['ignore_user_abort']) {
             ignore_user_abort($abort);
         }
-
         if (!$result) {
             // maybe the cache is corrupted, so we remove it !
-            $this->_log("Zend_Cache_Core::save(): failed to save item '{$id}' -> removing it", 4);
-            $this->_backend->remove($id);
+            if ($this->_options['logging']) {
+                $this->_log("Zend_Cache_Core::save() : impossible to save cache (id=$id)");
+            }
+            $this->remove($id);
             return false;
         }
-
         if ($this->_options['write_control']) {
             $data2 = $this->_backend->load($id, true);
             if ($data!=$data2) {
-                $this->_log("Zend_Cache_Core::save(): write control of item '{$id}' failed -> removing it", 4);
+                $this->_log('Zend_Cache_Core::save() / write_control : written and read data do not match');
                 $this->_backend->remove($id);
                 return false;
             }
         }
-
         return true;
     }
 
@@ -424,9 +423,7 @@ class Zend_Cache_Core
             return true;
         }
         $id = $this->_id($id); // cache id may need prefix
-        $this->_validateIdOrTag($id);
-
-        $this->_log("Zend_Cache_Core: remove item '{$id}'", 7);
+        self::_validateIdOrTag($id);
         return $this->_backend->remove($id);
     }
 
@@ -460,8 +457,7 @@ class Zend_Cache_Core
                                    Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG))) {
             Zend_Cache::throwException('Invalid cleaning mode');
         }
-        $this->_validateTagsArray($tags);
-
+        self::_validateTagsArray($tags);
         return $this->_backend->clean($mode, $tags);
     }
 
@@ -653,8 +649,6 @@ class Zend_Cache_Core
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         $id = $this->_id($id); // cache id may need prefix
-
-        $this->_log("Zend_Cache_Core: touch item '{$id}'", 7);
         return $this->_backend->touch($id, $extraLifetime);
     }
 
@@ -667,7 +661,7 @@ class Zend_Cache_Core
      * @throws Zend_Cache_Exception
      * @return void
      */
-    protected function _validateIdOrTag($string)
+    protected static function _validateIdOrTag($string)
     {
         if (!is_string($string)) {
             Zend_Cache::throwException('Invalid id or tag : must be a string');
@@ -689,13 +683,13 @@ class Zend_Cache_Core
      * @throws Zend_Cache_Exception
      * @return void
      */
-    protected function _validateTagsArray($tags)
+    protected static function _validateTagsArray($tags)
     {
         if (!is_array($tags)) {
             Zend_Cache::throwException('Invalid tags array : must be an array');
         }
         foreach($tags as $tag) {
-            $this->_validateIdOrTag($tag);
+            self::_validateIdOrTag($tag);
         }
         reset($tags);
     }
@@ -719,11 +713,9 @@ class Zend_Cache_Core
         }
 
         // Create a default logger to the standard output stream
-        require_once 'Zend/Log.php';
         require_once 'Zend/Log/Writer/Stream.php';
-        require_once 'Zend/Log/Filter/Priority.php';
+        require_once 'Zend/Log.php';
         $logger = new Zend_Log(new Zend_Log_Writer_Stream('php://output'));
-        $logger->addFilter(new Zend_Log_Filter_Priority(Zend_Log::WARN, '<='));
         $this->_options['logger'] = $logger;
     }
 

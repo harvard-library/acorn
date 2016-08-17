@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Entry.php,v 1.1 2013/09/10 14:37:04 vcrema Exp $
  */
 
 /**
@@ -37,7 +37,7 @@ require_once 'Zend/Date.php';
 /**
  * @category   Zend
  * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Reader_Extension_DublinCore_Entry
@@ -102,7 +102,7 @@ class Zend_Feed_Reader_Extension_DublinCore_Entry
 
         return $this->_data['authors'];
     }
-
+    
     /**
      * Get categories (subjects under DC)
      *
@@ -113,13 +113,13 @@ class Zend_Feed_Reader_Extension_DublinCore_Entry
         if (array_key_exists('categories', $this->_data)) {
             return $this->_data['categories'];
         }
-
+        
         $list = $this->_xpath->evaluate($this->getXpathPrefix() . '//dc11:subject');
 
         if (!$list->length) {
             $list = $this->_xpath->evaluate($this->getXpathPrefix() . '//dc10:subject');
         }
-
+        
         if ($list->length) {
             $categoryCollection = new Zend_Feed_Reader_Collection_Category;
             foreach ($list as $category) {
@@ -132,11 +132,11 @@ class Zend_Feed_Reader_Extension_DublinCore_Entry
         } else {
             $categoryCollection = new Zend_Feed_Reader_Collection_Category;
         }
-
+        
         $this->_data['categories'] = $categoryCollection;
-        return $this->_data['categories'];
+        return $this->_data['categories'];  
     }
-
+    
 
     /**
      * Get the entry content

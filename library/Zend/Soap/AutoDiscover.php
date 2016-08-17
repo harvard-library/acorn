@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Soap
  * @subpackage AutoDiscover
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: AutoDiscover.php,v 1.3 2013/09/10 14:37:00 vcrema Exp $
  */
 
 /**
@@ -268,9 +268,7 @@ class Zend_Soap_AutoDiscover implements Zend_Server_Interface
      */
     protected function getRequestUriWithoutParameters()
     {
-        if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) { // IIS with Microsoft Rewrite Module
-            $requestUri = $_SERVER['HTTP_X_ORIGINAL_URL'];
-        } elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
+        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
             $requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
         } elseif (isset($_SERVER['REQUEST_URI'])) {
             $requestUri = $_SERVER['REQUEST_URI'];
@@ -380,10 +378,10 @@ class Zend_Soap_AutoDiscover implements Zend_Server_Interface
     /**
      * Add a function to the WSDL document.
      *
-     * @param Zend_Server_Reflection_Function_Abstract $function function to add
-     * @param Zend_Soap_Wsdl                           $wsdl     WSDL document
-     * @param object                                   $port     wsdl:portType
-     * @param object                                   $binding  wsdl:binding
+     * @param $function Zend_Server_Reflection_Function_Abstract function to add
+     * @param $wsdl Zend_Soap_Wsdl WSDL document
+     * @param $port object wsdl:portType
+     * @param $binding object wsdl:binding
      * @return void
      */
     protected function _addFunctionToWsdl($function, $wsdl, $port, $binding)
@@ -481,11 +479,7 @@ class Zend_Soap_AutoDiscover implements Zend_Server_Interface
         }
 
         // Add the binding operation
-        if($isOneWayMessage == false) {
-            $operation = $wsdl->addBindingOperation($binding, $function->getName(),  $this->_operationBodyStyle, $this->_operationBodyStyle);
-        } else {
-            $operation = $wsdl->addBindingOperation($binding, $function->getName(),  $this->_operationBodyStyle);
-        }
+        $operation = $wsdl->addBindingOperation($binding, $function->getName(),  $this->_operationBodyStyle, $this->_operationBodyStyle);
         $wsdl->addSoapOperation($operation, $uri . '#' .$function->getName());
 
         // Add the function name to the list

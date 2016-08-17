@@ -14,8 +14,8 @@
  *
  * @category   Zend
  * @package    Zend_Translate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: XmlTm.php,v 1.3 2013/09/10 14:36:40 vcrema Exp $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -26,16 +26,11 @@ require_once 'Zend/Locale.php';
 /** Zend_Translate_Adapter */
 require_once 'Zend/Translate/Adapter.php';
 
-/** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
-
-/** @See Zend_Xml_Exception */
-require_once 'Zend/Xml/Exception.php';
 
 /**
  * @category   Zend
  * @package    Zend_Translate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
@@ -73,20 +68,10 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
         xml_set_element_handler($this->_file, "_startElement", "_endElement");
         xml_set_character_data_handler($this->_file, "_contentElement");
 
-        try {
-            Zend_Xml_Security::scanFile($filename);
-        } catch (Zend_Xml_Exception $e) {
-            require_once 'Zend/Translate/Exception.php';
-            throw new Zend_Translate_Exception(
-                $e->getMessage()
-            );
-        }
-
         if (!xml_parse($this->_file, file_get_contents($filename))) {
-            $ex = sprintf('XML error: %s at line %d of file %s',
+            $ex = sprintf('XML error: %s at line %d',
                           xml_error_string(xml_get_error_code($this->_file)),
-                          xml_get_current_line_number($this->_file),
-                          $filename);
+                          xml_get_current_line_number($this->_file));
             xml_parser_free($this->_file);
             require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception($ex);

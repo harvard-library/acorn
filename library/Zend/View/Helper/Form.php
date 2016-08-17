@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Form.php,v 1.3 2013/09/10 14:36:12 vcrema Exp $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,7 +28,7 @@ require_once 'Zend/View/Helper/FormElement.php';
  *
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_Form extends Zend_View_Helper_FormElement
@@ -55,24 +55,9 @@ class Zend_View_Helper_Form extends Zend_View_Helper_FormElement
         if (array_key_exists('id', $attribs) && empty($attribs['id'])) {
             unset($attribs['id']);
         }
-        
-        if (!empty($name) && !($this->_isXhtml() && $this->_isStrictDoctype())) {
-            $name = ' name="' . $this->view->escape($name) . '"';
-        } else {
-            $name = '';
-        }
-        
-        if ($this->_isHtml5() && array_key_exists('action', $attribs) && !$attribs['action']) {
-            unset($attribs['action']);
-        }
-
-        if ( array_key_exists('name', $attribs) && empty($attribs['id'])) {
-            unset($attribs['id']);
-        }
 
         $xhtml = '<form'
                . $id
-               . $name
                . $this->_htmlAttribs($attribs)
                . '>';
 

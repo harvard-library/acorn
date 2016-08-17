@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage App
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: App.php,v 1.3 2013/09/10 14:36:49 vcrema Exp $
  */
 
 /**
@@ -42,14 +42,6 @@ require_once 'Zend/Version.php';
 require_once 'Zend/Gdata/App/MediaSource.php';
 
 /**
- * Zend_Uri/Http
- */
-require_once 'Zend/Uri/Http.php';
-
-/** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
-
-/**
  * Provides Atom Publishing Protocol (APP) functionality.  This class and all
  * other components of Zend_Gdata_App are designed to work independently from
  * other Zend_Gdata components in order to interact with generic APP services.
@@ -57,7 +49,7 @@ require_once 'Zend/Xml/Security.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage App
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_App
@@ -727,14 +719,14 @@ class Zend_Gdata_App
      * @param  string $uri
      * @param  Zend_Http_Client $client The client used for communication
      * @param  string $className The class which is used as the return type
-     * @param  bool $useObjectMapping Enable/disable the use of XML to object mapping.
      * @throws Zend_Gdata_App_Exception
-     * @return string|Zend_Gdata_App_Feed Returns string only if the fourth
-     *                                    parameter ($useObjectMapping) is set
-     *                                    to false.
+     * @return string|Zend_Gdata_App_Feed Returns string only if the object
+     *                                    mapping has been disabled explicitly
+     *                                    by passing false to the
+     *                                    useObjectMapping() function.
      */
     public static function import($uri, $client = null,
-        $className='Zend_Gdata_App_Feed', $useObjectMapping = true)
+        $className='Zend_Gdata_App_Feed')
     {
         $app = new Zend_Gdata_App($client);
         $requestData = $app->prepareRequest('GET', $uri);
@@ -742,7 +734,7 @@ class Zend_Gdata_App
             $requestData['method'], $requestData['url']);
 
         $feedContent = $response->getBody();
-        if (false === $useObjectMapping) {
+        if (!$this->_useObjectMapping) {
             return $feedContent;
         }
         $feed = self::importString($feedContent, $className);
@@ -825,10 +817,10 @@ class Zend_Gdata_App
         // Load the feed as an XML DOMDocument object
         @ini_set('track_errors', 1);
         $doc = new DOMDocument();
-        $doc = @Zend_Xml_Security::scan($string, $doc);
+        $success = @$doc->loadXML($string);
         @ini_restore('track_errors');
 
-        if (!$doc) {
+        if (!$success) {
             require_once 'Zend/Gdata/App/Exception.php';
             throw new Zend_Gdata_App_Exception(
                 "DOMDocument cannot parse XML: $php_errormsg");
@@ -1063,9 +1055,6 @@ class Zend_Gdata_App
                      break;
                  } catch (Zend_Exception $e) {
                      // package wasn't here- continue searching
-                 } catch (ErrorException $e) {
-                     // package wasn't here- continue searching
-                     // @see ZF-7013 and ZF-11959
                  }
             }
             if ($foundClassName != null) {
@@ -1098,7 +1087,7 @@ class Zend_Gdata_App
      * significant amount of time to complete. In some cases this may cause
      * execution to timeout without proper precautions in place.
      *
-     * @param object $feed The feed to iterate through.
+     * @param $feed The feed to iterate through.
      * @return mixed A new feed of the same type as the one originally
      *          passed in, containing all relevent entries.
      */
@@ -1128,7 +1117,7 @@ class Zend_Gdata_App
      * NOTE: This will not work if you have customized the adapter
      * already to use a proxy server or other interface.
      *
-     * @param string $logfile The logfile to use when logging the requests
+     * @param $logfile The logfile to use when logging the requests
      */
     public function enableRequestDebugLogging($logfile)
     {

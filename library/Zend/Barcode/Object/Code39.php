@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Barcode
  * @subpackage Object
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Code39.php,v 1.1 2013/09/10 14:36:05 vcrema Exp $
  */
 
 /**
@@ -35,7 +35,7 @@ require_once 'Zend/Validate/Barcode.php';
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Barcode_Object_Code39 extends Zend_Barcode_Object_ObjectAbstract
@@ -113,17 +113,6 @@ class Zend_Barcode_Object_Code39 extends Zend_Barcode_Object_ObjectAbstract
     }
 
     /**
-     * Set text to encode
-     * @param string $value
-     * @return Zend_Barcode_Object
-     */
-    public function setText($value)
-    {
-        $this->_text = $value;
-        return $this;
-    }
-
-    /**
      * Retrieve text to display
      * @return string
      */
@@ -163,7 +152,7 @@ class Zend_Barcode_Object_Code39 extends Zend_Barcode_Object_ObjectAbstract
                 $barcodeTable[] = array((int) $visible, $width, 0, 1);
                 $visible = ! $visible;
             }
-            $barcodeTable[] = array(0 , $this->_barThinWidth);
+            $barcodeTable[] = array(0 , 1);
         }
         return $barcodeTable;
     }

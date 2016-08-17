@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Between.php,v 1.3 2013/09/10 14:36:14 vcrema Exp $
  */
 
 /**
@@ -27,7 +27,7 @@ require_once 'Zend/Validate/Abstract.php';
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_Between extends Zend_Validate_Abstract
@@ -94,7 +94,7 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
      *   'inclusive' => boolean, inclusive border values
      *
      * @param  array|Zend_Config $options
-     * @throws Zend_Validate_Exception
+     * @return void
      */
     public function __construct($options)
     {

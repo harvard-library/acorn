@@ -16,8 +16,8 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Cookie
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Cookie.php,v 1.3 2013/09/10 14:36:45 vcrema Exp $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -41,7 +41,7 @@ require_once 'Zend/Uri/Http.php';
  *
  * @category   Zend
  * @package    Zend_Http
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Http_Cookie
@@ -277,7 +277,7 @@ class Zend_Http_Cookie
      *
      * @param string $cookieStr
      * @param Zend_Uri_Http|string $refUri Reference URI for default values (domain, path)
-     * @param boolean $encodeValue Whether or not the cookie's value should be
+     * @param boolean $encodeValue Weither or not the cookie's value should be
      *                             passed through urlencode/urldecode
      * @return Zend_Http_Cookie A new Zend_Http_Cookie object or false on failure.
      */

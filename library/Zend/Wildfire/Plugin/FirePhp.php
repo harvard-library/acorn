@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Wildfire
  * @subpackage Plugin
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: FirePhp.php,v 1.3 2013/09/10 14:37:16 vcrema Exp $
  */
 
 /** Zend_Controller_Request_Abstract */
@@ -41,7 +41,7 @@ require_once 'Zend/Wildfire/Plugin/Interface.php';
  * @category   Zend
  * @package    Zend_Wildfire
  * @subpackage Plugin
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
@@ -214,7 +214,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
     /**
      * Get or create singleton instance
      *
-     * @param bool $skipCreate True if an instance should not be created
+     * @param $skipCreate boolean True if an instance should not be created
      * @return Zend_Wildfire_Plugin_FirePhp
      */
     public static function getInstance($skipCreate=false)
@@ -323,12 +323,11 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
      * Starts a group in the Firebug Console
      *
      * @param string $title The title of the group
-     * @param array $options OPTIONAL Setting 'Collapsed' to true will initialize group collapsed instead of expanded
      * @return TRUE if the group instruction was added to the response headers or buffered.
      */
-    public static function group($title, $options=array())
+    public static function group($title)
     {
-        return self::send(null, $title, self::GROUP_START, $options);
+        return self::send(null, $title, self::GROUP_START);
     }
 
     /**
@@ -489,12 +488,6 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
             unset($meta['Line']);
         }
 
-        if ($meta['Type'] == self::GROUP_START) {
-            if (isset($options['Collapsed'])) {
-                $meta['Collapsed'] = ($options['Collapsed'])?'true':'false';
-            }
-        }
-
         if ($meta['Type'] == self::DUMP) {
 
           return $firephp->_recordMessage(self::STRUCTURE_URI_DUMP,
@@ -522,7 +515,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
         $trace = debug_backtrace();
 
         $trace = array_splice($trace, $options['traceOffset']);
-
+        
         if (!count($trace)) {
             return $trace;
         }
@@ -532,12 +525,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
                 isset($trace[0]['file']) && substr($trace[0]['file'], -7, 7)=='Log.php' &&
                 isset($trace[1]['function']) && $trace[1]['function']=='__call') {
 
-                $spliceOffset = 2;
-                //Debug backtrace changed in PHP 7.0.0
-                if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-                    $spliceOffset = 1;
-                }
-                $trace = array_splice($trace, $spliceOffset);
+                $trace = array_splice($trace, 2);
             }
         }
 

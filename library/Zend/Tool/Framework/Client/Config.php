@@ -15,15 +15,15 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Config.php,v 1.1 2013/09/10 14:36:34 vcrema Exp $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Framework_Client_Config
@@ -72,13 +72,13 @@ class Zend_Tool_Framework_Client_Config
 
         $this->_configFilepath = $configFilepath;
         $this->loadConfig($configFilepath);
-
+        
         return $this;
     }
 
     /**
      * Load the configuration from the given path.
-     *
+     * 
      * @param string $configFilepath
      */
     protected function loadConfig($configFilepath)
@@ -108,7 +108,7 @@ class Zend_Tool_Framework_Client_Config
 
     /**
      * Return the filepath of the configuration.
-     *
+     * 
      * @return string
      */
     public function getConfigFilepath()
@@ -118,7 +118,7 @@ class Zend_Tool_Framework_Client_Config
 
     /**
      * Get a configuration value.
-     *
+     * 
      * @param string $name
      * @param string $defaultValue
      * @return mixed

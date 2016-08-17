@@ -15,20 +15,30 @@
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @subpackage PHP
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Tag.php,v 1.1 2013/09/10 14:37:14 vcrema Exp $
  */
 
 /**
- * @see Zend_CodeGenerator_Php_Abstract
+ * @see Zend_CodeGenerator_Abstract
  */
 require_once 'Zend/CodeGenerator/Php/Abstract.php';
 
 /**
+ * @see Zend_CodeGenerator_Php_Docblock_Tag_Param
+ */
+require_once 'Zend/CodeGenerator/Php/Docblock/Tag/Param.php';
+
+/**
+ * @see Zend_CodeGenerator_Php_Docblock_Tag_Return
+ */
+require_once 'Zend/CodeGenerator/Php/Docblock/Tag/Return.php';
+
+/**
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_CodeGenerator_Php_Docblock_Tag extends Zend_CodeGenerator_Php_Abstract
@@ -168,11 +178,7 @@ class Zend_CodeGenerator_Php_Docblock_Tag extends Zend_CodeGenerator_Php_Abstrac
      */
     public function generate()
     {
-        $tag = '@' . $this->_name;
-        if ($this->_description) {
-            $tag .= ' ' . $this->_description;
-        }
-        return $tag;
+        return '@' . $this->_name . ' ' . $this->_description;
     }
 
 }

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Pdf
  * @subpackage Actions
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: NameTree.php,v 1.1 2013/09/10 14:36:06 vcrema Exp $
  */
 
 /** Internally used classes */
@@ -30,7 +30,7 @@ require_once 'Zend/Pdf/Element.php';
  * @todo implement lazy resource loading so resources will be really loaded at access time
  *
  * @package    Zend_Pdf
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Pdf_NameTree implements ArrayAccess, Iterator, Countable
@@ -46,7 +46,7 @@ class Zend_Pdf_NameTree implements ArrayAccess, Iterator, Countable
     /**
      * Object constructor
      *
-     * @param Zend_Pdf_Element $rootDictionary root of name dictionary
+     * @param $rootDictionary root of name dictionary
      */
     public function __construct(Zend_Pdf_Element $rootDictionary)
     {

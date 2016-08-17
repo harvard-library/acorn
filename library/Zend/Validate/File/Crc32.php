@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id$
+ * @version   $Id: Crc32.php,v 1.1 2013/09/10 14:36:27 vcrema Exp $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Validate/File/Hash.php';
  *
  * @category  Zend
  * @package   Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_File_Crc32 extends Zend_Validate_File_Hash
@@ -61,8 +61,7 @@ class Zend_Validate_File_Crc32 extends Zend_Validate_File_Hash
      * Sets validator options
      *
      * @param  string|array|Zend_Config $options
-     * @throws Zend_Validate_Exception
-     * @return Zend_Validate_File_Crc32
+     * @return void
      */
     public function __construct($options)
     {

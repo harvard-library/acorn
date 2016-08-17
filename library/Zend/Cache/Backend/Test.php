@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Test.php,v 1.3 2013/09/10 14:36:36 vcrema Exp $
  */
 
 
@@ -34,7 +34,7 @@ require_once 'Zend/Cache/Backend.php';
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_Backend_ExtendedInterface
@@ -125,9 +125,6 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
           || $id == '4a923ef02d7f997ca14d56dfeae25ea7') {
             return serialize(array('foo', 'bar'));
         }
-        if ( $id == 'f53c7d912cc523d9a65834c8286eceb9') {
-            return serialize(array('foobar'));
-        }
         return 'foo';
     }
 
@@ -167,7 +164,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
     public function save($data, $id, $tags = array(), $specificLifetime = false)
     {
         $this->_addLog('save', array($data, $id, $tags));
-        if (substr($id,-5)=='false') {
+        if ($id=='false') {
             return false;
         }
         return true;
@@ -185,7 +182,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
     public function remove($id)
     {
         $this->_addLog('remove', array($id));
-        if (substr($id,-5)=='false') {
+        if ($id=='false') {
             return false;
         }
         return true;

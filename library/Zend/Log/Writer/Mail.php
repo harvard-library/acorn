@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Mail.php,v 1.1 2013/09/10 14:36:38 vcrema Exp $
  */
 
 /** Zend_Log_Writer_Abstract */
@@ -39,9 +39,9 @@ require_once 'Zend/Log/Formatter/Simple.php';
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Mail.php,v 1.1 2013/09/10 14:36:38 vcrema Exp $
  */
 class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
 {
@@ -106,7 +106,7 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      * @var array
      */
     protected static $_methodMapHeaders = array(
-        'from' => 'setFrom',
+    	'from' => 'setFrom',
         'to' => 'addTo',
         'cc' => 'addCc',
         'bcc' => 'addBcc',
@@ -148,7 +148,7 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
             $writer->setLayout($config);
         }
         if (isset($config['layoutFormatter'])) {
-            $layoutFormatter = new $config['layoutFormatter'];
+        	$layoutFormatter = new $config['layoutFormatter'];
             $writer->setLayoutFormatter($layoutFormatter);
         }
         if (isset($config['subjectPrependText'])) {
@@ -185,7 +185,6 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      *
      * @param array $config
      * @return Zend_Mail
-     * @throws Zend_Log_Exception
      */
     protected static function _constructMailFromConfig(array $config)
     {
@@ -214,8 +213,8 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
                     && !is_numeric($address['name'])
                 ) {
                     $params = array(
-                        $address['email'],
-                        $address['name']
+                    	$address['email'],
+                    	$address['name']
                     );
                 } else if (is_array($address) && isset($address['email'])) {
                     $params = array($address['email']);
@@ -234,7 +233,6 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      *
      * @param array $config
      * @return Zend_Layout
-     * @throws Zend_Log_Exception
      */
     protected function _constructLayoutFromConfig(array $config)
     {
@@ -333,7 +331,6 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      *
      * @param  string $subject Subject prepend text.
      * @return Zend_Log_Writer_Mail
-     * @throws Zend_Log_Exception
      */
     public function setSubjectPrependText($subject)
     {

@@ -16,20 +16,15 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gbase
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: SnippetFeed.php,v 1.3 2013/09/10 14:36:17 vcrema Exp $
  */
 
 /**
- * @see Zend_Exception
+ * @see Zend_Gdata_Gbase_Feed
  */
-require_once 'Zend/Exception.php';
-
-/**
- * @see Zend_Gdata_Feed
- */
-require_once 'Zend/Gdata/Feed.php';
+require_once 'Zend/Gdata/Gbase/Feed.php';
 
 /**
  * Represents the Google Base Snippets Feed
@@ -39,9 +34,15 @@ require_once 'Zend/Gdata/Feed.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gbase
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Gbase_SnippetFeed extends Zend_Gdata_Feed
 {
+    /**
+     * The classname for individual snippet feed elements.
+     *
+     * @var string
+     */
+    protected $_entryClassName = 'Zend_Gdata_Gbase_SnippetEntry';
 }

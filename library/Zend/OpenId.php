@@ -15,18 +15,15 @@
  *
  * @category   Zend
  * @package    Zend_OpenId
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: OpenId.php,v 1.3 2013/09/10 14:36:15 vcrema Exp $
  */
 
 /**
  * @see Zend_Controller_Response_Abstract
  */
 require_once "Zend/Controller/Response/Abstract.php";
-
-/** @see Zend_Crypt_Math */
-require_once 'Zend/Crypt/Math.php';
 
 /**
  * Static class that contains common utility functions for
@@ -38,7 +35,7 @@ require_once 'Zend/Crypt/Math.php';
  *
  * @category   Zend
  * @package    Zend_OpenId
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_OpenId
@@ -127,11 +124,7 @@ class Zend_OpenId
         }
 
         $url .= $port;
-        if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) { 
-            // IIS with Microsoft Rewrite Module
-            $url .= $_SERVER['HTTP_X_ORIGINAL_URL'];
-        } elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
-            // IIS with ISAPI_Rewrite 
+        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
             $url .= $_SERVER['HTTP_X_REWRITE_URL'];
         } elseif (isset($_SERVER['REQUEST_URI'])) {
             $query = strpos($_SERVER['REQUEST_URI'], '?');
@@ -292,7 +285,7 @@ class Zend_OpenId
         $port = $reg[4];
         $path = $reg[5];
         $query = $reg[6];
-        $fragment = $reg[7]; /* strip it */ /* ZF-4358 Fragment retained under OpenID 2.0 */
+        $fragment = $reg[7]; /* strip it */
 
         if (empty($scheme) || empty($host)) {
             return false;
@@ -357,8 +350,7 @@ class Zend_OpenId
             . $host
             . (empty($port) ? '' : (':' . $port))
             . $path
-            . $query
-            . $fragment;
+            . $query;
         return true;
     }
 
@@ -477,7 +469,11 @@ class Zend_OpenId
      */
     static public function randomBytes($len)
     {
-        return (string) Zend_Crypt_Math::randBytes($len);
+        $key = '';
+        for($i=0; $i < $len; $i++) {
+            $key .= chr(mt_rand(0, 255));
+        }
+        return $key;
     }
 
     /**
@@ -528,7 +524,7 @@ class Zend_OpenId
 //        require_once "Zend/Crypt/Hmac.php";
 //        return Zend_Crypt_Hmac::compute($secret, $macFunc, $data, Zend_Crypt_Hmac::BINARY);
         if (function_exists('hash_hmac')) {
-            return hash_hmac($macFunc, $data, $secret, true);
+            return hash_hmac($macFunc, $data, $secret, 1);
         } else {
             if (Zend_OpenId::strlen($secret) > 64) {
                 $secret = self::digest($macFunc, $secret);

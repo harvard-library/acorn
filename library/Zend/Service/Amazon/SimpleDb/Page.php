@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -30,95 +30,68 @@ require_once 'Zend/Service/Amazon/Exception.php';
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Amazon_SimpleDb_Page
 {
-    /**
-     * Page data
-     *
-     * @var string
-     */
+    /** @var string Page data */
     protected $_data;
 
-    /**
-     * Token identifying page
-     *
-     * @var string|null
-     */
+    /** @var string|null Token identifying page */
     protected $_token;
 
     /**
      * Constructor
-     *
-     * @param string      $data
-     * @param string|null $token
+     * 
+     * @param  string $data 
+     * @param  string|null $token 
+     * @return void
      */
-    public function __construct($data, $token = null)
+    public function __construct($data, $token = null) 
     {
-        $this->setData($data);
-        $this->setToken($token);
-    }
-
-    /**
-     * Set page data
-     *
-     * @param string $data
-     */
-    public function setData($data)
-    {
-        $this->_data = $data;
+        $this->_data  = $data;
+        $this->_token = $token;
     }
 
     /**
      * Retrieve page data
-     *
+     * 
      * @return string
      */
-    public function getData()
+    public function getData() 
     {
         return $this->_data;
     }
 
     /**
-     * Set token
-     *
-     * @param string|null $token
-     */
-    public function setToken($token)
-    {
-        $this->_token = (trim($token) === '') ? null : $token;
-    }
-
-    /**
      * Retrieve token
-     *
+     * 
      * @return string|null
      */
-    public function getToken()
+    public function getToken() 
     {
         return $this->_token;
     }
 
     /**
      * Determine whether this is the last page of data
-     *
-     * @return bool
+     * 
+     * @return void
      */
-    public function isLast()
+    public function isLast() 
     {
         return (null === $this->_token);
     }
 
     /**
      * Cast to string
-     *
+     * 
      * @return string
      */
-    public function __toString()
+    public function __toString() 
     {
-        return "Page with token: " . $this->_token
+        return "Page with token: " . $this->_token 
              . "\n and data: " . $this->_data;
     }
 }

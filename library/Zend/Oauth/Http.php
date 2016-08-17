@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Http.php,v 1.1 2013/09/10 14:37:10 vcrema Exp $
  */
 
 /** Zend_Oauth_Http_Utility */
@@ -28,7 +28,7 @@ require_once 'Zend/Uri/Http.php';
 /**
  * @category   Zend
  * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Oauth_Http
@@ -80,7 +80,7 @@ class Zend_Oauth_Http
      * @return void
      */
     public function __construct(
-        Zend_Oauth_Consumer $consumer,
+        Zend_Oauth_Consumer $consumer, 
         array $parameters = null,
         Zend_Oauth_Http_Utility $utility = null
     ) {
@@ -233,7 +233,7 @@ class Zend_Oauth_Http
                 require_once 'Zend/Oauth/Exception.php';
                 throw new Zend_Oauth_Exception(
                     'Could not retrieve a valid Token response from Token URL:'
-                    . ($response !== null
+                    . ($response !== null 
                         ? PHP_EOL . $response->getBody()
                         : ' No body - check for headers')
                 );

@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_Loader
  * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id$
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Resource.php,v 1.1 2013/09/10 14:36:58 vcrema Exp $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -29,7 +29,7 @@ require_once 'Zend/Loader/Autoloader/Interface.php';
  * @uses       Zend_Loader_Autoloader_Interface
  * @package    Zend_Loader
  * @subpackage Autoloader
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Loader_Autoloader_Resource implements Zend_Loader_Autoloader_Interface
@@ -88,7 +88,6 @@ class Zend_Loader_Autoloader_Resource implements Zend_Loader_Autoloader_Interfac
         if (!empty($namespace)) {
             $namespace .= '_';
         }
-        require_once 'Zend/Loader/Autoloader.php';
         Zend_Loader_Autoloader::getInstance()->unshiftAutoloader($this, $namespace);
     }
 
@@ -145,12 +144,7 @@ class Zend_Loader_Autoloader_Resource implements Zend_Loader_Autoloader_Interfac
         $namespace         = '';
 
         if (!empty($namespaceTopLevel)) {
-            $namespace = array();
-            $topLevelSegments = count(explode('_', $namespaceTopLevel));
-            for ($i = 0; $i < $topLevelSegments; $i++) {
-                $namespace[] = array_shift($segments);
-            }
-            $namespace = implode('_', $namespace);
+            $namespace = array_shift($segments);
             if ($namespace != $namespaceTopLevel) {
                 // wrong prefix? we're done
                 return false;
@@ -211,12 +205,6 @@ class Zend_Loader_Autoloader_Resource implements Zend_Loader_Autoloader_Interfac
      */
     public function setOptions(array $options)
     {
-        // Set namespace first, see ZF-10836
-        if (isset($options['namespace'])) {
-            $this->setNamespace($options['namespace']);
-            unset($options['namespace']);
-        }
-
         $methods = get_class_methods($this);
         foreach ($options as $key => $value) {
             $method = 'set' . ucfirst($key);

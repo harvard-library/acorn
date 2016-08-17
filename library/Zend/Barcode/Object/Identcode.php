@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Barcode
  * @subpackage Object
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Identcode.php,v 1.1 2013/09/10 14:36:05 vcrema Exp $
  */
 
 /**
@@ -35,7 +35,7 @@ require_once 'Zend/Validate/Barcode.php';
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Barcode_Object_Identcode extends Zend_Barcode_Object_Code25interleaved
@@ -66,7 +66,7 @@ class Zend_Barcode_Object_Identcode extends Zend_Barcode_Object_Code25interleave
      * Check allowed characters
      * @param string $value
      * @return string
-     * @throws Zend_Barcode_Object_Exception
+     * @throw Zend_Barcode_Object_Exception
      */
     public function validateText($value)
     {

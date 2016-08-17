@@ -15,21 +15,28 @@
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: DynamicTableEntity.php,v 1.1 2013/09/10 14:36:10 vcrema Exp $
  */
+
+
+/**
+ * @see Zend_Service_WindowsAzure_Exception
+ */
+require_once 'Zend/Service/WindowsAzure/Exception.php';
 
 /**
  * @see Zend_Service_WindowsAzure_Storage_TableEntity
  */
 require_once 'Zend/Service/WindowsAzure/Storage/TableEntity.php';
 
+
 /**
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_WindowsAzure_Storage_DynamicTableEntity extends Zend_Service_WindowsAzure_Storage_TableEntity
@@ -79,7 +86,7 @@ class Zend_Service_WindowsAzure_Storage_DynamicTableEntity extends Zend_Service_
         } else {
             if (!array_key_exists(strtolower($name), $this->_dynamicProperties)) {
                 // Determine type?
-                if (is_null($type)) {
+                if ($type === null) {
                     $type = 'Edm.String';
                     if (is_int($value)) {
                         $type = 'Edm.Int32';
@@ -87,11 +94,6 @@ class Zend_Service_WindowsAzure_Storage_DynamicTableEntity extends Zend_Service_
                         $type = 'Edm.Double';
                     } else if (is_bool($value)) {
                         $type = 'Edm.Boolean';
-                    } else if ($value instanceof DateTime || $this->_convertToDateTime($value) !== false) {
-                        if (!$value instanceof DateTime) {
-                            $value = $this->_convertToDateTime($value);
-                        }
-                        $type = 'Edm.DateTime';
                     }
                 }
                 
@@ -102,28 +104,7 @@ class Zend_Service_WindowsAzure_Storage_DynamicTableEntity extends Zend_Service_
                     	'Value' => $value,
                     );
             }
-            
-            // Set type?
-            if (!is_null($type)) {
-            	$this->_dynamicProperties[strtolower($name)]->Type = $type;
-            	
-            	// Try to convert the type
-            	if ($type == 'Edm.Int32' || $type == 'Edm.Int64') {
-            		$value = intval($value);
-            	} else if ($type == 'Edm.Double') {
-            		$value = floatval($value);
-            	} else if ($type == 'Edm.Boolean') {
-            		if (!is_bool($value)) {
-            			$value = strtolower($value) == 'true';
-            		}
-            	} else if ($type == 'Edm.DateTime') {
-            		if (!$value instanceof DateTime) {
-                    	$value = $this->_convertToDateTime($value);
-                    }
-            	}
-            }
-       
-    		// Set value
+    
             $this->_dynamicProperties[strtolower($name)]->Value = $value;
         }
         return $this;

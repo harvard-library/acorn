@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Queue
  * @subpackage Message
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Iterator.php,v 1.1 2013/09/10 14:37:00 vcrema Exp $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Queue
  * @subpackage Message
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Queue_Message_Iterator implements Iterator, Countable

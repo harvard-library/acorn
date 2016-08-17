@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Amf
  * @subpackage Parse_Amf3
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Serializer.php,v 1.1 2013/09/10 14:36:19 vcrema Exp $
  */
 
 /** Zend_Amf_Constants */
@@ -35,7 +35,7 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
  *
  * @package    Zend_Amf
  * @subpackage Parse_Amf3
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
@@ -45,7 +45,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      * @var string
      */
     protected $_strEmpty = '';
-
+    
     /**
      * An array of reference objects per amf body
      * @var array
@@ -78,7 +78,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      */
     public function writeTypeMarker(&$data, $markerType = null, $dataByVal = false)
     {
-        // Workaround for PHP5 with E_STRICT enabled complaining about "Only
+        // Workaround for PHP5 with E_STRICT enabled complaining about "Only 
         // variables should be passed by reference"
         if ((null === $data) && ($dataByVal !== false)) {
             $data = &$dataByVal;
@@ -215,7 +215,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      * @return Zend_Amf_Parse_Amf3_Serializer
      */
     protected function writeBinaryString(&$string){
-        $ref = ($this->_mbStringFunctionsOverloaded ? mb_strlen($string, '8bit') : strlen($string)) << 1 | 0x01;
+        $ref = strlen($string) << 1 | 0x01;
         $this->writeInteger($ref);
         $this->_stream->writeBytes($string);
 
@@ -230,17 +230,15 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      */
     public function writeString(&$string)
     {
-        $len = $this->_mbStringFunctionsOverloaded ? mb_strlen($string, '8bit') : strlen($string);
+        $len = strlen($string);
         if(!$len){
             $this->writeInteger(0x01);
             return $this;
         }
 
-        $ref = array_key_exists($string, $this->_referenceStrings) 
-             ? $this->_referenceStrings[$string] 
-             : false;
-        if ($ref === false){
-            $this->_referenceStrings[$string] = count($this->_referenceStrings);
+        $ref = array_search($string, $this->_referenceStrings, true);
+        if($ref === false){
+            $this->_referenceStrings[] = $string;
             $this->writeBinaryString($string);
         } else {
             $ref <<= 1;
@@ -382,16 +380,13 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
      */
     protected function writeObjectReference(&$object, $objectByVal = false)
     {
-        // Workaround for PHP5 with E_STRICT enabled complaining about "Only
+        // Workaround for PHP5 with E_STRICT enabled complaining about "Only 
         // variables should be passed by reference"
         if ((null === $object) && ($objectByVal !== false)) {
             $object = &$objectByVal;
         }
 
-        $hash = spl_object_hash($object);
-        $ref = array_key_exists($hash, $this->_referenceObjects) 
-             ? $this->_referenceObjects[$hash] 
-             : false;
+        $ref = array_search($object, $this->_referenceObjects,true);
 
         // quickly handle object references
         if ($ref !== false){
@@ -399,7 +394,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
             $this->writeInteger($ref);
             return true;
         }
-        $this->_referenceObjects[$hash] = count($this->_referenceObjects);
+        $this->_referenceObjects[] = $object;
         return false;
     }
 

@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Cache.php,v 1.1 2013/09/10 14:36:10 vcrema Exp $
  */
 
 /**
@@ -37,7 +37,7 @@ require_once 'Zend/Cache/Manager.php';
 /**
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_Helper_Cache
@@ -64,7 +64,7 @@ class Zend_Controller_Action_Helper_Cache
      * @var array
      */
     protected $_tags = array();
-
+    
     /**
      * Indexed map of Extensions by Controller and Action
      *
@@ -130,26 +130,16 @@ class Zend_Controller_Action_Helper_Cache
     public function removePage($relativeUrl, $recursive = false)
     {
         $cache = $this->getCache(Zend_Cache_Manager::PAGECACHE);
-        $encodedCacheId = $this->_encodeCacheId($relativeUrl);
-
         if ($recursive) {
             $backend = $cache->getBackend();
             if (($backend instanceof Zend_Cache_Backend)
                 && method_exists($backend, 'removeRecursively')
             ) {
-                $result = $backend->removeRecursively($encodedCacheId);
-                if (is_null($result) ) {
-                    $result = $backend->removeRecursively($relativeUrl);
-                }
-                return $result;
+                return $backend->removeRecursively($relativeUrl);
             }
         }
 
-        $result = $cache->remove($encodedCacheId);
-        if (is_null($result) ) {
-            $result = $cache->remove($relativeUrl);
-        }
-        return $result;
+        return $cache->remove($relativeUrl);
     }
 
     /**
@@ -199,7 +189,7 @@ class Zend_Controller_Action_Helper_Cache
                 ->start($this->_encodeCacheId($reqUri), $tags, $extension);
         }
     }
-
+    
     /**
      * Encode a Cache ID as hexadecimal. This is a workaround because Backend ID validation
      * is trapped in the Frontend classes. Will try to get this reversed for ZF 2.0

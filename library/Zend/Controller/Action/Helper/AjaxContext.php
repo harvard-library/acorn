@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: AjaxContext.php,v 1.3 2013/09/10 14:36:09 vcrema Exp $
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Zend/Controller/Action/Helper/ContextSwitch.php';
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Controller_Action_Helper_AjaxContext extends Zend_Controller_Action_Helper_ContextSwitch
@@ -68,10 +68,7 @@ class Zend_Controller_Action_Helper_AjaxContext extends Zend_Controller_Action_H
     {
         $this->_currentContext = null;
 
-        $request = $this->getRequest();
-        if (!method_exists($request, 'isXmlHttpRequest') ||
-            !$this->getRequest()->isXmlHttpRequest())
-        {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             return;
         }
 

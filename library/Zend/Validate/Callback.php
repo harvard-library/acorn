@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Callback.php,v 1.1 2013/09/10 14:36:14 vcrema Exp $
  */
 
 /**
@@ -27,7 +27,7 @@ require_once 'Zend/Validate/Abstract.php';
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_Callback extends Zend_Validate_Abstract
@@ -69,8 +69,10 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
     /**
      * Sets validator options
      *
-     * @param  mixed $callback
-     * @throws Zend_Validate_Exception
+     * @param  string|array $callback
+     * @param  mixed   $max
+     * @param  boolean $inclusive
+     * @return void
      */
     public function __construct($callback = null)
     {
@@ -105,7 +107,6 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
      * Sets the callback
      *
      * @param  string|array $callback
-     * @throws Zend_Validate_Exception
      * @return Zend_Validate_Callback Provides a fluent interface
      */
     public function setCallback($callback)
@@ -131,7 +132,7 @@ class Zend_Validate_Callback extends Zend_Validate_Abstract
     /**
      * Sets options for the callback
      *
-     * @param  mixed $options
+     * @param  mixed $max
      * @return Zend_Validate_Callback Provides a fluent interface
      */
     public function setOptions($options)

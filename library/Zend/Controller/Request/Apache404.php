@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Controller
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Apache404.php,v 1.3 2013/09/10 14:37:02 vcrema Exp $
  */
 
 /** Zend_Controller_Request_Http */
@@ -50,8 +50,8 @@ class Zend_Controller_Request_Apache404 extends Zend_Controller_Request_Http
                 $requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
             } elseif (isset($_SERVER['REDIRECT_URL'])) {  // Check if using mod_rewrite
                 $requestUri = $_SERVER['REDIRECT_URL'];
-                if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
-                    $parseUriGetVars = $_SERVER['REDIRECT_QUERY_STRING'];
+                if (isset($_SERVER['REDIRECT_QUERYSTRING'])) {
+                    $parseUriGetVars = $_SERVER['REDIRECT_QUERYSTRING'];
                 }
             } elseif (isset($_SERVER['REQUEST_URI'])) {
                 $requestUri = $_SERVER['REQUEST_URI'];

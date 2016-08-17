@@ -16,20 +16,15 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gbase
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Query.php,v 1.3 2013/09/10 14:36:17 vcrema Exp $
  */
-
-/**
- * @see Zend_Exception
- */
-require_once 'Zend/Exception.php';
 
 /**
  * @see Zend_Gdata_Query
  */
-require_once 'Zend/Gdata/Query.php';
+require_once('Zend/Gdata/Query.php');
 
 /**
  * Assists in constructing queries for Google Base
@@ -39,7 +34,7 @@ require_once 'Zend/Gdata/Query.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gbase
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Gbase_Query extends Zend_Gdata_Query
@@ -48,22 +43,226 @@ class Zend_Gdata_Gbase_Query extends Zend_Gdata_Query
     /**
      * Path to the customer items feeds on the Google Base server.
      */
-    const GBASE_ITEM_FEED_URI = 'https://www.google.com/base/feeds/items';
+    const GBASE_ITEM_FEED_URI = 'http://www.google.com/base/feeds/items';
 
     /**
      * Path to the snippets feeds on the Google Base server.
      */
-    const GBASE_SNIPPET_FEED_URI = 'https://www.google.com/base/feeds/snippets';
+    const GBASE_SNIPPET_FEED_URI = 'http://www.google.com/base/feeds/snippets';
 
     /**
-     * Create Gdata_Query object
+     * The default URI for POST methods
+     *
+     * @var string
      */
-    public function __construct($url = null)
+    protected $_defaultFeedUri = self::GBASE_ITEM_FEED_URI;
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_Query Provides a fluent interface
+     */
+    public function setKey($value)
     {
-        throw new Zend_Exception(
-            'Google Base API has been discontinued by Google and was removed'
-            . ' from Zend Framework in 1.12.0.  For more information see: '
-            . 'http://googlemerchantblog.blogspot.ca/2010/12/new-shopping-apis-and-deprecation-of.html'
-        );    
+        if ($value !== null) {
+            $this->_params['key'] = $value;
+        } else {
+            unset($this->_params['key']);
+        }
+        return $this;
     }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setBq($value)
+    {
+        if ($value !== null) {
+            $this->_params['bq'] = $value;
+        } else {
+            unset($this->_params['bq']);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setRefine($value)
+    {
+        if ($value !== null) {
+            $this->_params['refine'] = $value;
+        } else {
+            unset($this->_params['refine']);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setContent($value)
+    {
+        if ($value !== null) {
+            $this->_params['content'] = $value;
+        } else {
+            unset($this->_params['content']);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setOrderBy($value)
+    {
+        if ($value !== null) {
+            $this->_params['orderby'] = $value;
+        } else {
+            unset($this->_params['orderby']);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setSortOrder($value)
+    {
+        if ($value !== null) {
+            $this->_params['sortorder'] = $value;
+        } else {
+            unset($this->_params['sortorder']);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setCrowdBy($value)
+    {
+        if ($value !== null) {
+            $this->_params['crowdby'] = $value;
+        } else {
+            unset($this->_params['crowdby']);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return Zend_Gdata_Gbase_ItemQuery Provides a fluent interface
+     */
+    public function setAdjust($value)
+    {
+        if ($value !== null) {
+            $this->_params['adjust'] = $value;
+        } else {
+            unset($this->_params['adjust']);
+        }
+        return $this;
+    }
+
+    /**
+     * @return string key
+     */
+    public function getKey()
+    {
+        if (array_key_exists('key', $this->_params)) {
+            return $this->_params['key'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string bq
+     */
+    public function getBq()
+    {
+        if (array_key_exists('bq', $this->_params)) {
+            return $this->_params['bq'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string refine
+     */
+    public function getRefine()
+    {
+        if (array_key_exists('refine', $this->_params)) {
+            return $this->_params['refine'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string content
+     */
+    public function getContent()
+    {
+        if (array_key_exists('content', $this->_params)) {
+            return $this->_params['content'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string orderby
+     */
+    public function getOrderBy()
+    {
+        if (array_key_exists('orderby', $this->_params)) {
+            return $this->_params['orderby'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string sortorder
+     */
+    public function getSortOrder()
+    {
+        if (array_key_exists('sortorder', $this->_params)) {
+            return $this->_params['sortorder'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string crowdby
+     */
+    public function getCrowdBy()
+    {
+        if (array_key_exists('crowdby', $this->_params)) {
+            return $this->_params['crowdby'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string adjust
+     */
+    public function getAdjust()
+    {
+        if (array_key_exists('adjust', $this->_params)) {
+            return $this->_params['adjust'];
+        } else {
+            return null;
+        }
+    }
+
 }

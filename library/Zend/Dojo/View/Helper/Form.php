@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Dojo
  * @subpackage View
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Form.php,v 1.3 2013/09/10 14:36:22 vcrema Exp $
  */
 
 /** Zend_Dojo_View_Helper_Dijit */
@@ -29,7 +29,7 @@ require_once 'Zend/Dojo/View/Helper/Dijit.php';
  * @uses       Zend_Dojo_View_Helper_Dijit
  * @package    Zend_Dojo
  * @subpackage View
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
   */
 class Zend_Dojo_View_Helper_Form extends Zend_Dojo_View_Helper_Dijit
@@ -68,6 +68,10 @@ class Zend_Dojo_View_Helper_Form extends Zend_Dojo_View_Helper_Dijit
             $attribs['name'] = $id;
         } else {
             $attribs['id'] = $id;
+        }
+
+        if (false === $content) {
+            $content = '';
         }
 
         $attribs = $this->_prepareDijit($attribs, array(), 'layout');

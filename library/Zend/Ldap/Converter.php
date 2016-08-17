@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Converter.php,v 1.1 2013/09/10 14:36:55 vcrema Exp $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Ldap_Converter
@@ -69,24 +69,11 @@ class Zend_Ldap_Converter
      */
     public static function hex32ToAsc($string)
     {
-        // Using a callback, since PHP 5.5 has deprecated the /e modifier in preg_replace.
-        $string = preg_replace_callback("/\\\([0-9A-Fa-f]{2})/", array('Zend_Ldap_Converter', '_charHex32ToAsc'), $string);
+        $string = preg_replace("/\\\([0-9A-Fa-f]{2})/e", "''.chr(hexdec('\\1')).''", $string);
         return $string;
     }
 
-    /**
-     * Convert a single slash-prefixed character from Hex32 to ASCII.
-     * Used as a callback in @see hex32ToAsc()
-     * @param array $matches
-     *
-     * @return string
-     */
-    private static function _charHex32ToAsc(array $matches)
-    {
-        return chr(hexdec($matches[0]));
-    }
-
-    /**
+	/**
      * Convert any value to an LDAP-compatible value.
      *
      * By setting the <var>$type</var>-parameter the conversion of a certain
@@ -94,10 +81,10 @@ class Zend_Ldap_Converter
      *
      * @todo write more tests
      *
-     * @param    mixed     $value     The value to convert
-     * @param    int       $ytpe      The conversion type to use
-     * @return    string
-     * @throws    Zend_Ldap_Converter_Exception
+     * @param	mixed 	$value 	The value to convert
+     * @param	int   	$ytpe  	The conversion type to use
+     * @return	string
+     * @throws	Zend_Ldap_Converter_Exception
      */
     public static function toLdap($value, $type = self::STANDARD)
     {
@@ -145,11 +132,11 @@ class Zend_Ldap_Converter
      * DateTime Object, a string that is parseable by strtotime() or a Zend_Date
      * Object.
      *
-     * @param    integer|string|DateTimt|Zend_Date        $date    The date-entity
-     * @param    boolean                                    $asUtc    Whether to return the LDAP-compatible date-string
-     *                                                          as UTC or as local value
-     * @return    string
-     * @throws    InvalidArgumentException
+     * @param	integer|string|DateTimt|Zend_Date		$date	The date-entity
+     * @param	boolean									$asUtc	Whether to return the LDAP-compatible date-string
+     *                          								as UTC or as local value
+     * @return	string
+     * @throws	InvalidArgumentException
      */
     public static function toLdapDateTime($date, $asUtc = true)
     {
@@ -183,8 +170,8 @@ class Zend_Ldap_Converter
      * case-insensitive string 'true' to an LDAP-compatible 'TRUE'. All other
      * other values are converted to an LDAP-compatible 'FALSE'.
      *
-     * @param    boolean|integer|string        $value    The boolean value to encode
-     * @return    string
+     * @param	boolean|integer|string		$value	The boolean value to encode
+     * @return	string
      */
     public static function toLdapBoolean($value)
     {
@@ -201,8 +188,8 @@ class Zend_Ldap_Converter
     /**
      * Serialize any value for storage in LDAP
      *
-     * @param    mixed        $value    The value to serialize
-     * @return    string
+     * @param	mixed		$value	The value to serialize
+     * @return	string
      */
     public static function toLdapSerialize($value)
     {
@@ -215,11 +202,11 @@ class Zend_Ldap_Converter
      * By setting the <var>$type</var>-parameter the conversion of a certain
      * type can be forced
      * .
-     * @param    string    $value             The value to convert
-     * @param    int        $ytpe              The conversion type to use
-     * @param    boolean    $dateTimeAsUtc    Return DateTime values in UTC timezone
-     * @return    mixed
-     * @throws    Zend_Ldap_Converter_Exception
+     * @param	string	$value 			The value to convert
+     * @param	int		$ytpe  			The conversion type to use
+     * @param	boolean	$dateTimeAsUtc	Return DateTime values in UTC timezone
+     * @return	mixed
+     * @throws	Zend_Ldap_Converter_Exception
      */
     public static function fromLdap($value, $type = self::STANDARD, $dateTimeAsUtc = true)
     {
@@ -232,8 +219,7 @@ class Zend_Ldap_Converter
                 break;
             default:
                 if (is_numeric($value)) {
-                    // prevent numeric values to be treated as date/time
-                    return $value;
+                    return (float)$value;
                 } else if ('TRUE' === $value || 'FALSE' === $value) {
                     return self::fromLdapBoolean($value);
                 }
@@ -253,10 +239,10 @@ class Zend_Ldap_Converter
      *
      * CAVEAT: The DateTime-Object returned will alwasy be set to UTC-Timezone.
      *
-     * @param    string        $date    The generalized-Time
-     * @param    boolean        $asUtc    Return the DateTime with UTC timezone
-     * @return    DateTime
-     * @throws    InvalidArgumentException if a non-parseable-format is given
+     * @param	string		$date	The generalized-Time
+     * @param	boolean		$asUtc	Return the DateTime with UTC timezone
+     * @return	DateTime
+     * @throws	InvalidArgumentException if a non-parseable-format is given
      */
     public static function fromLdapDateTime($date, $asUtc = true)
     {
@@ -279,7 +265,7 @@ class Zend_Ldap_Converter
             'second' => 0,
             'offdir' => '+',
             'offsethours' => 0,
-            'offsetminutes' => 0
+			'offsetminutes' => 0
         );
 
         $length = strlen($date);
@@ -377,9 +363,9 @@ class Zend_Ldap_Converter
     /**
      * Convert an LDAP-compatible boolean value into a PHP-compatible one
      *
-     * @param    string        $value        The value to convert
-     * @return    boolean
-     * @throws    InvalidArgumentException
+     * @param	string		$value		The value to convert
+     * @return	boolean
+     * @throws	InvalidArgumentException
      */
     public static function fromLdapBoolean($value)
     {
@@ -395,9 +381,9 @@ class Zend_Ldap_Converter
     /**
      * Unserialize a serialized value to return the corresponding object
      *
-     * @param    string        $value    The value to convert
-     * @return    mixed
-     * @throws    UnexpectedValueException
+     * @param	string		$value	The value to convert
+     * @return	mixed
+     * @throws	UnexpectedValueException
      */
     public static function fromLdapUnserialize($value)
     {

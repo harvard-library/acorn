@@ -15,31 +15,15 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: ViewScriptFile.php,v 1.1 2013/09/10 14:36:07 vcrema Exp $
  */
 
 /**
  * @see Zend_Tool_Project_Context_Filesystem_File
  */
 require_once 'Zend/Tool/Project/Context/Filesystem/File.php';
-
-/**
- * @see Zend_Filter
- */
-require_once 'Zend/Filter.php';
-
-/**
- * @see Zend_Filter_Word_CamelCaseToDash
- */
-require_once 'Zend/Filter/Word/CamelCaseToDash.php';
-
-/**
- * @see Zend_Filter_StringToLower
- */
-require_once 'Zend/Filter/StringToLower.php';
-
 
 /**
  * This class is the front most class for utilizing Zend_Tool_Project
@@ -49,7 +33,7 @@ require_once 'Zend/Filter/StringToLower.php';
  *
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Context_Zf_ViewScriptFile extends Zend_Tool_Project_Context_Filesystem_File
@@ -130,18 +114,6 @@ class Zend_Tool_Project_Context_Zf_ViewScriptFile extends Zend_Tool_Project_Cont
     {
         $contents = '';
 
-        $controllerName = $this->_resource->getParentResource()->getAttribute('forControllerName');
-        
-        $viewsDirectoryResource = $this->_resource
-            ->getParentResource() // view script
-            ->getParentResource() // view controller dir
-            ->getParentResource(); // views dir
-        if ($viewsDirectoryResource->getParentResource()->getName() == 'ModuleDirectory') {
-            $moduleName = $viewsDirectoryResource->getParentResource()->getModuleName();
-        } else {
-            $moduleName = 'default';
-        }
-        
         if ($this->_filesystemName == 'error.phtml') {  // should also check that the above directory is forController=error
             $contents .= <<<EOS
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -155,7 +127,7 @@ class Zend_Tool_Project_Context_Zf_ViewScriptFile extends Zend_Tool_Project_Cont
   <h2><?php echo \$this->message ?></h2>
 
   <?php if (isset(\$this->exception)): ?>
-  
+
   <h3>Exception information:</h3>
   <p>
       <b>Message:</b> <?php echo \$this->exception->getMessage() ?>
@@ -166,16 +138,15 @@ class Zend_Tool_Project_Context_Zf_ViewScriptFile extends Zend_Tool_Project_Cont
   </pre>
 
   <h3>Request Parameters:</h3>
-  <pre><?php echo \$this->escape(var_export(\$this->request->getParams(), true)) ?>
+  <pre><?php echo var_export(\$this->request->getParams(), true) ?>
   </pre>
-
   <?php endif ?>
 
 </body>
 </html>
 
 EOS;
-        } elseif ($this->_forActionName == 'index' && $controllerName == 'Index' && $moduleName == 'default') {
+        } elseif ($this->_forActionName == 'index' && $this->_resource->getParentResource()->getAttribute('forControllerName') == 'Index') {
 
             $contents =<<<EOS
 <style>
@@ -224,14 +195,8 @@ EOS;
 EOS;
 
         } else {
-            $controllerName = $this->_resource->getParentResource()->getAttribute('forControllerName');
-            $actionName = $this->_forActionName;
-            $contents = <<<EOS
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>$controllerName</b> and script/action name <b>$actionName</b></p>
-</div>
-EOS;
+            $contents = '<br /><br /><center>View script for controller <b>' . $this->_resource->getParentResource()->getAttribute('forControllerName') . '</b>'
+                . ' and script/action name <b>' . $this->_forActionName . '</b></center>';
         }
         return $contents;
     }
@@ -243,5 +208,5 @@ EOS;
             ->addFilter(new Zend_Filter_StringToLower());
         return $filter->filter($actionName);
     }
-
+    
 }

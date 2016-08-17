@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Soap
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Client.php,v 1.3 2013/09/10 14:37:00 vcrema Exp $
  */
 
 /**
@@ -41,7 +41,7 @@ require_once 'Zend/Soap/Client/Common.php';
  * @category   Zend
  * @package    Zend_Soap
  * @subpackage Client
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Soap_Client
@@ -89,7 +89,6 @@ class Zend_Soap_Client
     protected $_features            = null;
     protected $_cache_wsdl          = null;
     protected $_user_agent          = null;
-    protected $_exceptions          = null;
 
     /**
      * WSDL used to access server
@@ -269,9 +268,6 @@ class Zend_Soap_Client
                 case 'user_agent':
                     $this->setUserAgent($value);
                     break;
-                case 'exceptions':
-                    $this->setExceptions($value);
-                    break;
 
                 // Not used now
                 // case 'connection_timeout':
@@ -319,14 +315,13 @@ class Zend_Soap_Client
         $options['cache_wsdl']     = $this->getWsdlCache();
         $options['features']       = $this->getSoapFeatures();
         $options['user_agent']     = $this->getUserAgent();
-        $options['exceptions']     = $this->getExceptions();
 
         foreach ($options as $key => $value) {
             /*
              * ugly hack as I don't know if checking for '=== null'
              * breaks some other option
              */
-            if (in_array($key, array('user_agent', 'cache_wsdl', 'compression', 'exceptions'))) {
+            if ($key == 'user_agent') {
                 if ($value === null) {
                     unset($options[$key]);
                 }
@@ -772,17 +767,15 @@ class Zend_Soap_Client
     /**
      * Set compression options
      *
-     * @param  int|null $compressionOptions
+     * @param  int $compressionOptions
      * @return Zend_Soap_Client
      */
     public function setCompressionOptions($compressionOptions)
     {
-        if ($compressionOptions === null) {
-            $this->_compression = null;
-        } else {
-            $this->_compression = (int)$compressionOptions;
-        }
+        $this->_compression = $compressionOptions;
+
         $this->_soapClient = null;
+
         return $this;
     }
 
@@ -864,23 +857,17 @@ class Zend_Soap_Client
     /**
      * Set the SOAP Wsdl Caching Options
      *
-     * @param string|int|boolean|null $caching
+     * @param string|int|boolean $caching
      * @return Zend_Soap_Client
      */
-    public function setWsdlCache($caching)
+    public function setWsdlCache($options)
     {
-        if ($caching === null) {
-            $this->_cache_wsdl = null;
-        } else {
-            $this->_cache_wsdl = (int)$caching;
-        }
+        $this->_cache_wsdl = $options;
         return $this;
     }
 
     /**
      * Get current SOAP Wsdl Caching option
-     *
-     * @return int
      */
     public function getWsdlCache()
     {
@@ -911,39 +898,6 @@ class Zend_Soap_Client
     public function getUserAgent()
     {
         return $this->_user_agent;
-    }
-
-    /**
-     * Set the exceptions option
-     *
-     * The exceptions option is a boolean value defining whether soap errors
-     * throw exceptions.
-     *
-     * @see http://php.net/manual/soapclient.soapclient.php#refsect1-soapclient.soapclient-parameters
-     *
-     * @param bool $exceptions
-     * @return $this
-     */
-    public function setExceptions($exceptions)
-    {
-        $this->_exceptions = (bool) $exceptions;
-
-        return $this;
-    }
-
-    /**
-     * Get the exceptions option
-     *
-     * The exceptions option is a boolean value defining whether soap errors
-     * throw exceptions.
-     *
-     * @see http://php.net/manual/soapclient.soapclient.php#refsect1-soapclient.soapclient-parameters
-     *
-     * @return bool|null
-     */
-    public function getExceptions()
-    {
-        return $this->_exceptions;
     }
 
     /**

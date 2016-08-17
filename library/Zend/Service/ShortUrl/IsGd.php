@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Service_ShortUrl
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: $
+ * @version    $Id: IsGd.php,v 1.1 2013/09/10 14:36:45 vcrema Exp $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Service/ShortUrl/AbstractShortener.php';
  *
  * @category   Zend
  * @package    Zend_Service_ShortUrl
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_ShortUrl_IsGd extends Zend_Service_ShortUrl_AbstractShortener
@@ -40,7 +40,7 @@ class Zend_Service_ShortUrl_IsGd extends Zend_Service_ShortUrl_AbstractShortener
      * @var string
      */
     protected $_baseUri = 'http://is.gd';
-
+    
     /**
      * This function shortens long url
      *
@@ -51,15 +51,15 @@ class Zend_Service_ShortUrl_IsGd extends Zend_Service_ShortUrl_AbstractShortener
     public function shorten($url)
     {
         $this->_validateUri($url);
-
+        
         $serviceUri = 'http://is.gd/api.php';
-
+        
         $this->getHttpClient()->resetParameters(true);
         $this->getHttpClient()->setUri($serviceUri);
         $this->getHttpClient()->setParameterGet('longurl', $url);
-
+        
         $response = $this->getHttpClient()->request();
-
+        
         return $response->getBody();
     }
 
@@ -75,21 +75,21 @@ class Zend_Service_ShortUrl_IsGd extends Zend_Service_ShortUrl_AbstractShortener
         $this->_validateUri($shortenedUrl);
 
         $this->_verifyBaseUri($shortenedUrl);
-
+        
         $this->getHttpClient()->resetParameters(true);
         $this->getHttpClient()->setUri($shortenedUrl);
         $this->getHttpClient()->setConfig(array('maxredirects' => 0));
-
+        
         $response = $this->getHttpClient()->request();
         if ($response->isError()) {
             require_once 'Zend/Service/ShortUrl/Exception.php';
             throw new Zend_Service_ShortUrl_Exception($response->getMessage());
         }
-
+        
         if ($response->isRedirect()) {
             return $response->getHeader('Location');
         }
-
+        
         require_once 'Zend/Service/ShortUrl/Exception.php';
         throw new Zend_Service_ShortUrl_Exception('Url unshortening was not successful');
     }

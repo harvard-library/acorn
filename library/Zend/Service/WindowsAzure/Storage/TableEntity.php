@@ -15,20 +15,28 @@
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: TableEntity.php,v 1.1 2013/09/10 14:36:10 vcrema Exp $
  */
+
+/**
+ * @see Zend_Service_WindowsAzure_Exception
+ */
+require_once 'Zend/Service/WindowsAzure/Exception.php';
+
 
 /**
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
  * @subpackage Storage
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_WindowsAzure_Storage_TableEntity
 {
+    const DEFAULT_TIMESTAMP = '1900-01-01T00:00:00';
+
     /**
      * Partition key
      * 
@@ -121,8 +129,8 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
      */
     public function getTimestamp()
     {
-    	if (null === $this->_timestamp) {
-            $this->setTimestamp(new DateTime());
+        if (null === $this->_timestamp) {
+            $this->setTimestamp(self::DEFAULT_TIMESTAMP);
         }
         return $this->_timestamp;
     }
@@ -131,9 +139,9 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
      * Set timestamp
      * 
      * @azure Timestamp Edm.DateTime
-     * @param DateTime $value
+     * @param string $value
      */
-    public function setTimestamp(DateTime $value)
+    public function setTimestamp($value = '1900-01-01T00:00:00')
     {
         $this->_timestamp = $value;
     }
@@ -222,8 +230,6 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
         	                break;
         	            case 'edm.double':
         	                $values[$accessor->AzurePropertyName] = floatval($values[$accessor->AzurePropertyName]); break;
-        	            case 'edm.datetime':
-        	            	$values[$accessor->AzurePropertyName] = $this->_convertToDateTime($values[$accessor->AzurePropertyName]); break;
         	        }
                 }
                 
@@ -236,7 +242,6 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
                     $this->$method($values[$accessor->AzurePropertyName]);
                 }
             } else if ($throwOnError) {
-				require_once 'Zend/Service/WindowsAzure/Exception.php';
                 throw new Zend_Service_WindowsAzure_Exception("Property '" . $accessor->AzurePropertyName . "' was not found in \$values array");    
             }
         }
@@ -263,7 +268,7 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
         $properties = $type->getProperties();
         foreach ($properties as $property) {
             $accessor = self::getAzureAccessor($property);
-            if (!is_null($accessor)) {
+            if ($accessor !== null) {
                 $azureAccessors[] = $accessor;
             }
         }
@@ -272,7 +277,7 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
         $methods = $type->getMethods();
         foreach ($methods as $method) {
             $accessor = self::getAzureAccessor($method);
-            if (!is_null($accessor)) {
+            if ($accessor !== null) {
                 $azureAccessors[] = $accessor;
             }
         }
@@ -319,36 +324,5 @@ class Zend_Service_WindowsAzure_Storage_TableEntity
             'AzurePropertyName' => $azureProperties[0],
         	'AzurePropertyType' => isset($azureProperties[1]) ? $azureProperties[1] : ''
         );
-    }
-    
-    /**
-     * Converts a string to a DateTime object. Returns false on failure.
-     * 
-     * @param string $value The string value to parse
-     * @return DateTime|boolean
-     */
-    protected function _convertToDateTime($value = '') 
-    {
-    	if ($value === '') {
-    		return false;
-    	}
-    	
-    	if ($value instanceof DateTime) {
-    		return $value;
-    	}
-    	
-    	if (@strtotime($value) !== false) {
-	    	try {
-	    		if (substr($value, -1) == 'Z') {
-	    			$value = substr($value, 0, strlen($value) - 1);
-	    		}
-	    		return new DateTime($value, new DateTimeZone('UTC'));
-	    	}
-	    	catch (Exception $ex) {
-	    		return false;
-	    	}
-	    }
-    	
-    	return false;
     }
 }

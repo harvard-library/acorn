@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Captcha
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -33,9 +33,9 @@ require_once 'Zend/Validate/Abstract.php';
  * @category   Zend
  * @package    Zend_Captcha
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Base.php,v 1.3 2013/09/10 14:36:36 vcrema Exp $
  */
 abstract class Zend_Captcha_Base extends Zend_Validate_Abstract implements Zend_Captcha_Adapter
 {
@@ -78,7 +78,6 @@ abstract class Zend_Captcha_Base extends Zend_Validate_Abstract implements Zend_
      * Set name
      *
      * @param string $name
-     * @return Zend_Captcha_Adapter
      */
     public function setName($name)
     {
@@ -90,6 +89,7 @@ abstract class Zend_Captcha_Base extends Zend_Validate_Abstract implements Zend_
      * Constructor
      *
      * @param  array|Zend_Config $options
+     * @return void
      */
     public function __construct($options = null)
     {

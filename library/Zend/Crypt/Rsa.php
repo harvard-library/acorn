@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Crypt
  * @subpackage Rsa
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Rsa.php,v 1.1 2013/09/10 14:36:47 vcrema Exp $
  */
 
 /**
@@ -33,7 +33,7 @@ require_once 'Zend/Crypt/Rsa/Key/Public.php';
 /**
  * @category   Zend
  * @package    Zend_Crypt
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Crypt_Rsa
@@ -42,42 +42,27 @@ class Zend_Crypt_Rsa
     const BINARY = 'binary';
     const BASE64 = 'base64';
 
-    protected $_privateKey;
+    protected $_privateKey = null;
 
-    protected $_publicKey;
+    protected $_publicKey = null;
 
     /**
      * @var string
      */
-    protected $_pemString;
+    protected $_pemString = null;
 
-    protected $_pemPath;
+    protected $_pemPath = null;
 
-    protected $_certificateString;
+    protected $_certificateString = null;
 
-    protected $_certificatePath;
+    protected $_certificatePath = null;
 
-    protected $_hashAlgorithm;
+    protected $_hashAlgorithm = OPENSSL_ALGO_SHA1;
 
-    protected $_passPhrase;
+    protected $_passPhrase = null;
 
-    /**
-     * Class constructor
-     *
-     * @param array $options
-     * @throws Zend_Crypt_Rsa_Exception
-     */
     public function __construct(array $options = null)
     {
-        if (!extension_loaded('openssl')) {
-            require_once 'Zend/Crypt/Rsa/Exception.php';
-            throw new Zend_Crypt_Rsa_Exception('Zend_Crypt_Rsa requires openssl extension to be loaded.');
-        }
-
-        // Set _hashAlgorithm property when we are sure, that openssl extension is loaded
-        // and OPENSSL_ALGO_SHA1 constant is available
-        $this->_hashAlgorithm = OPENSSL_ALGO_SHA1;
-
         if (isset($options)) {
             $this->setOptions($options);
         }
@@ -201,13 +186,6 @@ class Zend_Crypt_Rsa
         return $decrypted;
     }
 
-    /**
-     * @param  array $configargs
-     * 
-     * @throws Zend_Crypt_Rsa_Exception
-     * 
-     * @return ArrayObject
-     */
     public function generateKeys(array $configargs = null)
     {
         $config = null;
@@ -222,10 +200,6 @@ class Zend_Crypt_Rsa
         $privateKey = null;
         $publicKey = null;
         $resource = openssl_pkey_new($config);
-        if (!$resource) {
-            require_once 'Zend/Crypt/Rsa/Exception.php';
-            throw new Zend_Crypt_Rsa_Exception('Failed to generate a new private key');
-        }
         // above fails on PHP 5.3
         openssl_pkey_export($resource, $private, $passPhrase);
         $privateKey = new Zend_Crypt_Rsa_Key_Private($private, $passPhrase);
@@ -323,9 +297,6 @@ class Zend_Crypt_Rsa
     protected function _parseConfigArgs(array $config = null)
     {
         $configs = array();
-        if (isset($config['private_key_bits'])) {
-            $configs['private_key_bits'] = $config['private_key_bits'];
-        }
         if (isset($config['privateKeyBits'])) {
             $configs['private_key_bits'] = $config['privateKeyBits'];
         }

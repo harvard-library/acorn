@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage UserAgent
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: NonPersistent.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id: NonPersistent.php,v 1.1 2013/09/10 14:37:04 vcrema Exp $
  */
 
 
@@ -36,10 +36,10 @@ require_once 'Zend/Http/UserAgent/Storage.php';
  *
  * @package    Zend_Http
  * @subpackage UserAgent
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Http_UserAgent_Storage_NonPersistent
+class Zend_Http_UserAgent_Storage_NonPersistent 
     implements Zend_Http_UserAgent_Storage
 {
     /**

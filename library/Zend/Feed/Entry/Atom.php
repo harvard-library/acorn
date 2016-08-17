@@ -15,9 +15,9 @@
  *
  * @category   Zend
  * @package    Zend_Feed
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Atom.php,v 1.3 2013/09/10 14:36:25 vcrema Exp $
  */
 
 
@@ -26,15 +26,13 @@
  */
 require_once 'Zend/Feed/Entry/Abstract.php';
 
-/** @see Zend_Xml_Security */
-require_once 'Zend/Xml/Security.php';
 
 /**
  * Concrete class for working with Atom entries.
  *
  * @category   Zend
  * @package    Zend_Feed
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
@@ -196,10 +194,10 @@ class Zend_Feed_Entry_Atom extends Zend_Feed_Entry_Abstract
         // Update internal properties using $client->responseBody;
         @ini_set('track_errors', 1);
         $newEntry = new DOMDocument;
-        $newEntry = @Zend_Xml_Security::scan($response->getBody(), $newEntry);
+        $status = @$newEntry->loadXML($response->getBody());
         @ini_restore('track_errors');
 
-        if (!$newEntry) {
+        if (!$status) {
             // prevent the class to generate an undefined variable notice (ZF-2590)
             if (!isset($php_errormsg)) {
                 if (function_exists('xdebug_is_enabled')) {

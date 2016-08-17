@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,9 +28,9 @@ require_once 'Zend/Form/Element/Multi.php';
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Element
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: Radio.php,v 1.3 2013/09/10 14:36:43 vcrema Exp $
  */
 class Zend_Form_Element_Radio extends Zend_Form_Element_Multi
 {
@@ -45,7 +45,7 @@ class Zend_Form_Element_Radio extends Zend_Form_Element_Multi
      *
      * Disables "for" attribute of label if label decorator enabled.
      *
-     * @return Zend_Form_Element_Radio
+     * @return void
      */
     public function loadDefaultDecorators()
     {
@@ -53,14 +53,8 @@ class Zend_Form_Element_Radio extends Zend_Form_Element_Multi
             return $this;
         }
         parent::loadDefaultDecorators();
-
-        // Disable 'for' attribute
-        if (isset($this->_decorators['Label'])
-            && !isset($this->_decorators['Label']['options']['disableFor']))
-        {
-             $this->_decorators['Label']['options']['disableFor'] = true;
-        }
-
+        $this->addDecorator('Label', array('tag' => 'dt',
+                                           'disableFor' => true));
         return $this;
     }
 }

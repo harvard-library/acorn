@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @version    $Id: StringLength.php,v 1.3 2013/09/10 14:36:14 vcrema Exp $
  */
 
 /**
@@ -27,7 +27,7 @@ require_once 'Zend/Validate/Abstract.php';
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_StringLength extends Zend_Validate_Abstract
@@ -79,7 +79,8 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     /**
      * Sets validator options
      *
-     * @param integer|array|Zend_Config $options
+     * @param  integer|array|Zend_Config $options
+     * @return void
      */
     public function __construct($options = array())
     {
@@ -193,36 +194,21 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
      * Sets a new encoding to use
      *
      * @param string $encoding
-     * @throws Zend_Validate_Exception
      * @return Zend_Validate_StringLength
      */
     public function setEncoding($encoding = null)
     {
         if ($encoding !== null) {
-            $orig = PHP_VERSION_ID < 50600
-                        ? iconv_get_encoding('internal_encoding')
-                        : ini_get('default_charset');
-            if (PHP_VERSION_ID < 50600) {
-                if ($encoding) {
-                    $result = iconv_set_encoding('internal_encoding', $encoding);
-                } else {
-                    $result = false;
-                }
-            } else {
-                ini_set('default_charset', $encoding);
-                $result = ini_get('default_charset');
-            }
+            $orig   = iconv_get_encoding('internal_encoding');
+            $result = iconv_set_encoding('internal_encoding', $encoding);
             if (!$result) {
                 require_once 'Zend/Validate/Exception.php';
                 throw new Zend_Validate_Exception('Given encoding not supported on this OS!');
             }
 
-            if (PHP_VERSION_ID < 50600) {
-                iconv_set_encoding('internal_encoding', $orig);
-            } else {
-                ini_set('default_charset', $orig);
-            }
+            iconv_set_encoding('internal_encoding', $orig);
         }
+
         $this->_encoding = $encoding;
         return $this;
     }
