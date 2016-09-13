@@ -965,38 +965,38 @@ class ItemDAO extends Zend_Db_Table
      */
     private function insertNewItem(Item $item, $db)
     {    
-	    $identificationarray = $this->buildIdentificationArray($item);
+	$identificationarray = $this->buildIdentificationArray($item);
         $itemarray = $this->buildItemArray($item);
         
         Logger::log($identificationarray, Zend_Log::DEBUG);
-	    $db->insert('ItemIdentification', $identificationarray);
-	    $identificationid = $db->lastInsertId();
-	    $itemarray[self::IDENTIFICATION_ID] = $identificationid;
-	    Logger::log($itemarray, Zend_Log::DEBUG);
-	    $db->insert($this->_name, $itemarray);
-	    $itemid = $db->lastInsertId();   
+	$db->insert('ItemIdentification', $identificationarray);
+        $identificationid = $db->lastInsertId();
+        $itemarray[self::IDENTIFICATION_ID] = $identificationid;
+        Logger::log($itemarray, Zend_Log::DEBUG);
+        $db->insert($this->_name, $itemarray);
+        $itemid = $db->lastInsertId();   
 	    
-	    //Related arrays
-	    $callnumbers = $item->getCallNumbers();
-	    $insertcounts = $this->buildInsertCounts($item->getInitialCounts());
-	    $workassignedto = $item->getWorkAssignedTo();
+        //Related arrays
+        $callnumbers = $item->getCallNumbers();
+        $insertcounts = $this->buildInsertCounts($item->getInitialCounts());
+        $workassignedto = $item->getWorkAssignedTo();
 	    
-	    $this->insertCallNumbers($db, $identificationid, $callnumbers);
-		$this->insertCounts($db, $itemid, $insertcounts);
-		$this->insertWorkAssignedTo($db, $itemid, $workassignedto);
+        $this->insertCallNumbers($db, $identificationid, $callnumbers);
+    	$this->insertCounts($db, $itemid, $insertcounts);
+	$this->insertWorkAssignedTo($db, $itemid, $workassignedto);
 		
-		$auth = Zend_Auth::getInstance();
-  		$identity = $auth->getIdentity();
-   		$audittrail = new AuditTrail();
+	$auth = Zend_Auth::getInstance();
+	$identity = $auth->getIdentity();
+	$audittrail = new AuditTrail();
         $zenddate = new Zend_Date();
-		$audittrail->setDate($zenddate->toString(ACORNConstants::$ZEND_INTERNAL_DATETIME_FORMAT));
+	$audittrail->setDate($zenddate->toString(ACORNConstants::$ZEND_INTERNAL_DATETIME_FORMAT));
         $audittrail->setTableName('ItemIdentification');
         $audittrail->setPersonID($identity[PeopleDAO::PERSON_ID]);
-	    $audittrail->setActionType(AuditTrailDAO::ACTION_INSERT);
-	    $audittrail->setPrimaryKey($identificationid);
-		AuditTrailDAO::getAuditTrailDAO()->insertAuditTrailItem($audittrail, $db);
+        $audittrail->setActionType(AuditTrailDAO::ACTION_INSERT);
+        $audittrail->setPrimaryKey($identificationid);
+	AuditTrailDAO::getAuditTrailDAO()->insertAuditTrailItem($audittrail, $db);
    			
-	    return $itemid;
+        return $itemid;
     }
     
 	/*

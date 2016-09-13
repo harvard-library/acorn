@@ -46,104 +46,101 @@ class RecordidentificationController extends Zend_Controller_Action
     	$this->_helper->viewRenderer->setNoRender();
     	
     	//Make sure that this was submitted.
-		if ($this->_request->isPost())
+	if ($this->_request->isPost())
+	{
+            $form = $this->getRecordForm()->getSubForm("recordidentificationform");
+            $formData = $this->_request->getPost();
+            RecordNamespace::setRenderTab(RecordNamespace::IDENTIFICATION);
+			
+            $auth = Zend_Auth::getInstance();
+            $identity = $auth->getIdentity();
+            //If it is a repository user or a repository admin user and the
+            //item is logged in, the only savable items are the repository info items.
+            $item = RecordNamespace::getCurrentItem();
+			
+            //If the item being saved is not the item in the session, 
+            //set the correct session item.
+            if (!empty($formData['hiddenitemid']) && $item->getItemID() != $formData['hiddenitemid'])
+            {
+		$item = ItemDAO::getItemDAO()->getItem($formData['hiddenitemid']);
+		RecordNamespace::setCurrentItem($item);
+		RecordNamespace::setOriginalItem(ItemDAO::getItemDAO()->getItem($formData['hiddenitemid']));
+            }
+			
+            //If the person is from the repository and the item is logged in, then
+            //the only fields they may edit are the expected date of return, repository memo, and insurance fields.
+            if ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY
+		|| ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN
+		&& !is_null($item->getFunctions()->getLogin()->getPrimaryKey())))
+            {
+		$isvalid = $form->isValidPartial(
+		array($formData['expecteddateofreturninput'],
+                      $formData['repositorymemotextarea'],
+                      $formData['insuranceinput']));	
+            }
+            else 
+            {
+		//If this is a repository admin user, the repository is disabled
+		//so we have to add it dynamically.
+		if ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN)
 		{
-			$form = $this->getRecordForm()->getSubForm("recordidentificationform");
-			$formData = $this->_request->getPost();
-			RecordNamespace::setRenderTab(RecordNamespace::IDENTIFICATION);
-			
-			$auth = Zend_Auth::getInstance();
-			$identity = $auth->getIdentity();
-			//If it is a repository user or a repository admin user and the
-			//item is logged in, the only savable items are the repository info items.
-			$item = RecordNamespace::getCurrentItem();
-			
-			//If the item being saved is not the item in the session, 
-			//set the correct session item.
-			if (!empty($formData['hiddenitemid']) 
-					&& $item->getItemID() != $formData['hiddenitemid'])
-			{
-				$item = ItemDAO::getItemDAO()->getItem($formData['hiddenitemid']);
-				RecordNamespace::setCurrentItem($item);
-				RecordNamespace::setOriginalItem(ItemDAO::getItemDAO()->getItem($formData['hiddenitemid']));
-			}
-			
-			//If the person is from the repository and the item is logged in, then
-			//the only fields they may edit are the expected date of return, repository memo, and insurance fields.
-			if ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY
-				|| ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN
-					&& !is_null($item->getFunctions()->getLogin()->getPrimaryKey())))
-			{
-				$isvalid = $form->isValidPartial(
-					array($formData['expecteddateofreturninput'],
-					$formData['repositorymemotextarea'],
-    				$formData['insuranceinput']));	
-			}
-			else 
-			{
-				//If this is a repository admin user, the repository is disabled
-				//so we have to add it dynamically.
-				if ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN)
-				{
-					$formData['repositoryselect'] = $identity[LocationDAO::LOCATION_ID];
-					$formData['chargetoselect'] = $identity[LocationDAO::LOCATION_ID];
-				}
+                    $formData['repositoryselect'] = $identity[LocationDAO::LOCATION_ID];
+                    $formData['chargetoselect'] = $identity[LocationDAO::LOCATION_ID];
+		}
  		
-				$isvalid = $form->isValid($formData);	
-			}
+		$isvalid = $form->isValid($formData);	
+            }
 			
-			
-			if ($isvalid)
-			{
-				if ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY
-					|| ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN
-						&& !is_null($item->getFunctions()->getLogin()->getPrimaryKey())
-						))
-					{
-						//Save the data
-						$itemid = $this->saveFundInformation($formData);
-					}
-					else 
-					{
-						$itemid = $this->saveItemIdentification($form->getValues());
-					}
-				
-				if (!is_null($itemid))
-				{
-					if (!is_null($item->getItemID()))
-					{
-						//Clear the duplicate values.
-						$item->clearAllDuplicates();
-						//Clone the current item and make it the 
-						//original item
-						$origitem = RecordNamespace::getOriginalItem();
-						$origfunctions = $origitem->getFunctions();
-						$origitem = clone $item;
-						//Since we only saved the identification, keep the
-						//original item's functions instead of using the cloned one.
-						$origitem->setFunctions($origfunctions);
-						RecordNamespace::setOriginalItem($origitem);
-					}
-					RecordNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_SUCCESS);
-					//Go back to the record screen.
-					$this->_helper->redirector('index', 'record', NULL, array('recordnumber' => $itemid));
-				}
-				//TODO otherwise display an error message regarding the save
-				else 
-				{
-						$this->displayRecordErrors($formData, ACORNConstants::MESSAGE_PROBLEM_SAVING);
-				}
-			}
-			else
-			{
-				$this->displayRecordErrors($formData, ACORNConstants::MESSAGE_INVALID_FORM);
-			}
-		}
-		else
+            if ($isvalid)
+            {
+		if ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY
+		|| ($identity[PeopleDAO::ACCESS_LEVEL] == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN
+		&& !is_null($item->getFunctions()->getLogin()->getPrimaryKey())))
 		{
-			//If the url was typed directly, go to the DE screen.
-			$this->_helper->redirector('newitem');
+                    //Save the data
+                    $itemid = $this->saveFundInformation($formData);
 		}
+		else 
+		{
+                    $itemid = $this->saveItemIdentification($form->getValues());
+		}
+				
+		if (!is_null($itemid))
+		{
+                    if (!is_null($item->getItemID()))
+                    {
+			//Clear the duplicate values.
+			$item->clearAllDuplicates();
+			//Clone the current item and make it the 
+			//original item
+			$origitem = RecordNamespace::getOriginalItem();
+			$origfunctions = $origitem->getFunctions();
+			$origitem = clone $item;
+			//Since we only saved the identification, keep the
+			//original item's functions instead of using the cloned one.
+			$origitem->setFunctions($origfunctions);
+			RecordNamespace::setOriginalItem($origitem);
+                    }
+		RecordNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_SUCCESS);
+		//Go back to the record screen.
+		$this->_helper->redirector('index', 'record', NULL, array('recordnumber' => $itemid));
+		}
+		//TODO otherwise display an error message regarding the save
+		else 
+		{
+                    $this->displayRecordErrors($formData, ACORNConstants::MESSAGE_PROBLEM_SAVING);
+		}
+            }
+            else
+            {
+		$this->displayRecordErrors($formData, ACORNConstants::MESSAGE_INVALID_FORM);
+            }
+	}
+	else
+	{
+            //If the url was typed directly, go to the DE screen.
+            $this->_helper->redirector('newitem');
+	}
     }
     
     /**
