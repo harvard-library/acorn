@@ -224,6 +224,19 @@ class ACORNConfig extends Zend_Config_Ini
 	}
 	
 	/**
+	 * @return array
+	 */
+	public function getErrorEmailAddresses()
+	{
+		$erroremails = $this->get(self::ERROR_EMAILS_NAME);
+		if (!is_array($erroremails))
+		{
+			$erroremails = array($erroremails);
+		}
+		return $erroremails;
+	}
+	
+	/**
 	 * @param String $logLevel
 	 */
 	public function setLogLevel($logLevel)
