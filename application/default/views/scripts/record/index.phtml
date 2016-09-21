@@ -1,4 +1,19 @@
 <?php 
+/**
+ * Copyright 2016 The President and Fellows of Harvard College
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 $title = "";
 
 $auth = Zend_Auth::getInstance();
@@ -100,11 +115,7 @@ $this->placeholder('body')->set('class="yui-skin-sam" onload=" initCheckingForMo
     <div id="recorddetails"><?php echo $this->placeholder("recordinfo")?></div>
     <div id="statusdiv"><?php echo $statusmessage; ?></div>
 </div>
-<!-- per bug 4205
-<div id="myrecordsarea">
-    <?php  include ("myrecords.phtml"); ?>
-</div>
--->
+
 <div id="recordcontent">
 <div id="demo" class="yui-navset yui-navset-top">	
   <ul class="yui-nav">
