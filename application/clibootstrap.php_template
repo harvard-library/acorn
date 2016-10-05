@@ -40,8 +40,8 @@ require_once "Zend/Loader/Autoloader.php";
 $loader = Zend_Loader_Autoloader::getInstance();
 $loader->setFallbackAutoloader(true);
 
-$env = 'dev';
 // Change $env variable to 'prod' parameter under production environment
+$env = '<instance>';
 $initializer = new CLIInitializer($env);
 
 //Start session
