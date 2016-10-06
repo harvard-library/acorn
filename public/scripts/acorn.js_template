@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-var baseUrl = "https://<acorn_url>";
+var baseUrl = "https://<acorn_url>/";
 var accesslevel = 'None';
 var curators;
 

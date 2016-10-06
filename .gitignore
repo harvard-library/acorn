@@ -5,12 +5,15 @@
 .settings/
 application/config.ini
 application/dbconfig.ini
+application/bootstrap.php
+application/clibootstrap.php
 acorn_sessions/sess_*
 bb2/*
 logs/*log*
 nbproject/
 public/documentation
 public/drsstagingfiles
+public/scripts/acorn.js
 public/userfiles/*
 public/userreports/*.pdf
 public/userreports/cvsreports/*.csv

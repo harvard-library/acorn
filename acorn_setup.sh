@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# TME  10/05/16  Initial version
+# TME  10/06/16  Initial version
 
 #
 # Define functions and variables, grab any arguments and check usage
@@ -25,7 +25,7 @@ function usage {
 
 cat <<END
 
-Use this script to set-up an new ACORN instance. It will set the proper 
+Use this script to set-up a new ACORN instance. It will set the proper 
 directory permissions and, if specified, set-up a MySQL user and database
 for ACORN. The user will be prompted for needed information. The $mysqlAdminUser
 MySQL password will be required if databases changes will be made.
@@ -76,20 +76,20 @@ read mysqlAcornPw
 echo "Would you like the MySQL database $databaseName created for ACORN? (y or n)"
 read makeDatabase
 
-echo "Would you like the MySQL database $mysqlAcornUser created for ACORN? (y or n)"
+echo "Would you like the MySQL user account $mysqlAcornUser created for ACORN? (y or n)"
 read makeUser
 
-echo "Would you like the ACORN tables loaded into the MySQL $mysqlAcornUser database? (y or n)"
+echo "Would you like the ACORN tables loaded into the MySQL $mysqlAcornUser database? (any data in database will be lost)(y or n)"
 read loadTables
 
 cd $appHomeDir
 
 # Set directory permissions
 echo "Setting directory permissions"
-for directory in logs acorn_sessions public/userfiles public/userreports
-do
-    chmod 777 $directory
-done
+chmod 777 logs
+chmod 777 acorn_sessions
+chmod -R 777 public/userfiles
+chmod -R 777 public/userreports
 
 # Setting up the config files. Use sed, our variables and the config templates
 echo "Setting up the config files"
