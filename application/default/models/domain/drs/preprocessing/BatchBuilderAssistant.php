@@ -260,7 +260,7 @@ class BatchBuilderAssistant
 	 * @param String $batchnameforimages - The name for the batch
 	 * @param DRSDropperConfig $config
 	 * @param boolean $tryCopyAgain - If the copy function fails, this gives it a second chance.
-	 * @throws DRSServicException
+	 * @throws DRSServiceException
 	 */
 	public static function prepareTemplateDirectory($sourcePath, array $sourcefiles, $projectName, DRSDropperConfig $config, $tryCopyAgain = TRUE)
 	{
@@ -299,7 +299,7 @@ class BatchBuilderAssistant
 				//Delete the source files and the project/template files.
 				self::deleteSourceFiles($sourcePath);
 				self::deleteProjectTemplateFiles($projectDirectoryTemplatePath);
-				throw new DRSServicException("Files were not copied from the temporary directory to the DRS staging area properly.  Please upload again.");
+				throw new DRSServiceException("Files were not copied from the temporary directory to the DRS staging area properly.  Please upload again.");
 			}
 		}
 		
@@ -307,7 +307,7 @@ class BatchBuilderAssistant
 		$deleted = self::deleteSourceFiles($sourcePath);
 		if (!$deleted)
 		{
-			throw new DRSServicException("Could not delete the source files.");
+			throw new DRSServiceException("Could not delete the source files.");
 		}
 	}
 	
