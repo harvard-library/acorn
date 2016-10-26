@@ -28,8 +28,6 @@ class DRSBulkCli
         $filesdirectory = $config->getFilesDirectory();
         $fulltemppath   = $filesdirectory . "/temp" . $userid;
         
-//        print "$filesdirectory, $fulltemppath\n"; // #-
-
         // Does the file exist?
         if (file_exists($fulltemppath))
         {
@@ -47,14 +45,11 @@ class DRSBulkCli
     	
                 foreach ($filelist as $filename)
                 {
-//                    print "$batchnameforimages\n"; // #-
 
                     if (is_file($fulltemppath . "/" . $filename))
                     {
                         $filetype = AcornFile::parseFileType($filename);
-//                        print "$filetype, $filesdirectory\n"; // #-
                         $newfilename = $this->processFilename($filename, $filesdirectory);
-//                        print "$filetype\n"; // #-
 
                         if ($filetype == "Image")
                         {
@@ -66,7 +61,6 @@ class DRSBulkCli
                         {
                             //Move the file to the proper destination.
                             $moved = rename($fulltemppath . "/" . $filename, $filesdirectory . "/" . $newfilename);
-                            print "Found a text file\n"; // #-
                         }
                     
                         $message = $this->updateItemWithNewFile($recordtype, $filetype, $newfilename, $batchnameforimages, $config);
@@ -92,11 +86,12 @@ class DRSBulkCli
                     {
                         $projectDirectory .= "/" . $projectName;
     			//BB2 requires the template directory to be set up.
-    			BatchBuilderAssistant::prepareTemplateDirectory($fulltemppath, $imagearray, $projectName, $config);
+                	BatchBuilderAssistant::prepareTemplateDirectory($fulltemppath, $imagearray, $projectName, $config, FALSE);
 
     			//Create the batch and descriptor files
     			$success = $this->getBatchBuilderAssistant($projectDirectory, $userid)->execute($batchnameforimages);
-    			//If an error wasn't thrown but the batch.xml wasn't created, warn the user.
+
+                        //If an error wasn't thrown but the batch.xml wasn't created, warn the user.
     			if (!$success)
                         {
                             $message = "There was a problem creating the batch file for the DRS.";
@@ -115,7 +110,7 @@ class DRSBulkCli
                             $action = "osw";
                             $itemid = $item->getOSWID();
                         }
-    					
+   					
     			RecordNamespace::setSaveStatus(RecordNamespace::SAVE_STATE_SUCCESS);
 			RecordNamespace::setStatusMessage("Your files have been sent to the DRS.");
                     }
@@ -124,7 +119,7 @@ class DRSBulkCli
                         //If an error was thrown, then the batch.xml wasn't created.
     			$message = "There was a problem processing the batch for the DRS.\n";
     			$message .= "The message generated was:\n" . $e->getMessage();
-/*    			
+// #- 			
     			//Delete the batch directory.
     			$cleanupAssistant = new DRSStagingDirectoryCleanupAssistant(array($batchnameforimages));
     			$cleanupAssistant->runService();
@@ -143,7 +138,7 @@ class DRSBulkCli
                             $originalitem = RecordNamespace::getOriginalOSW();
                             RecordNamespace::setCurrentOSW($originalitem);
     			}
-  */
+// #-
     			print "$message\n";
                         }			 
                 }  	
