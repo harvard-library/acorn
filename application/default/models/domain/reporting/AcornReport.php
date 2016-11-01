@@ -107,37 +107,12 @@ abstract class AcornReport
 		return $filename . '.pdf';
 	}
 	
+        /*
+         * Removed the bulk of this function as it was Harvard specific
+         */
 	protected function drawMainHeader()
 	{
-		//Catch an exception that the image my throw.
-		try 
-		{
-			$image = Zend_Pdf_Image::imageWithPath('images/Veritas.jpg');
-			Logger::log($image->getProperties());
-			$this->currentPage->drawImage($image, self::$X_LEFT, self::$Y_TOP-50, self::$X_LEFT + 70, self::$Y_TOP+15);
-		}
-		catch (Exception $e)
-		{
-			Logger::log($e->getMessage(), Zend_Log::ERR);
-		}
-		$this->currentPage->setFont(self::$REGULAR_FONT, 12);
-		$title = strtoupper('HARVARD LIBRARY');
-		$length = strlen($title);
-		//Attempt to calculate the center of the page based on a font of 12
-		//Some minor calculations estimates that the following will 
-		//target the center of the page.
-		$xloc = $length / .275;
-		$xloc = $this->currentPage->getWidth()/2 - round($xloc, 0);
-		$this->currentPage->drawText('HARVARD LIBRARY', $xloc, self::$Y_TOP);
-		$title = strtoupper('WEISSMAN PRESERVATION CENTER');
-		$length = strlen($title);
-		//Attempt to calculate the center of the page based on a font of 12
-		//Some minor calculations estimates that the following will 
-		//target the center of the page.
-		$xloc = $length / .275;
-		$xloc = $this->currentPage->getWidth()/2 - round($xloc, 0);
-		$this->currentPage->drawText('WEISSMAN PRESERVATION CENTER', $xloc, self::$Y_TOP-20);
-		$this->yloc = self::$Y_TOP - 60;
+            $this->yloc = self::$Y_TOP - 5;
 	}
 	
 	/*

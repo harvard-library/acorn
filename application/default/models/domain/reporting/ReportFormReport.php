@@ -333,9 +333,12 @@ class ReportFormReport extends AcornReport
 		}
 	}
 	
+        /*
+         * Removed Harvard specific code
+         */
 	protected function getCustomFooter()
 	{
-		return 'WPC phone 617.495.8596; fax 617.496.8344';
+		return;
 	}
 	
 	/*

@@ -319,9 +319,12 @@ class TransferFormReport extends AcornReport
 		return 'TRANSFER OF COLLECTION MATERIAL';
 	}
 	
+        /*
+         * Removed Harvard specific code
+         */
 	protected function getCustomFooter()
 	{
-		return 'COPY -- Librarian/Curator, Registrar, WPC';
+            return;
 	}
 	
 	/*
