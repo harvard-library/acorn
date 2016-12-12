@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Form
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -29,9 +29,9 @@ require_once 'Zend/Dojo/Form/Decorator/DijitContainer.php';
  * @uses       Zend_Dojo_Form_Decorator_DijitContainer
  * @package    Zend_Dojo
  * @subpackage Form_Decorator
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: AccordionPane.php,v 1.3 2013/09/10 14:36:57 vcrema Exp $
+ * @version    $Id$
  */
 class Zend_Dojo_Form_Decorator_AccordionPane extends Zend_Dojo_Form_Decorator_DijitContainer
 {

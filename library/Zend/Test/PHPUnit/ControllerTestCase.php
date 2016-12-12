@@ -14,16 +14,10 @@
  *
  * @category   Zend
  * @package    Zend_Test
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ControllerTestCase.php,v 1.3 2013/09/10 14:37:07 vcrema Exp $
+ * @version    $Id$
  */
-
-/** @see PHPUnit_Framework_TestCase */
-require_once 'PHPUnit/Framework/TestCase.php';
-
-/** @see PHPUnit_Runner_Version */
-require_once 'PHPUnit/Runner/Version.php';
 
 /** @see Zend_Controller_Front */
 require_once 'Zend/Controller/Front.php';
@@ -47,7 +41,7 @@ require_once 'Zend/Registry.php';
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_TestCase
@@ -87,8 +81,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      * Overloading: prevent overloading to special properties
      *
      * @param  string $name
-     * @param  mixed $value
-     * @return void
+     * @param  mixed  $value
+     * @throws Zend_Exception
      */
     public function __set($name, $value)
     {
@@ -104,8 +98,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      *
      * Provides overloading for request, response, and frontController objects.
      *
-     * @param mixed $name
-     * @return void
+     * @param  mixed $name
+     * @return null|Zend_Controller_Front|Zend_Controller_Request_HttpTestCase|Zend_Controller_Response_HttpTestCase
      */
     public function __get($name)
     {
@@ -125,8 +119,6 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      * Set up MVC app
      *
      * Calls {@link bootstrap()} by default
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -141,8 +133,6 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      * If {@link $bootstrap} is a callback, executes it; if it is a file, it include's
      * it. When done, sets the test case request and response objects into the
      * front controller.
-     *
-     * @return void
      */
     final public function bootstrap()
     {
@@ -173,8 +163,7 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      * disables throwing exceptions, and disables returning the response.
      * Finally, dispatches the front controller.
      *
-     * @param  string|null $url
-     * @return void
+     * @param string|null $url
      */
     public function dispatch($url = null)
     {
@@ -213,7 +202,6 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      * instance, and resets the action helper broker.
      *
      * @todo   Need to update Zend_Layout to add a resetInstance() method
-     * @return void
      */
     public function reset()
     {
@@ -231,8 +219,6 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
 
     /**
      * Rest all view placeholders
-     *
-     * @return void
      */
     protected function _resetPlaceholders()
     {
@@ -283,9 +269,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection
      *
-     * @param  string $path CSS selector path
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $message
      */
     public function assertQuery($path, $message = '')
     {
@@ -301,9 +286,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection
      *
-     * @param  string $path CSS selector path
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $message
      */
     public function assertNotQuery($path, $message = '')
     {
@@ -319,10 +303,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; node should contain content
      *
-     * @param  string $path CSS selector path
-     * @param  string $match content that should be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $match content that should be contained in matched nodes
+     * @param string $message
      */
     public function assertQueryContentContains($path, $match, $message = '')
     {
@@ -338,10 +321,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; node should NOT contain content
      *
-     * @param  string $path CSS selector path
-     * @param  string $match content that should NOT be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $match content that should NOT be contained in matched nodes
+     * @param string $message
      */
     public function assertNotQueryContentContains($path, $match, $message = '')
     {
@@ -357,10 +339,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; node should match content
      *
-     * @param  string $path CSS selector path
-     * @param  string $pattern Pattern that should be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $pattern Pattern that should be contained in matched nodes
+     * @param string $message
      */
     public function assertQueryContentRegex($path, $pattern, $message = '')
     {
@@ -376,10 +357,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; node should NOT match content
      *
-     * @param  string $path CSS selector path
-     * @param  string $pattern pattern that should NOT be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $pattern pattern that should NOT be contained in matched nodes
+     * @param string $message
      */
     public function assertNotQueryContentRegex($path, $pattern, $message = '')
     {
@@ -395,10 +375,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; should contain exact number of nodes
      *
-     * @param  string $path CSS selector path
-     * @param  string $count Number of nodes that should match
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $count Number of nodes that should match
+     * @param string $message
      */
     public function assertQueryCount($path, $count, $message = '')
     {
@@ -414,10 +393,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; should NOT contain exact number of nodes
      *
-     * @param  string $path CSS selector path
-     * @param  string $count Number of nodes that should NOT match
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $count Number of nodes that should NOT match
+     * @param string $message
      */
     public function assertNotQueryCount($path, $count, $message = '')
     {
@@ -433,10 +411,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; should contain at least this number of nodes
      *
-     * @param  string $path CSS selector path
-     * @param  string $count Minimum number of nodes that should match
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $count Minimum number of nodes that should match
+     * @param string $message
      */
     public function assertQueryCountMin($path, $count, $message = '')
     {
@@ -452,10 +429,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against DOM selection; should contain no more than this number of nodes
      *
-     * @param  string $path CSS selector path
-     * @param  string $count Maximum number of nodes that should match
-     * @param  string $message
-     * @return void
+     * @param string $path CSS selector path
+     * @param string $count Maximum number of nodes that should match
+     * @param string $message
      */
     public function assertQueryCountMax($path, $count, $message = '')
     {
@@ -471,8 +447,7 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Register XPath namespaces
      *
-     * @param   array $xpathNamespaces
-     * @return  void
+     * @param array $xpathNamespaces
      */
     public function registerXpathNamespaces($xpathNamespaces)
     {
@@ -482,9 +457,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection
      *
-     * @param  string $path XPath path
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $message
      */
     public function assertXpath($path, $message = '')
     {
@@ -501,9 +475,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection
      *
-     * @param  string $path XPath path
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $message
      */
     public function assertNotXpath($path, $message = '')
     {
@@ -520,10 +493,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; node should contain content
      *
-     * @param  string $path XPath path
-     * @param  string $match content that should be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $match content that should be contained in matched nodes
+     * @param string $message
      */
     public function assertXpathContentContains($path, $match, $message = '')
     {
@@ -540,10 +512,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; node should NOT contain content
      *
-     * @param  string $path XPath path
-     * @param  string $match content that should NOT be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $match content that should NOT be contained in matched nodes
+     * @param string $message
      */
     public function assertNotXpathContentContains($path, $match, $message = '')
     {
@@ -560,10 +531,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; node should match content
      *
-     * @param  string $path XPath path
-     * @param  string $pattern Pattern that should be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $pattern Pattern that should be contained in matched nodes
+     * @param string $message
      */
     public function assertXpathContentRegex($path, $pattern, $message = '')
     {
@@ -580,10 +550,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; node should NOT match content
      *
-     * @param  string $path XPath path
-     * @param  string $pattern pattern that should NOT be contained in matched nodes
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $pattern pattern that should NOT be contained in matched nodes
+     * @param string $message
      */
     public function assertNotXpathContentRegex($path, $pattern, $message = '')
     {
@@ -600,10 +569,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; should contain exact number of nodes
      *
-     * @param  string $path XPath path
-     * @param  string $count Number of nodes that should match
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $count Number of nodes that should match
+     * @param string $message
      */
     public function assertXpathCount($path, $count, $message = '')
     {
@@ -620,10 +588,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; should NOT contain exact number of nodes
      *
-     * @param  string $path XPath path
-     * @param  string $count Number of nodes that should NOT match
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $count Number of nodes that should NOT match
+     * @param string $message
      */
     public function assertNotXpathCount($path, $count, $message = '')
     {
@@ -640,10 +607,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; should contain at least this number of nodes
      *
-     * @param  string $path XPath path
-     * @param  string $count Minimum number of nodes that should match
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $count Minimum number of nodes that should match
+     * @param string $message
      */
     public function assertXpathCountMin($path, $count, $message = '')
     {
@@ -660,10 +626,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert against XPath selection; should contain no more than this number of nodes
      *
-     * @param  string $path XPath path
-     * @param  string $count Maximum number of nodes that should match
-     * @param  string $message
-     * @return void
+     * @param string $path XPath path
+     * @param string $count Maximum number of nodes that should match
+     * @param string $message
      */
     public function assertXpathCountMax($path, $count, $message = '')
     {
@@ -680,8 +645,7 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that response is a redirect
      *
-     * @param  string $message
-     * @return void
+     * @param string $message
      */
     public function assertRedirect($message = '')
     {
@@ -697,8 +661,7 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that response is NOT a redirect
      *
-     * @param  string $message
-     * @return void
+     * @param string $message
      */
     public function assertNotRedirect($message = '')
     {
@@ -714,9 +677,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that response redirects to given URL
      *
-     * @param  string $url
-     * @param  string $message
-     * @return void
+     * @param string $url
+     * @param string $message
      */
     public function assertRedirectTo($url, $message = '')
     {
@@ -732,9 +694,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that response does not redirect to given URL
      *
-     * @param  string $url
-     * @param  string $message
-     * @return void
+     * @param string $url
+     * @param string $message
      */
     public function assertNotRedirectTo($url, $message = '')
     {
@@ -750,9 +711,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that redirect location matches pattern
      *
-     * @param  string $pattern
-     * @param  string $message
-     * @return void
+     * @param string $pattern
+     * @param string $message
      */
     public function assertRedirectRegex($pattern, $message = '')
     {
@@ -768,9 +728,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that redirect location does not match pattern
      *
-     * @param  string $pattern
-     * @param  string $message
-     * @return void
+     * @param string $pattern
+     * @param string $message
      */
     public function assertNotRedirectRegex($pattern, $message = '')
     {
@@ -786,9 +745,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response code
      *
-     * @param  int $code
-     * @param  string $message
-     * @return void
+     * @param int $code
+     * @param string $message
      */
     public function assertResponseCode($code, $message = '')
     {
@@ -804,9 +762,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response code
      *
-     * @param  int $code
-     * @param  string $message
-     * @return void
+     * @param int $code
+     * @param string $message
      */
     public function assertNotResponseCode($code, $message = '')
     {
@@ -823,9 +780,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response header exists
      *
-     * @param  string $header
-     * @param  string $message
-     * @return void
+     * @param string $header
+     * @param string $message
      */
     public function assertHeader($header, $message = '')
     {
@@ -841,9 +797,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response header does not exist
      *
-     * @param  string $header
-     * @param  string $message
-     * @return void
+     * @param string $header
+     * @param string $message
      */
     public function assertNotHeader($header, $message = '')
     {
@@ -860,10 +815,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response header exists and contains the given string
      *
-     * @param  string $header
-     * @param  string $match
-     * @param  string $message
-     * @return void
+     * @param string $header
+     * @param string $match
+     * @param string $message
      */
     public function assertHeaderContains($header, $match, $message = '')
     {
@@ -879,10 +833,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response header does not exist and/or does not contain the given string
      *
-     * @param  string $header
-     * @param  string $match
-     * @param  string $message
-     * @return void
+     * @param string $header
+     * @param string $match
+     * @param string $message
      */
     public function assertNotHeaderContains($header, $match, $message = '')
     {
@@ -899,10 +852,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response header exists and matches the given pattern
      *
-     * @param  string $header
-     * @param  string $pattern
-     * @param  string $message
-     * @return void
+     * @param string $header
+     * @param string $pattern
+     * @param string $message
      */
     public function assertHeaderRegex($header, $pattern, $message = '')
     {
@@ -918,10 +870,9 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert response header does not exist and/or does not match the given regex
      *
-     * @param  string $header
-     * @param  string $pattern
-     * @param  string $message
-     * @return void
+     * @param string $header
+     * @param string $pattern
+     * @param string $message
      */
     public function assertNotHeaderRegex($header, $pattern, $message = '')
     {
@@ -938,9 +889,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the last handled request used the given module
      *
-     * @param  string $module
-     * @param  string $message
-     * @return void
+     * @param string $module
+     * @param string $message
      */
     public function assertModule($module, $message = '')
     {
@@ -960,9 +910,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the last handled request did NOT use the given module
      *
-     * @param  string $module
-     * @param  string $message
-     * @return void
+     * @param string $module
+     * @param string $message
      */
     public function assertNotModule($module, $message = '')
     {
@@ -979,9 +928,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the last handled request used the given controller
      *
-     * @param  string $controller
-     * @param  string $message
-     * @return void
+     * @param string $controller
+     * @param string $message
      */
     public function assertController($controller, $message = '')
     {
@@ -1003,7 +951,6 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      *
      * @param  string $controller
      * @param  string $message
-     * @return void
      */
     public function assertNotController($controller, $message = '')
     {
@@ -1023,9 +970,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the last handled request used the given action
      *
-     * @param  string $action
-     * @param  string $message
-     * @return void
+     * @param string $action
+     * @param string $message
      */
     public function assertAction($action, $message = '')
     {
@@ -1042,9 +988,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the last handled request did NOT use the given action
      *
-     * @param  string $action
-     * @param  string $message
-     * @return void
+     * @param string $action
+     * @param string $message
      */
     public function assertNotAction($action, $message = '')
     {
@@ -1061,9 +1006,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the specified route was used
      *
-     * @param  string $route
-     * @param  string $message
-     * @return void
+     * @param string $route
+     * @param string $message
      */
     public function assertRoute($route, $message = '')
     {
@@ -1084,9 +1028,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Assert that the route matched is NOT as specified
      *
-     * @param  string $route
-     * @param  string $message
-     * @return void
+     * @param string $route
+     * @param string $message
      */
     public function assertNotRoute($route, $message = '')
     {
@@ -1117,7 +1060,7 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Retrieve test case request object
      *
-     * @return Zend_Controller_Request_Abstract
+     * @return Zend_Controller_Request_HttpTestCase
      */
     public function getRequest()
     {
@@ -1131,7 +1074,7 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     /**
      * Retrieve test case response object
      *
-     * @return Zend_Controller_Response_Abstract
+     * @return Zend_Controller_Response_HttpTestCase
      */
     public function getResponse()
     {
@@ -1157,14 +1100,54 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     }
 
     /**
-     * Increment assertion count
+     * URL Helper
      *
-     * @return void
+     * @param  array  $urlOptions
+     * @param  string $name
+     * @param  bool   $reset
+     * @param  bool   $encode
+     * @throws Exception
+     * @throws Zend_Controller_Router_Exception
+     * @return string
+     */
+    public function url($urlOptions = array(), $name = null, $reset = false, $encode = true)
+    {
+        $frontController = $this->getFrontController();
+        $router = $frontController->getRouter();
+        if (!$router instanceof Zend_Controller_Router_Rewrite) {
+            throw new Exception('This url helper utility function only works when the router is of type Zend_Controller_Router_Rewrite');
+        }
+        if (count($router->getRoutes()) == 0) {
+            $router->addDefaultRoutes();
+        }
+        return $router->assemble($urlOptions, $name, $reset, $encode);
+    }
+
+    /**
+     * Urlize options
+     *
+     * @param  array $urlOptions
+     * @param  bool  $actionControllerModuleOnly
+     * @return mixed
+     */
+    public function urlizeOptions($urlOptions, $actionControllerModuleOnly = true)
+    {
+        $ccToDash = new Zend_Filter_Word_CamelCaseToDash();
+        foreach ($urlOptions as $n => $v) {
+            if (in_array($n, array('action', 'controller', 'module'))) {
+                $urlOptions[$n] = $ccToDash->filter($v);
+            }
+        }
+        return $urlOptions;
+    }
+
+    /**
+     * Increment assertion count
      */
     protected function _incrementAssertionCount()
     {
         $stack = debug_backtrace();
-        foreach (debug_backtrace() as $step) {
+        foreach ($stack as $step) {
             if (isset($step['object'])
                 && $step['object'] instanceof PHPUnit_Framework_TestCase
             ) {

@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -43,9 +43,9 @@ require_once 'Zend/Form/Decorator/Abstract.php';
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HtmlTag.php,v 1.3 2013/09/10 14:36:04 vcrema Exp $
+ * @version    $Id$
  */
 class Zend_Form_Decorator_HtmlTag extends Zend_Form_Decorator_Abstract
 {
@@ -85,8 +85,9 @@ class Zend_Form_Decorator_HtmlTag extends Zend_Form_Decorator_Abstract
             $key = htmlspecialchars($key, ENT_COMPAT, $enc);
             if (is_array($val)) {
                 if (array_key_exists('callback', $val)
-                    && is_callable($val['callback'])) {
-                    $val = $val['callback']($this);
+                    && is_callable($val['callback'])
+                ) {
+                    $val = call_user_func($val['callback'], $this);
                 } else {
                     $val = implode(' ', $val);
                 }
@@ -231,7 +232,7 @@ class Zend_Form_Decorator_HtmlTag extends Zend_Form_Decorator_Abstract
 
     /**
      * Get encoding for use with htmlspecialchars()
-     * 
+     *
      * @return string
      */
     protected function _getEncoding()

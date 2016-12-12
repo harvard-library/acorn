@@ -15,15 +15,18 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gdata
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HttpClient.php,v 1.3 2013/09/10 14:36:49 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
  * Zend_Http_Client
  */
 require_once 'Zend/Http/Client.php';
+
+/** @see Zend_Crypt_Math */
+require_once 'Zend/Crypt/Math.php';
 
 /**
  * Gdata Http Client object.
@@ -34,7 +37,7 @@ require_once 'Zend/Http/Client.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gdata
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_HttpClient extends Zend_Http_Client
@@ -210,7 +213,7 @@ class Zend_Gdata_HttpClient extends Zend_Http_Client
             if ($this->getAuthSubPrivateKeyId() != null) {
                 // secure AuthSub
                 $time = time();
-                $nonce = mt_rand(0, 999999999);
+                $nonce = Zend_Crypt_Math::randInteger(0, 999999999);
                 $dataToSign = $method . ' ' . $url . ' ' . $time . ' ' . $nonce;
 
                 // compute signature

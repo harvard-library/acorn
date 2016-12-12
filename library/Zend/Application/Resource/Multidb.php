@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Multidb.php,v 1.1 2013/09/10 14:36:33 vcrema Exp $
+ * @version    $Id$
  */
 
 require_once 'Zend/Application/Resource/ResourceAbstract.php';
@@ -51,7 +51,7 @@ require_once 'Zend/Db/Table.php';
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_Multidb extends Zend_Application_Resource_ResourceAbstract
@@ -85,7 +85,7 @@ class Zend_Application_Resource_Multidb extends Zend_Application_Resource_Resour
         }
 
         foreach ($options as $id => $params) {
-        	$adapter = $params['adapter'];
+            $adapter = $params['adapter'];
             $default = (int) (
                 isset($params['isDefaultTableAdapter']) && $params['isDefaultTableAdapter']
                 || isset($params['default']) && $params['default']
@@ -114,7 +114,7 @@ class Zend_Application_Resource_Multidb extends Zend_Application_Resource_Resour
      */
     public function isDefault($db)
     {
-        if(!$db instanceof Zend_Db_Adapter_Abstract) {
+        if (!$db instanceof Zend_Db_Adapter_Abstract) {
             $db = $this->getDb($db);
         }
 
@@ -178,7 +178,7 @@ class Zend_Application_Resource_Multidb extends Zend_Application_Resource_Resour
 
    /**
      * Set the default metadata cache
-     * 
+     *
      * @param string|Zend_Cache_Core $cache
      * @return Zend_Application_Resource_Multidb
      */

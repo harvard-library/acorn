@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Currency
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Currency.php,v 1.3 2013/09/10 14:36:16 vcrema Exp $
+ * @version   $Id$
  */
 
 /**
@@ -31,7 +31,7 @@ require_once 'Zend/Locale/Format.php';
  *
  * @category  Zend
  * @package   Zend_Currency
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Currency
@@ -91,6 +91,11 @@ class Zend_Currency
      */
     public function __construct($options = null, $locale = null)
     {
+        $calloptions = $options;
+        if (is_array($options) && isset($options['display'])) {
+            $this->_options['display'] = $options['display'];
+        }
+
         if (is_array($options)) {
             $this->setLocale($locale);
             $this->setFormat($options);
@@ -120,10 +125,13 @@ class Zend_Currency
         }
 
         // Get the format
-        if (!empty($this->_options['symbol'])) {
-            $this->_options['display'] = self::USE_SYMBOL;
-        } else if (!empty($this->_options['currency'])) {
-            $this->_options['display'] = self::USE_SHORTNAME;
+        if ((is_array($calloptions) && !isset($calloptions['display']))
+                || (!is_array($calloptions) && $this->_options['display'] == self::NO_SYMBOL)) {
+            if (!empty($this->_options['symbol'])) {
+                $this->_options['display'] = self::USE_SYMBOL;
+            } else if (!empty($this->_options['currency'])) {
+                $this->_options['display'] = self::USE_SHORTNAME;
+            }
         }
     }
 
@@ -794,7 +802,7 @@ class Zend_Currency
             if (!class_exists($service)) {
                 $file = str_replace('_', DIRECTORY_SEPARATOR, $service) . '.php';
                 if (Zend_Loader::isReadable($file)) {
-                    Zend_Loader::loadClass($class);
+                    Zend_Loader::loadClass($service);
                 }
             }
 

@@ -173,6 +173,7 @@
     	parent::setDefault($name, $value);
     }
     
+    /* Use Zend's method
     public function setAttrib($name, $value)
     {
     	$existingattrib = $this->getElement($this->personselectname)->getAttrib($name);
@@ -187,5 +188,6 @@
     	$this->getElement($this->personselectname)->setAttrib($name, $existingattrib);
     	
     }
+     */
 }
 ?>

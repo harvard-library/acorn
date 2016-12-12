@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Tool
  * @subpackage Framework
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ApisDirectory.php,v 1.1 2013/09/10 14:36:08 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -33,12 +33,11 @@ require_once 'Zend/Tool/Project/Context/Filesystem/Directory.php';
  *
  * @category   Zend
  * @package    Zend_Tool
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Tool_Project_Context_Zf_ApisDirectory extends Zend_Tool_Project_Context_Filesystem_Directory
 {
-
     /**
      * @var string
      */
@@ -53,5 +52,4 @@ class Zend_Tool_Project_Context_Zf_ApisDirectory extends Zend_Tool_Project_Conte
     {
         return 'ApisDirectory';
     }
-
 }

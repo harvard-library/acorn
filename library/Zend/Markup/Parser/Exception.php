@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Markup
  * @subpackage Parser
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php,v 1.1 2013/09/10 14:37:06 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -28,11 +28,11 @@ require_once 'Zend/Markup/Exception.php';
 /**
  * Exception class for Zend_Markup_Parser
  *
- * @category   Zend 
+ * @category   Zend
  * @uses       Zend_Markup_Exception
  * @package    Zend_Markup
  * @subpackage Parser
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Markup_Parser_Exception extends Zend_Markup_Exception
