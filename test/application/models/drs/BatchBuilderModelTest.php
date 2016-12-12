@@ -12,10 +12,8 @@ class BatchBuilderModelTest extends PHPUnit_Framework_TestCase {
 	const SAMPLE_IMAGES_PATH = "/home/acorn/dev/public/sampleimages";
 	const SOURCE_PATH = "/home/acorn/dev/public/drs2sourceimages";
 	const IMAGE_NAME = "testimage.jpg";
-	const BB1_TEST_BATCH = "TEST_BATCH_BB1";
 	const BB2_TEST_BATCH_TEMPLATE = "TEST_BATCH_BB2_TEMPLATE";
 	const BB2_TEST_BATCH = "TEST_BATCH_BB2";
-	const BB1_BATCH_XML = "/home/acorn/dev/public/drsstagingfiles/TEST_BATCH_BB1/batch.xml";
 	//const BB2_OBJECT_XML = "/home/acorn/dev/public/drs2stagingfiles/_aux/TEST_BATCH_BB2/testimage/object.xml";
 	const BB2_BATCH_XML = "/home/acorn/dev/public/drs2stagingfiles/testBB2project/TEST_BATCH_BB2/batch.xml";
 	const BB2_DESCRIPTOR_XML = "/home/acorn/dev/public/drs2stagingfiles/testBB2project/TEST_BATCH_BB2/testimage/descriptor.xml";
@@ -38,18 +36,6 @@ class BatchBuilderModelTest extends PHPUnit_Framework_TestCase {
 	}
 
 	
-	/**
-	 * Tests that the batch directories get properly created for BB1
-	 */
-	public function testDirectoryCreationForBB1()
-	{
-		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-		$config->__set(DRSDropperConfig::DRS_VERSION, DRSDropperConfig::DRS);
-		BatchBuilderAssistant::createBB1DirectoryAndCopyFiles(self::SOURCE_PATH, self::IMAGE_NAME, self::BB1_TEST_BATCH, $config);
-		//Verify that the directories were made and the file was copied
-		$this->assertTrue(file_exists("/home/acorn/dev/public/drsstagingfiles/TEST_BATCH_BB1/deliverable/testimage.jpg"), "copy was unsuccessful: /home/acorn/dev/public/drsstagingfiles/TEST_BATCH_BB1/deliverable/testimage.jpg");
-		
-	}
 	
 	/**
 	 * Tests that the batch directories get properly created for BB2
@@ -57,27 +43,12 @@ class BatchBuilderModelTest extends PHPUnit_Framework_TestCase {
 	public function testDirectoryCreationForBB2()
 	{
 		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-		$config->__set(DRSDropperConfig::DRS_VERSION, DRSDropperConfig::DRS2);
 		$sourcefiles = array(self::IMAGE_NAME => self::IMAGE_NAME);
 		BatchBuilderAssistant::prepareTemplateDirectory(self::SOURCE_PATH, $sourcefiles, self::BB2_PROJECT_NAME, $config);
 		//Verify that the directories were made and the file was copied
 		$this->assertTrue(file_exists("/home/acorn/dev/public/drs2stagingfiles/testBB2project"), "project directory creation was unsuccessful: /home/acorn/dev/public/drs2stagingfiles/testBB2project");
 	}
 	
-	/**
-	 * Tests that the batch file is created for BB1
-	 */
-	public function testBatchFilesForBB1()
-	{
-		$config = Zend_Registry::getInstance()->get(ACORNConstants::CONFIG_NAME);
-		$config->__set(DRSDropperConfig::DRS_VERSION, DRSDropperConfig::DRS);
-		$batchbuilderassistant = new BatchBuilderAssistant($config->getStagingFileDirectory(), $config->getBbClientPath(), $config->getBbScriptName(), $config->getDRSVersion());
-		$batchbuilderassistant->execute(self::BB1_TEST_BATCH); 
-		
-		//Verify that the batch.xml file was created
-		$this->assertTrue(file_exists(self::BB1_BATCH_XML), "batch.xml was not created properly here: " . self::BB1_BATCH_XML);
-	
-	}
 	
 	/**
 	 * Tests that the batch file and descriptor file are created for BB2

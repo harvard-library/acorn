@@ -66,13 +66,6 @@ class BatchBuilderAssistant
 
     
     /**
-     * The version of the DRS being used (drs or drs2)
-     * 
-     * @var String
-     */
-    private $drsVersion;
-    
-    /**
      * The array of emails to send
      *
      * @var array
@@ -87,86 +80,17 @@ class BatchBuilderAssistant
      */
     private $failEmails = array();
 
-	public function __construct($projectDirectory, $bbClientPath, $bbScriptName, $drsVersion)
+	public function __construct($projectDirectory, $bbClientPath, $bbScriptName)
     {
     	$this->projectDirectory = $projectDirectory;
     	$this->bbClientPath = $bbClientPath;
     	$this->bbScriptName = $bbScriptName;
-    	$this->drsVersion = $drsVersion;
     }
     
     /**
-     * This runs BB.  It first determines whether to run BB1 or BB2 based on the
-     * DRS version and then calls the appropriate method to execute the CLI.
+     * This runs BB2
      */
     public function execute($batchDirectory)
-    {
-    	//DRS1
-    	if ($this->drsVersion == DRSDropperConfig::DRS)
-    	{
-    		return $this->executeBB1($batchDirectory);
-    	}
-    	//DRS2
-    	elseif ($this->drsVersion == DRSDropperConfig::DRS2)
-    	{
-    		return $this->executeBB2($batchDirectory);
-    	}
-    }
-    
-    /**
-     * Creates the batch.xml file and places it into the batch directory.
-     *
-     * @access public
-     * @return Boolean
-     */
-    private function executeBB1($batchDirectory)
-    {
-    	$overrides = "";
-    	$delimiter = "";
-    	if (!empty($this->successEmails))
-    	{
-    		$overrides = "successEmail=" . implode(",", $this->successEmails);
-    		$delimiter = ";";
-    	}
-    	if (!empty($this->failEmails))
-    	{
-    		$overrides .= $delimiter . "failureEmail=" . implode(",", $this->failEmails);
-    	}
-        $command = "cd " . $this->bbClientPath;
-    	$command .= " && sh " . $this->bbScriptName . " -a batch -p " . $this->projectDirectory . " -b " . $batchDirectory;
-		if (!empty($overrides))
-		{
-			$command .= " -o " . $overrides;
-		}
-		
-		Logger::log($command);
-		
-		//Create the batch file.
-		$output = shell_exec($command);
-		
-		//Change the permissions so that the files can be deleted via cron
-		exec("chmod -R o=rwx " . $this->projectDirectory . "/" . $batchDirectory);
-		//Change the permissions so that the files can be deleted via cron
-		exec("chmod -R o=rwx " . $this->projectDirectory . "/sync/" . $batchDirectory);
-		
-		$fileexists = file_exists($this->projectDirectory . "/" . $batchDirectory . "/batch.xml");
-		if (!$fileexists)
-		{
-			throw new DRSServiceException($output);
-		}
-		
-		//Check to see if the file was created properly
-		return $fileexists;
-    }
-    
-    /**
-     * Creates the batch and objects from the template
-     * Creates the batch.xml and descriptor.xml file and places it into the batch directory.
-     *
-     * @access public
-     * @return Boolean
-     */
-    private function executeBB2($batchDirectory)
     {
     	$batchcreated = $this->createBatchFromTemplate($batchDirectory);
     	$batchprocessed = $this->processBatch($batchDirectory);
@@ -336,7 +260,7 @@ class BatchBuilderAssistant
 	 * @param String $batchnameforimages - The name for the batch
 	 * @param DRSDropperConfig $config
 	 * @param boolean $tryCopyAgain - If the copy function fails, this gives it a second chance.
-	 * @throws DRSServicException
+	 * @throws DRSServiceException
 	 */
 	public static function prepareTemplateDirectory($sourcePath, array $sourcefiles, $projectName, DRSDropperConfig $config, $tryCopyAgain = TRUE)
 	{
@@ -375,7 +299,7 @@ class BatchBuilderAssistant
 				//Delete the source files and the project/template files.
 				self::deleteSourceFiles($sourcePath);
 				self::deleteProjectTemplateFiles($projectDirectoryTemplatePath);
-				throw new DRSServicException("Files were not copied from the temporary directory to the DRS staging area properly.  Please upload again.");
+				throw new DRSServiceException("Files were not copied from the temporary directory to the DRS staging area properly.  Please upload again.");
 			}
 		}
 		
@@ -383,7 +307,7 @@ class BatchBuilderAssistant
 		$deleted = self::deleteSourceFiles($sourcePath);
 		if (!$deleted)
 		{
-			throw new DRSServicException("Could not delete the source files.");
+			throw new DRSServiceException("Could not delete the source files.");
 		}
 	}
 	
@@ -444,7 +368,6 @@ class BatchBuilderAssistant
 			//If the file was created properly, create the project.conf file from the project.conf.template
 			if ($projectdirexists)
 			{
-				//self::createProjectTemplateDirectory($config, $projectName);
 				self::createProjectConfigurationFile($config, $projectName);
 				self::createProjectAuxDirectories($config, $projectDir);
 			}
@@ -456,22 +379,7 @@ class BatchBuilderAssistant
 			
 		return $projectDir;
 	}
-	/**
-	 *
-	 * @param DRSDropperConfig $config
-	 * @param String $projectName
-	 * @return boolean - TRUE if the project template directory exists after the method
-	 */
-	private static function createProjectTemplateDirectory(DRSDropperConfig $config, $projectDirectoryPath)
-	{
-		$projectTemplate = $projectDirectoryPath . "/" . self::PROJECT_TEMPLATE_IMAGE_DIR;
-		if (!file_exists($projectTemplate))
-		{
-			mkdir($projectTemplate, 0777, TRUE);
-			exec("chmod -R o=rwx " . $projectTemplate);
-		}
-		return file_exists($projectTemplate);
-	}
+
 	
 	/**
 	 * 
@@ -517,43 +425,6 @@ class BatchBuilderAssistant
 		$projectconffile = file_get_contents($projectConf);
 		$projectconffile = str_replace(self::PROJECT_NAME_VARIABLE, $projectName, $projectconffile);
 		file_put_contents($projectConf, $projectconffile);
-	}
-	
-	/**
-	 * This creates the batch directory under the project directory
-	 * @param String $sourcePath
-	 * @param String $filename
-	 * @param String $batchnameforimages
-	 * @param DRSDropperConfig $config
-	 */
-	public static function createBB1DirectoryAndCopyFiles($sourcePath, $sourcefiles, $batchnameforimages, DRSDropperConfig $config)
-	{
-		
-		$targetpath = $config->getStagingFileDirectory() . "/" . $batchnameforimages . "/" . $config->getBatchType();
-		
-		//If the destination does not exist, make the directory
-		if (!file_exists($targetpath))
-		{
-			mkdir($targetpath, 0777, TRUE);
-		}
-		
-		foreach ($sourcefiles as $sourcefile => $destinationfilename)
-		{
-			copy($sourcePath . "/" . $sourcefile, $targetpath . "/" . $destinationfilename);
-		}
-		
-		$originalfiles = scandir($sourcePath);
-		$files = scandir($targetpath);
-		//Should be =
-		$success = count($originalfiles) == count($files);
-		
-		//Delete the source file if the copy was successful.
-		if ($success)
-		{
-			$success = self::deleteSourceFiles($sourcePath);
-		}
-		
-		return $success;
 	}
 
 

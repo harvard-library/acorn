@@ -46,6 +46,8 @@ chmod -R o=rwx /home/acorn/<instance>/public/drsstagingfiles/drs2
 
 Create the crontab.  Cron info is in the conf/crontab.txt file
 
+Copy the project.conf.template file into the staging files directory (drs2).
+
 ACORN also requires that keys be set up for the DRS dropboxes:
 The prod requirements are:
 
