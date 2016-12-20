@@ -1,12 +1,9 @@
 //PROD
-//var baseUrl = "https://acorn.lib.harvard.edu:8881/";
+var baseUrl = "https://acorn.lib.harvard.edu:8881/";
 //DEV
-//var baseUrl = "https://amy.lts.harvard.edu:8881/";
-//var baseUrl = "https://sal.hul.harvard.edu:8883/";
-//var baseUrl = "https://acorn.local/";
+//var baseUrl = "https://amy.lts.harvard.edu:8883/";
 //QA
-var baseUrl = "https://amy.lts.harvard.edu:8881/";
-//var baseUrl = "https://sal.hul.harvard.edu:8884/";
+//var baseUrl = "https://amy.lts.harvard.edu:8884/";
 var accesslevel = 'None';
 var curators;
 
