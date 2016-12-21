@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mcrypt.php,v 1.1 2013/09/10 14:37:08 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -24,12 +24,15 @@
  */
 require_once 'Zend/Filter/Encrypt/Interface.php';
 
+/** @see Zend_Crypt_Math */
+require_once 'Zend/Crypt/Math.php';
+
 /**
  * Encryption adapter for mcrypt
  *
  * @category   Zend
  * @package    Zend_Filter
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
@@ -355,9 +358,8 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
         if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
             return;
         }
-
         if (!self::$_srandCalled) {
-            srand((double) microtime() * 1000000);
+            srand(Zend_Crypt_Math::randInteger(0, PHP_INT_MAX));
             self::$_srandCalled = true;
         }
     }

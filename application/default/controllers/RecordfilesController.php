@@ -377,7 +377,7 @@ class RecordfilesController extends Zend_Controller_Action
     	//Assume that the file is a text file.
     	if (strrpos($filename, ".") === FALSE)
     	{
-    		$filename .= ".txt";
+            $filename .= ".txt";
     	}
     	
     	$filetype = AcornFile::parseFileType($filename);
@@ -386,33 +386,34 @@ class RecordfilesController extends Zend_Controller_Action
     	$strippedfilename = substr($filename, 0, strrpos($filename, "."));
     	$newfilename = $strippedfilename;
     	//Get the file suffix
-	    $suffix = substr($filename, strrpos($filename, ".")+1);
+	$suffix = substr($filename, strrpos($filename, ".")+1);
 	    	
-	    //Files are being stored on the local server.
+	//Files are being stored on the local server.
     	if ($filetype != "Image")
     	{
-	    	$targetpath = $filesdirectory;
-    		$fullpath = $targetpath . "/" . $filename;
-    		$counter = 1;
-    		//Loop through the files until the filename name doesn't exist.
-	    	while (file_exists($fullpath))
-	        {
-	        	$newfilename = $strippedfilename . "_" . $counter . "." . $suffix;
-	        	$fullpath = $targetpath . "/" . $newfilename;
-	        	$counter++;
-	        }
-	        
+	    $targetpath = $filesdirectory;
+            $counter = 1;
+            $newfilename = $strippedfilename . "_" . $counter . "." . $suffix;
+            $fullpath = $targetpath . "/" . $newfilename;
+
+            //Loop through the files until the filename name doesn't exist.
+	    while (file_exists($fullpath))
+	    {
+	       	$counter++;
+	       	$newfilename = $strippedfilename . "_" . $counter . "." . $suffix;
+	       	$fullpath = $targetpath . "/" . $newfilename;
+	    }	        
     	}
     	else 
     	{
-    		$counter = 1;
-    		//Loop through the database filenames until the filename does not exist.
-    		while (FilesDAO::getFilesDAO()->filenameExists($newfilename))
-    		{
-    			$newfilename = $strippedfilename . "_" . $counter;
-    			$counter++;
-    		}
-    		$newfilename .= '.' . $suffix;
+            $counter = 1;
+            //Loop through the database filenames until the filename does not exist.
+            while (FilesDAO::getFilesDAO()->filenameExists($newfilename))
+            {
+                $newfilename = $strippedfilename . "_" . $counter;
+    		$counter++;
+            }
+            $newfilename .= '.' . $suffix;
     	}
     	$filename = $newfilename;
     	return $filename;

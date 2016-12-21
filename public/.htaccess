@@ -2,8 +2,6 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /(.*)index\.php(.*)\ HTTP/ [NC]
-RewriteRule ^index\.php(.*)$ /$1 [R=301,L]
 
 # Security: Don't allow browsing of directories
 Options -Indexes

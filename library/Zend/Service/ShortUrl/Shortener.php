@@ -14,32 +14,32 @@
  *
  * @category   Zend
  * @package    Zend_Service_ShortUrl
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Shortener.php,v 1.1 2013/09/10 14:36:45 vcrema Exp $
+ * @version    $Id: $
  */
 
 /**
  * @category   Zend
  * @package    Zend_Service_ShortUrl
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_Service_ShortUrl_Shortener
 {
     /**
      * This function shortens long url
-     * 
+     *
      * @param  string $url URL to Shorten
      * @return string Shortened Url
      */
-    function shorten($shortenedUrl);
-    
+    public function shorten($url);
+
     /**
      * Reveals target for short URL
      *
      * @param  string $shortenedUrl URL to reveal target of
      * @return string Unshortened Url
      */
-    function unshorten($shortenedUrl);
+    public function unshorten($shortenedUrl);
 }

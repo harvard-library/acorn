@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Barcode.php,v 1.1 2013/09/10 14:36:15 vcrema Exp $
+ * @version    $Id$
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category   Zend
  * @package    Zend_Barcode
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Barcode
@@ -55,10 +55,10 @@ class Zend_Barcode
      * @throws Zend_Barcode_Exception
      */
     public static function factory(
-        $barcode, 
-        $renderer = 'image', 
-        $barcodeConfig = array(), 
-        $rendererConfig = array(), 
+        $barcode,
+        $renderer = 'image',
+        $barcodeConfig = array(),
+        $rendererConfig = array(),
         $automaticRenderError = true
     ) {
         /*
@@ -313,9 +313,9 @@ class Zend_Barcode
      * @param array | Zend_Config $rendererConfig
      */
     public static function render(
-        $barcode, 
-        $renderer, 
-        $barcodeConfig = array(), 
+        $barcode,
+        $renderer,
+        $barcodeConfig = array(),
         $rendererConfig = array()
     ) {
         self::factory($barcode, $renderer, $barcodeConfig, $rendererConfig)->render();
@@ -331,9 +331,9 @@ class Zend_Barcode
      * @return mixed
      */
     public static function draw(
-        $barcode, 
-        $renderer, 
-        $barcodeConfig = array(), 
+        $barcode,
+        $renderer,
+        $barcodeConfig = array(),
         $rendererConfig = array()
     ) {
         return self::factory($barcode, $renderer, $barcodeConfig, $rendererConfig)->draw();
