@@ -1113,7 +1113,7 @@ UNLOCK TABLES;
 /*!50001 DROP TABLE `CombinedRecords`*/;
 /*!50001 DROP VIEW IF EXISTS `CombinedRecords`*/;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`acorndev`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`acorn`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `CombinedRecords` AS (select _latin1'Item' AS `RecordType`,`t`.`ItemID` AS `RecordID`,`i`.`IdentificationID` AS `IdentificationID`,`i`.`PurposeID` AS `PurposeID`,`i`.`HomeLocationID` AS `HomeLocationID`,`i`.`ChargeToID` AS `ChargeToID`,`i`.`Title` AS `Title`,`i`.`DepartmentID` AS `DepartmentID`,`i`.`GroupID` AS `GroupID`,`i`.`ProjectID` AS `ProjectID`,`i`.`Comments` AS `Comments`,`i`.`Inactive` AS `Inactive`,`i`.`EditCounter` AS `EditCounter`,`i`.`NonDigitalImagesExist` AS `NonDigitalImagesExist`,`i`.`IsBeingEdited` AS `IsBeingEdited`,`i`.`EditedByID` AS `EditedByID`,`i`.`CuratorID` AS `CuratorID`,`i`.`ApprovingCuratorID` AS `ApprovingCuratorID`,`t`.`FormatID` AS `FormatID`,`t`.`CoordinatorID` AS `CoordinatorID`,`t`.`IsNonCollectionMaterial` AS `IsNonCollectionMaterial`,`t`.`ExpectedDateOfReturn` AS `ExpectedDateOfReturn`,`t`.`InsuranceValue` AS `InsuranceValue`,`t`.`FundMemo` AS `FundMemo`,`t`.`AuthorArtist` AS `AuthorArtist`,`t`.`DateOfObject` AS `DateOfObject`,`t`.`CollectionName` AS `CollectionName`,`t`.`Storage` AS `Storage`,`i`.`ManuallyClosed` AS `ManuallyClosed`,`i`.`ManuallyClosedDate` AS `ManuallyClosedDate` from (`ItemIdentification` `i` join `Items` `t` on((`i`.`IdentificationID` = `t`.`IdentificationID`)))) */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
