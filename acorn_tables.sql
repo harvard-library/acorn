@@ -1,8 +1,8 @@
--- MySQL dump 10.11
+-- MySQL dump 10.13  Distrib 5.5.52, for Linux (x86_64)
 --
--- Host: localhost    Database: acorntest
+-- Host: localhost    Database: acornosdev
 -- ------------------------------------------------------
--- Server version	5.0.95
+-- Server version	5.5.52
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS `AuditTrail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `AuditTrail` (
-  `AuditTrailID` int(10) unsigned NOT NULL auto_increment,
+  `AuditTrailID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `PersonID` int(10) unsigned NOT NULL,
-  `ActionType` enum('Insert','Update','Delete') NOT NULL default 'Insert',
+  `ActionType` enum('Insert','Update','Delete') NOT NULL DEFAULT 'Insert',
   `Date` datetime NOT NULL,
-  `Details` varchar(1024) default NULL,
+  `Details` varchar(1024) DEFAULT NULL,
   `TableName` varchar(255) NOT NULL,
   `PKID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`AuditTrailID`),
+  PRIMARY KEY (`AuditTrailID`),
   KEY `AuditTrail_FKIndex1` (`PersonID`),
   CONSTRAINT `Audit_Person` FOREIGN KEY (`PersonID`) REFERENCES `People` (`PersonID`) ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=49480 DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -53,14 +53,14 @@ DROP TABLE IF EXISTS `Autotext`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Autotext` (
-  `AutotextID` int(10) unsigned NOT NULL auto_increment,
+  `AutotextID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Caption` varchar(255) NOT NULL,
   `Autotext` text,
-  `PersonID` int(10) unsigned default NULL,
-  `AutotextType` enum('Dependency','Treatment','Description','Condition','Preservation','ProposedTreatment') default NULL,
-  `DependentAutotextID` int(10) unsigned default NULL,
-  `IsGlobal` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`AutotextID`),
+  `PersonID` int(10) unsigned DEFAULT NULL,
+  `AutotextType` enum('Dependency','Treatment','Description','Condition','Preservation','ProposedTreatment') DEFAULT NULL,
+  `DependentAutotextID` int(10) unsigned DEFAULT NULL,
+  `IsGlobal` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`AutotextID`),
   KEY `Person_AutoText` (`PersonID`),
   CONSTRAINT `Person_AutoText` FOREIGN KEY (`PersonID`) REFERENCES `People` (`PersonID`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8 PACK_KEYS=0 COMMENT='This is used to help populate certain fields.';
@@ -84,8 +84,8 @@ DROP TABLE IF EXISTS `CallNumbers`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CallNumbers` (
   `CallNumber` varchar(255) NOT NULL,
-  `IdentificationID` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`CallNumber`,`IdentificationID`),
+  `IdentificationID` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`CallNumber`,`IdentificationID`),
   KEY `CallNumbers_Ident` (`IdentificationID`),
   CONSTRAINT `Call_ItemIdent` FOREIGN KEY (`IdentificationID`) REFERENCES `ItemIdentification` (`IdentificationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -106,11 +106,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ChargeTo`;
 /*!50001 DROP VIEW IF EXISTS `ChargeTo`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 /*!50001 CREATE TABLE `ChargeTo` (
-  `ChargeToID` varbinary(21),
-  `ChargeToName` varchar(255),
-  `ChargeToType` varchar(10)
+  `ChargeToID` tinyint NOT NULL,
+  `ChargeToName` tinyint NOT NULL,
+  `ChargeToType` tinyint NOT NULL
 ) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Temporary table structure for view `CombinedRecords`
@@ -118,38 +121,41 @@ DROP TABLE IF EXISTS `ChargeTo`;
 
 DROP TABLE IF EXISTS `CombinedRecords`;
 /*!50001 DROP VIEW IF EXISTS `CombinedRecords`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 /*!50001 CREATE TABLE `CombinedRecords` (
-  `RecordType` varchar(4),
-  `RecordID` int(10) unsigned,
-  `IdentificationID` int(10) unsigned,
-  `PurposeID` int(10) unsigned,
-  `HomeLocationID` int(10) unsigned,
-  `ChargeToID` varchar(50),
-  `Title` varchar(255),
-  `DepartmentID` int(10) unsigned,
-  `GroupID` int(10) unsigned,
-  `ProjectID` int(10) unsigned,
-  `Comments` text,
-  `Inactive` tinyint(1) unsigned,
-  `EditCounter` int(10) unsigned,
-  `NonDigitalImagesExist` tinyint(1) unsigned,
-  `IsBeingEdited` tinyint(1) unsigned,
-  `EditedByID` int(10) unsigned,
-  `CuratorID` int(10) unsigned,
-  `ApprovingCuratorID` int(10) unsigned,
-  `FormatID` int(10) unsigned,
-  `CoordinatorID` int(10) unsigned,
-  `IsNonCollectionMaterial` tinyint(1) unsigned,
-  `ExpectedDateOfReturn` date,
-  `InsuranceValue` decimal(10,2),
-  `FundMemo` text,
-  `AuthorArtist` varchar(255),
-  `DateOfObject` varchar(50),
-  `CollectionName` varchar(1000),
-  `Storage` varchar(255),
-  `ManuallyClosed` tinyint(1),
-  `ManuallyClosedDate` datetime
+  `RecordType` tinyint NOT NULL,
+  `RecordID` tinyint NOT NULL,
+  `IdentificationID` tinyint NOT NULL,
+  `PurposeID` tinyint NOT NULL,
+  `HomeLocationID` tinyint NOT NULL,
+  `ChargeToID` tinyint NOT NULL,
+  `Title` tinyint NOT NULL,
+  `DepartmentID` tinyint NOT NULL,
+  `GroupID` tinyint NOT NULL,
+  `ProjectID` tinyint NOT NULL,
+  `Comments` tinyint NOT NULL,
+  `Inactive` tinyint NOT NULL,
+  `EditCounter` tinyint NOT NULL,
+  `NonDigitalImagesExist` tinyint NOT NULL,
+  `IsBeingEdited` tinyint NOT NULL,
+  `EditedByID` tinyint NOT NULL,
+  `CuratorID` tinyint NOT NULL,
+  `ApprovingCuratorID` tinyint NOT NULL,
+  `FormatID` tinyint NOT NULL,
+  `CoordinatorID` tinyint NOT NULL,
+  `IsNonCollectionMaterial` tinyint NOT NULL,
+  `ExpectedDateOfReturn` tinyint NOT NULL,
+  `InsuranceValue` tinyint NOT NULL,
+  `FundMemo` tinyint NOT NULL,
+  `AuthorArtist` tinyint NOT NULL,
+  `DateOfObject` tinyint NOT NULL,
+  `CollectionName` tinyint NOT NULL,
+  `Storage` tinyint NOT NULL,
+  `ManuallyClosed` tinyint NOT NULL,
+  `ManuallyClosedDate` tinyint NOT NULL
 ) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `Departments`
@@ -159,13 +165,13 @@ DROP TABLE IF EXISTS `Departments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Departments` (
-  `DepartmentID` int(10) unsigned NOT NULL auto_increment,
+  `DepartmentID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `LocationID` int(10) unsigned NOT NULL,
   `DepartmentName` varchar(255) NOT NULL,
-  `ShortName` varchar(50) default NULL,
-  `Acronym` varchar(10) default NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`DepartmentID`),
+  `ShortName` varchar(50) DEFAULT NULL,
+  `Acronym` varchar(10) DEFAULT NULL,
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`DepartmentID`),
   KEY `Departments_FKIndex1` (`LocationID`)
 ) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -187,18 +193,18 @@ DROP TABLE IF EXISTS `Files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Files` (
-  `FileID` int(10) unsigned NOT NULL auto_increment,
+  `FileID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `PKID` int(10) unsigned NOT NULL,
   `Path` varchar(255) NOT NULL,
   `Description` text,
-  `FileType` varchar(255) NOT NULL default 'Image',
-  `LinkType` enum('Item','OSW','Group') NOT NULL default 'Item',
+  `FileType` varchar(255) NOT NULL DEFAULT 'Image',
+  `LinkType` enum('Item','OSW','Group') NOT NULL DEFAULT 'Item',
   `DateEntered` datetime NOT NULL,
   `LastModified` datetime NOT NULL,
   `FileName` varchar(500) NOT NULL,
-  `UploadStatus` enum('Pending','Complete') default NULL,
-  `EnteredByID` int(10) unsigned default NULL,
-  PRIMARY KEY  (`FileID`),
+  `UploadStatus` enum('Pending','Complete') DEFAULT NULL,
+  `EnteredByID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`FileID`),
   KEY `Files_FKIndex1` (`PKID`),
   KEY `Files_EnteredBy` (`EnteredByID`),
   CONSTRAINT `Files_EnteredBy` FOREIGN KEY (`EnteredByID`) REFERENCES `People` (`PersonID`)
@@ -222,11 +228,11 @@ DROP TABLE IF EXISTS `Formats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Formats` (
-  `FormatID` int(10) unsigned NOT NULL auto_increment,
+  `FormatID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Format` varchar(255) NOT NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  `Rank` int(10) unsigned NOT NULL default '500',
-  PRIMARY KEY  (`FormatID`)
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `Rank` int(10) unsigned NOT NULL DEFAULT '500',
+  PRIMARY KEY (`FormatID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -247,13 +253,13 @@ DROP TABLE IF EXISTS `Groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Groups` (
-  `GroupID` int(10) unsigned NOT NULL auto_increment,
+  `GroupID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `GroupName` varchar(255) NOT NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  `ProjectID` int(10) unsigned default NULL,
-  `IsBeingEdited` tinyint(1) unsigned NOT NULL default '0',
-  `EditedByID` int(10) unsigned default NULL,
-  PRIMARY KEY  (`GroupID`),
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ProjectID` int(10) unsigned DEFAULT NULL,
+  `IsBeingEdited` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `EditedByID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`GroupID`),
   KEY `Groups_FKIndex1` (`ProjectID`),
   CONSTRAINT `Groups_Project` FOREIGN KEY (`ProjectID`) REFERENCES `Projects` (`ProjectID`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -276,10 +282,10 @@ DROP TABLE IF EXISTS `Importances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Importances` (
-  `ImportanceID` int(10) unsigned NOT NULL auto_increment,
+  `ImportanceID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Importance` varchar(255) NOT NULL,
-  `Inactive` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`ImportanceID`)
+  `Inactive` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ImportanceID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -303,8 +309,8 @@ CREATE TABLE `InitialCounts` (
   `ItemID` int(10) unsigned NOT NULL,
   `CountType` enum('Volumes','Sheets','Photos','Other','Boxes') NOT NULL,
   `TotalCount` int(10) unsigned NOT NULL,
-  `Description` varchar(255) default NULL,
-  PRIMARY KEY  (`ItemID`,`CountType`,`TotalCount`),
+  `Description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ItemID`,`CountType`,`TotalCount`),
   KEY `InitialCounts_FKIndex1` (`ItemID`),
   CONSTRAINT `InitCt_Item` FOREIGN KEY (`ItemID`) REFERENCES `Items` (`ItemID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -330,7 +336,7 @@ CREATE TABLE `ItemConservators` (
   `PersonID` int(10) unsigned NOT NULL,
   `ReportID` int(10) unsigned NOT NULL,
   `CompletedHours` decimal(10,2) NOT NULL,
-  `DateCompleted` date default NULL,
+  `DateCompleted` date DEFAULT NULL,
   KEY `Preservation_FKIndex1` (`PersonID`),
   KEY `ItemConservators_FKIndex2` (`ReportID`),
   CONSTRAINT `Cons_Person` FOREIGN KEY (`PersonID`) REFERENCES `People` (`PersonID`),
@@ -355,25 +361,25 @@ DROP TABLE IF EXISTS `ItemIdentification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ItemIdentification` (
-  `IdentificationID` int(10) unsigned NOT NULL auto_increment,
+  `IdentificationID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `PurposeID` int(10) unsigned NOT NULL,
   `HomeLocationID` int(10) unsigned NOT NULL,
-  `Title` varchar(255) default NULL,
-  `DepartmentID` int(10) unsigned default NULL,
-  `GroupID` int(10) unsigned default NULL,
-  `ProjectID` int(10) unsigned default NULL,
+  `Title` varchar(255) DEFAULT NULL,
+  `DepartmentID` int(10) unsigned DEFAULT NULL,
+  `GroupID` int(10) unsigned DEFAULT NULL,
+  `ProjectID` int(10) unsigned DEFAULT NULL,
   `Comments` text,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  `EditCounter` int(10) unsigned default NULL,
-  `NonDigitalImagesExist` tinyint(1) unsigned NOT NULL default '0',
-  `IsBeingEdited` tinyint(1) unsigned NOT NULL default '0',
-  `EditedByID` int(10) unsigned default NULL,
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `EditCounter` int(10) unsigned DEFAULT NULL,
+  `NonDigitalImagesExist` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `IsBeingEdited` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `EditedByID` int(10) unsigned DEFAULT NULL,
   `CuratorID` int(10) unsigned NOT NULL,
   `ApprovingCuratorID` int(10) unsigned NOT NULL,
-  `ManuallyClosed` tinyint(1) NOT NULL default '0',
-  `ManuallyClosedDate` datetime default NULL,
-  `ChargeToID` varchar(50) default NULL,
-  PRIMARY KEY  (`IdentificationID`),
+  `ManuallyClosed` tinyint(1) NOT NULL DEFAULT '0',
+  `ManuallyClosedDate` datetime DEFAULT NULL,
+  `ChargeToID` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`IdentificationID`),
   KEY `ItemIdentification_Purpose` (`PurposeID`),
   KEY `ItemIdentification_HomeLoc` (`HomeLocationID`),
   KEY `ItemIdentification_FKIndex3` (`DepartmentID`),
@@ -409,7 +415,7 @@ DROP TABLE IF EXISTS `ItemImportances`;
 CREATE TABLE `ItemImportances` (
   `ImportanceID` int(10) unsigned NOT NULL,
   `ReportID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`ImportanceID`,`ReportID`),
+  PRIMARY KEY (`ImportanceID`,`ReportID`),
   KEY `ItemImportances_FKIndex2` (`ImportanceID`),
   KEY `ItemImportances_Rep` (`ReportID`),
   CONSTRAINT `ItemImp_Imp` FOREIGN KEY (`ImportanceID`) REFERENCES `Importances` (`ImportanceID`),
@@ -434,13 +440,13 @@ DROP TABLE IF EXISTS `ItemLogin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ItemLogin` (
-  `LoginID` int(10) unsigned NOT NULL auto_increment,
+  `LoginID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IdentificationID` int(10) unsigned NOT NULL,
   `LoginByID` int(10) unsigned NOT NULL,
   `LoginDate` date NOT NULL,
   `FromLocationID` int(10) unsigned NOT NULL,
   `ToLocationID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`LoginID`),
+  PRIMARY KEY (`LoginID`),
   KEY `ItemLogin_LoginBy` (`LoginByID`),
   KEY `ItemLogin_Ident` (`IdentificationID`),
   CONSTRAINT `Login_Ident` FOREIGN KEY (`IdentificationID`) REFERENCES `ItemIdentification` (`IdentificationID`) ON DELETE CASCADE,
@@ -465,13 +471,13 @@ DROP TABLE IF EXISTS `ItemLogout`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ItemLogout` (
-  `LogoutID` int(10) unsigned NOT NULL auto_increment,
+  `LogoutID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `LogoutByID` int(10) unsigned NOT NULL,
   `IdentificationID` int(10) unsigned NOT NULL,
   `LogoutDate` date NOT NULL,
   `ToLocationID` int(10) unsigned NOT NULL,
   `FromLocationID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`LogoutID`),
+  PRIMARY KEY (`LogoutID`),
   KEY `ItemLogout_FKIndex2` (`LogoutByID`),
   KEY `ItemLogout_Ident` (`IdentificationID`),
   CONSTRAINT `Logout_Ident` FOREIGN KEY (`IdentificationID`) REFERENCES `ItemIdentification` (`IdentificationID`) ON DELETE CASCADE,
@@ -496,7 +502,7 @@ DROP TABLE IF EXISTS `ItemProposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ItemProposal` (
-  `ProposalID` int(10) unsigned NOT NULL auto_increment,
+  `ProposalID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IdentificationID` int(10) unsigned NOT NULL,
   `ProposalDate` date NOT NULL,
   `Description` text,
@@ -504,13 +510,13 @@ CREATE TABLE `ItemProposal` (
   `Treatment` text,
   `MinimumProposedHours` decimal(10,2) NOT NULL,
   `MaximumProposedHours` decimal(10,2) NOT NULL,
-  `Height` decimal(10,2) default NULL,
-  `Width` decimal(10,2) default NULL,
-  `Thickness` decimal(10,2) default NULL,
-  `DimensionUnit` enum('cm','in') default NULL,
-  `ExamDate` date default NULL,
-  `ExamLocationID` int(10) unsigned default NULL,
-  PRIMARY KEY  (`ProposalID`),
+  `Height` decimal(10,2) DEFAULT NULL,
+  `Width` decimal(10,2) DEFAULT NULL,
+  `Thickness` decimal(10,2) DEFAULT NULL,
+  `DimensionUnit` enum('cm','in') DEFAULT NULL,
+  `ExamDate` date DEFAULT NULL,
+  `ExamLocationID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ProposalID`),
   KEY `ItemProposal_Ident` (`IdentificationID`),
   KEY `ItemProposal_FKIndex3` (`ExamLocationID`),
   CONSTRAINT `Prop_ExamLoc` FOREIGN KEY (`ExamLocationID`) REFERENCES `Locations` (`LocationID`),
@@ -535,24 +541,24 @@ DROP TABLE IF EXISTS `ItemReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ItemReport` (
-  `ReportID` int(10) unsigned NOT NULL auto_increment,
-  `FormatID` int(10) unsigned default NULL,
+  `ReportID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `FormatID` int(10) unsigned DEFAULT NULL,
   `IdentificationID` int(10) unsigned NOT NULL,
   `ReportByID` int(10) unsigned NOT NULL,
   `ReportDate` date NOT NULL,
   `Treatment` text,
   `Summary` text,
-  `Height` decimal(10,2) default NULL,
-  `Width` decimal(10,2) default NULL,
-  `Thickness` decimal(10,2) default NULL,
-  `DimensionUnit` varchar(10) default NULL,
+  `Height` decimal(10,2) DEFAULT NULL,
+  `Width` decimal(10,2) DEFAULT NULL,
+  `Thickness` decimal(10,2) DEFAULT NULL,
+  `DimensionUnit` varchar(10) DEFAULT NULL,
   `WorkLocationID` int(10) unsigned NOT NULL,
-  `ExamOnly` tinyint(1) unsigned NOT NULL default '0',
-  `CustomHousingOnly` tinyint(1) unsigned NOT NULL default '0',
-  `AdminOnly` tinyint(1) unsigned NOT NULL default '0',
+  `ExamOnly` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `CustomHousingOnly` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `AdminOnly` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `PreservationRecommendations` text,
-  `AdditionalMaterialsOnFile` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`ReportID`),
+  `AdditionalMaterialsOnFile` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ReportID`),
   KEY `ItemReport_FKIndex2` (`ReportByID`),
   KEY `ItemReport_FKIndex3` (`FormatID`),
   KEY `ItemReport_Ident` (`IdentificationID`),
@@ -581,21 +587,21 @@ DROP TABLE IF EXISTS `Items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Items` (
-  `ItemID` int(10) unsigned NOT NULL auto_increment,
-  `FormatID` int(10) unsigned default NULL,
+  `ItemID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `FormatID` int(10) unsigned DEFAULT NULL,
   `IdentificationID` int(10) unsigned NOT NULL,
   `CoordinatorID` int(10) unsigned NOT NULL,
-  `IsNonCollectionMaterial` tinyint(1) unsigned NOT NULL default '0',
-  `Fund` varchar(255) default NULL,
-  `InsuranceValue` decimal(10,2) default NULL,
+  `IsNonCollectionMaterial` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `Fund` varchar(255) DEFAULT NULL,
+  `InsuranceValue` decimal(10,2) DEFAULT NULL,
   `FundMemo` text,
-  `AuthorArtist` varchar(255) default NULL,
-  `DateOfObject` varchar(50) default NULL,
-  `EditCounter` int(10) unsigned default NULL,
-  `CollectionName` varchar(1000) default NULL,
-  `Storage` varchar(255) default NULL,
-  `ExpectedDateOfReturn` date default NULL,
-  PRIMARY KEY  (`ItemID`),
+  `AuthorArtist` varchar(255) DEFAULT NULL,
+  `DateOfObject` varchar(50) DEFAULT NULL,
+  `EditCounter` int(10) unsigned DEFAULT NULL,
+  `CollectionName` varchar(1000) DEFAULT NULL,
+  `Storage` varchar(255) DEFAULT NULL,
+  `ExpectedDateOfReturn` date DEFAULT NULL,
+  PRIMARY KEY (`ItemID`),
   KEY `Item_Coord` (`CoordinatorID`),
   KEY `Item_FKIndex5` (`IdentificationID`),
   KEY `Items_FKIndex4` (`FormatID`),
@@ -622,15 +628,15 @@ DROP TABLE IF EXISTS `LocationHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `LocationHistory` (
-  `LocationHistoryID` int(10) unsigned NOT NULL auto_increment,
+  `LocationHistoryID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ItemID` int(10) unsigned NOT NULL,
   `DateIn` datetime NOT NULL,
   `LocationID` int(10) unsigned NOT NULL,
-  `DateOut` datetime default NULL,
-  `IsPartial` tinyint(1) unsigned NOT NULL default '0',
-  `IsTemporary` tinyint(1) unsigned NOT NULL default '0',
+  `DateOut` datetime DEFAULT NULL,
+  `IsPartial` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `IsTemporary` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `PartialComments` text,
-  PRIMARY KEY  (`LocationHistoryID`),
+  PRIMARY KEY (`LocationHistoryID`),
   KEY `LocationHistory_FKIndex1` (`LocationID`),
   KEY `LocationHistory_FKIndex2` (`ItemID`),
   CONSTRAINT `LocHist_Item` FOREIGN KEY (`ItemID`) REFERENCES `Items` (`ItemID`) ON DELETE CASCADE,
@@ -655,15 +661,15 @@ DROP TABLE IF EXISTS `Locations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Locations` (
-  `LocationID` int(10) unsigned NOT NULL auto_increment,
+  `LocationID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Location` varchar(255) NOT NULL,
-  `TUB` varchar(100) default NULL,
-  `ShortName` varchar(50) default NULL,
-  `Acronym` varchar(10) default NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  `IsRepository` tinyint(1) unsigned NOT NULL default '1',
-  `IsWorkLocation` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`LocationID`)
+  `TUB` varchar(100) DEFAULT NULL,
+  `ShortName` varchar(50) DEFAULT NULL,
+  `Acronym` varchar(10) DEFAULT NULL,
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `IsRepository` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `IsWorkLocation` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`LocationID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -684,13 +690,13 @@ DROP TABLE IF EXISTS `OSW`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `OSW` (
-  `OSWID` int(10) unsigned NOT NULL auto_increment,
-  `IdentificationID` int(10) unsigned default NULL,
-  `ProposedHours` decimal(10,2) default NULL,
-  `WorkStartDate` date default NULL,
-  `WorkEndDate` date default NULL,
-  `FormatID` int(10) unsigned default NULL,
-  PRIMARY KEY  (`OSWID`),
+  `OSWID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `IdentificationID` int(10) unsigned DEFAULT NULL,
+  `ProposedHours` decimal(10,2) DEFAULT NULL,
+  `WorkStartDate` date DEFAULT NULL,
+  `WorkEndDate` date DEFAULT NULL,
+  `FormatID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`OSWID`),
   KEY `OSW_FKIndex1` (`IdentificationID`),
   KEY `OSW_Format` (`FormatID`),
   CONSTRAINT `OSW_Format` FOREIGN KEY (`FormatID`) REFERENCES `Formats` (`FormatID`) ON DELETE SET NULL,
@@ -717,7 +723,7 @@ DROP TABLE IF EXISTS `OSWWorkTypes`;
 CREATE TABLE `OSWWorkTypes` (
   `OSWID` int(10) unsigned NOT NULL,
   `WorkTypeID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`OSWID`,`WorkTypeID`),
+  PRIMARY KEY (`OSWID`,`WorkTypeID`),
   KEY `OSWWorkTypes_FKIndex1` (`OSWID`),
   KEY `OSWWorkTypes_FKIndex2` (`WorkTypeID`),
   CONSTRAINT `OSWWkType_OSW` FOREIGN KEY (`OSWID`) REFERENCES `OSW` (`OSWID`) ON DELETE CASCADE,
@@ -742,20 +748,20 @@ DROP TABLE IF EXISTS `People`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `People` (
-  `PersonID` int(10) unsigned NOT NULL auto_increment,
-  `LocationID` int(10) unsigned default NULL,
+  `PersonID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `LocationID` int(10) unsigned DEFAULT NULL,
   `FirstName` varchar(50) NOT NULL,
-  `MiddleName` varchar(50) default NULL,
+  `MiddleName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) NOT NULL,
-  `Username` varchar(50) default NULL,
-  `UserPassword` varchar(50) default NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  `AccessLevel` enum('Admin','Regular','Repository Admin','Repository','None','Curator') NOT NULL default 'Regular',
+  `Username` varchar(50) DEFAULT NULL,
+  `UserPassword` varchar(50) DEFAULT NULL,
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `AccessLevel` enum('Admin','Regular','Repository Admin','Repository','None','Curator') NOT NULL DEFAULT 'Regular',
   `DisplayName` varchar(255) NOT NULL,
   `SortName` varchar(255) NOT NULL,
-  `Initials` varchar(50) default NULL,
-  `EmailAddress` varchar(255) default NULL,
-  PRIMARY KEY  (`PersonID`),
+  `Initials` varchar(50) DEFAULT NULL,
+  `EmailAddress` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`PersonID`),
   KEY `People_FKIndex3` (`LocationID`),
   CONSTRAINT `People_Repository` FOREIGN KEY (`LocationID`) REFERENCES `Locations` (`LocationID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=331 DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -779,15 +785,15 @@ DROP TABLE IF EXISTS `Projects`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Projects` (
-  `ProjectID` int(10) unsigned NOT NULL auto_increment,
+  `ProjectID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ProjectName` varchar(255) NOT NULL,
-  `StartDate` date default NULL,
-  `EndDate` date default NULL,
-  `Inactive` tinyint(3) unsigned NOT NULL default '0',
+  `StartDate` date DEFAULT NULL,
+  `EndDate` date DEFAULT NULL,
+  `Inactive` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `ProjectDescription` text,
-  `IsBeingEdited` tinyint(1) unsigned NOT NULL default '0',
-  `EditedByID` int(10) unsigned default NULL,
-  PRIMARY KEY  (`ProjectID`)
+  `IsBeingEdited` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `EditedByID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ProjectID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -808,14 +814,14 @@ DROP TABLE IF EXISTS `ProposalApprovalHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ProposalApprovalHistory` (
-  `HistoryID` int(10) unsigned NOT NULL auto_increment,
+  `HistoryID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `PKID` int(10) unsigned NOT NULL,
-  `RecordType` enum('Item','Group') NOT NULL default 'Item',
+  `RecordType` enum('Item','Group') NOT NULL DEFAULT 'Item',
   `ActivityType` varchar(255) NOT NULL,
   `Details` text,
   `AuthorID` int(10) unsigned NOT NULL,
   `DateEntered` date NOT NULL,
-  PRIMARY KEY  (`HistoryID`),
+  PRIMARY KEY (`HistoryID`),
   KEY `Auth_Hist` (`AuthorID`),
   CONSTRAINT `Auth_Hist` FOREIGN KEY (`AuthorID`) REFERENCES `People` (`PersonID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5765 DEFAULT CHARSET=utf8;
@@ -840,7 +846,7 @@ DROP TABLE IF EXISTS `ProposedBy`;
 CREATE TABLE `ProposedBy` (
   `PersonID` int(10) unsigned NOT NULL,
   `ProposalID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`PersonID`,`ProposalID`),
+  PRIMARY KEY (`PersonID`,`ProposalID`),
   KEY `ProposedBy_Person` (`PersonID`),
   KEY `ProposedBy_Proposal` (`ProposalID`),
   CONSTRAINT ` ProposalBy _Person` FOREIGN KEY (`PersonID`) REFERENCES `People` (`PersonID`),
@@ -865,10 +871,10 @@ DROP TABLE IF EXISTS `Purposes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Purposes` (
-  `PurposeID` int(10) unsigned NOT NULL auto_increment,
+  `PurposeID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Purpose` varchar(255) NOT NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`PurposeID`)
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`PurposeID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -892,8 +898,8 @@ CREATE TABLE `ReportCounts` (
   `ReportID` int(10) unsigned NOT NULL,
   `CountType` enum('Volumes','Sheets','Photos','Other','Housings','Boxes') NOT NULL,
   `TotalCount` int(10) unsigned NOT NULL,
-  `Description` varchar(255) default NULL,
-  PRIMARY KEY  (`ReportID`,`CountType`,`TotalCount`),
+  `Description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ReportID`,`CountType`,`TotalCount`),
   KEY `ReportCounts_FKIndex1` (`ReportID`),
   CONSTRAINT `RepCounts_Rep` FOREIGN KEY (`ReportID`) REFERENCES `ItemReport` (`ReportID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -918,7 +924,7 @@ DROP TABLE IF EXISTS `Roles`;
 CREATE TABLE `Roles` (
   `PersonID` int(10) unsigned NOT NULL,
   `RoleType` enum('Staff','Curator','Donor','Contractor') NOT NULL,
-  PRIMARY KEY  (`PersonID`,`RoleType`),
+  PRIMARY KEY (`PersonID`,`RoleType`),
   KEY `Roles_FKIndex2` (`PersonID`),
   CONSTRAINT `Role_Person` FOREIGN KEY (`PersonID`) REFERENCES `People` (`PersonID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -941,12 +947,12 @@ DROP TABLE IF EXISTS `SavedSearches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `SavedSearches` (
-  `SearchID` int(10) unsigned NOT NULL auto_increment,
+  `SearchID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `SearchName` varchar(255) NOT NULL,
   `PersonID` int(10) unsigned NOT NULL,
-  `IsGlobal` tinyint(1) unsigned NOT NULL default '0',
+  `IsGlobal` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `FileName` varchar(255) NOT NULL,
-  PRIMARY KEY  (`SearchID`),
+  PRIMARY KEY (`SearchID`),
   KEY `AuditTrail_FKIndex1` (`PersonID`),
   CONSTRAINT `Search_Person` FOREIGN KEY (`PersonID`) REFERENCES `People` (`PersonID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 PACK_KEYS=0;
@@ -969,10 +975,10 @@ DROP TABLE IF EXISTS `Storage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Storage` (
-  `StorageID` int(10) unsigned NOT NULL auto_increment,
+  `StorageID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Storage` varchar(255) NOT NULL,
-  `Inactive` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`StorageID`)
+  `Inactive` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`StorageID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -993,13 +999,13 @@ DROP TABLE IF EXISTS `TemporaryTransfers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TemporaryTransfers` (
-  `TemporaryTransferID` int(10) unsigned NOT NULL auto_increment,
+  `TemporaryTransferID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ItemID` int(10) unsigned NOT NULL,
   `TransferDate` date NOT NULL,
   `FromLocationID` int(10) unsigned NOT NULL,
   `ToLocationID` int(10) unsigned NOT NULL,
-  `TransferType` enum('Transfer','Return') NOT NULL default 'Transfer',
-  PRIMARY KEY  (`TemporaryTransferID`),
+  `TransferType` enum('Transfer','Return') NOT NULL DEFAULT 'Transfer',
+  PRIMARY KEY (`TemporaryTransferID`),
   KEY `TemporaryTransfer_From` (`FromLocationID`),
   KEY `TemporaryTransfer_To` (`ToLocationID`),
   KEY `TemporaryTransfer_Item` (`ItemID`),
@@ -1025,11 +1031,11 @@ DROP TABLE IF EXISTS `UnlockedItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `UnlockedItems` (
-  `UnlockedID` int(10) unsigned NOT NULL auto_increment,
+  `UnlockedID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ItemID` int(10) unsigned NOT NULL,
   `ExpirationDate` date NOT NULL,
   `UnlockedByID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`UnlockedID`),
+  PRIMARY KEY (`UnlockedID`),
   KEY `Unlocked_FKIndex1` (`ItemID`),
   KEY `UnlockedBy_FKIndex1` (`UnlockedByID`),
   CONSTRAINT `UnlockedBy_Person` FOREIGN KEY (`UnlockedByID`) REFERENCES `People` (`PersonID`),
@@ -1056,7 +1062,7 @@ DROP TABLE IF EXISTS `WorkAssignedTo`;
 CREATE TABLE `WorkAssignedTo` (
   `PersonID` int(10) unsigned NOT NULL,
   `ItemID` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`PersonID`,`ItemID`),
+  PRIMARY KEY (`PersonID`,`ItemID`),
   KEY `WorkBy_Person` (`PersonID`),
   KEY `WorkBy_Item` (`ItemID`),
   CONSTRAINT `WorkBy_Item` FOREIGN KEY (`ItemID`) REFERENCES `Items` (`ItemID`) ON DELETE CASCADE,
@@ -1081,10 +1087,10 @@ DROP TABLE IF EXISTS `WorkTypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `WorkTypes` (
-  `WorkTypeID` int(10) unsigned NOT NULL auto_increment,
+  `WorkTypeID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `WorkType` varchar(255) NOT NULL,
-  `Inactive` tinyint(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`WorkTypeID`)
+  `Inactive` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`WorkTypeID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 PACK_KEYS=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1098,23 +1104,207 @@ LOCK TABLES `WorkTypes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Dumping routines for database 'acornosdev'
+--
+/*!50003 DROP FUNCTION IF EXISTS `GetCallNumberString` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`acorn`@`localhost` FUNCTION `GetCallNumberString`(IdentID int) RETURNS varchar(1000) CHARSET latin1
+BEGIN DECLARE callNumbers VARCHAR(1000) DEFAULT NULL; SELECT GROUP_CONCAT(CallNumber SEPARATOR ', ') INTO callNumbers FROM CallNumbers WHERE IdentificationID = IdentID; RETURN callNumbers; END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `GetChargeToText` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`acorn`@`localhost` FUNCTION `GetChargeToText`(ChargeToID varchar(50)) RETURNS varchar(255) CHARSET latin1
+BEGIN
+        DECLARE retval VARCHAR(255) DEFAULT "";
+        DECLARE ChargeToLocID INT DEFAULT 0;
+
+        IF ChargeToID != "Project" AND ChargeToID != "Patron" THEN
+SET ChargeToLocID = CAST( ChargeToID AS UNSIGNED);
+SELECT Location INTO retval
+FROM Locations WHERE LocationID = ChargeToLocID;
+       ELSE
+                SET retval = ChargeToID;
+        END IF;
+
+        RETURN retval;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `GetConservatorHours` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`acorn`@`localhost` FUNCTION `GetConservatorHours`(RepID int, PersID int) RETURNS decimal(10,2)
+BEGIN
+        DECLARE totalHours DECIMAL(10,2) DEFAULT 0.0;
+
+        IF PersID IS NULL THEN
+                SELECT SUM(CompletedHours) INTO totalHours
+                FROM ItemConservators WHERE ReportID = RepID;
+        ELSE
+                SELECT SUM(CompletedHours) INTO totalHours
+                FROM ItemConservators WHERE ReportID = RepID AND PersonID = PersID;
+        END IF;
+
+        RETURN totalHours;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `GetProposalItemCount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`acorn`@`localhost` FUNCTION `GetProposalItemCount`(ItID int) RETURNS int(11)
+BEGIN
+DECLARE itemCount INT DEFAULT 0;
+SELECT SUM(TotalCount) INTO itemCount
+FROM InitialCounts WHERE ItemID = ItID;
+RETURN itemCount;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `GetReportItemCount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`acorn`@`localhost` FUNCTION `GetReportItemCount`(RepID int) RETURNS int(11)
+BEGIN
+DECLARE itemCount INT DEFAULT 0;
+SELECT SUM(TotalCount) INTO itemCount
+FROM ReportCounts WHERE ReportID = RepID;
+RETURN itemCount;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `GetTreatmentLevel` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`acorn`@`localhost` FUNCTION `GetTreatmentLevel`(RepID int) RETURNS int(11)
+BEGIN
+        DECLARE totalHours, treatmentValue DECIMAL(10,2) DEFAULT 0.0;
+        DECLARE totalVolumes, treatmentLevel INT DEFAULT 0;
+
+        SELECT SUM(CompletedHours) INTO totalHours
+        FROM ItemConservators WHERE ReportID = RepID;
+
+        SELECT SUM(TotalCount) INTO totalVolumes
+        FROM ReportCounts WHERE ReportID = RepID and CountType = 'Volumes';
+        IF totalVolumes = 0 THEN
+                SET treatmentLevel = 0;
+        ELSE
+                SET treatmentValue = totalHours/totalVolumes;
+
+                IF treatmentValue >= 2.0 THEN
+                        SET treatmentLevel = 3;
+                ELSEIF treatmentValue < .25 THEN
+                        SET treatmentLevel = 1;
+                ELSE
+                        SET treatmentLevel = 2;
+                END IF;
+        END IF;
+
+        RETURN treatmentLevel;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
 -- Final view structure for view `ChargeTo`
 --
 
-/*!50001 DROP TABLE `ChargeTo`*/;
+/*!50001 DROP TABLE IF EXISTS `ChargeTo`*/;
 /*!50001 DROP VIEW IF EXISTS `ChargeTo`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `ChargeTo` AS select concat(_latin1'Patron',`People`.`PersonID`) AS `ChargeToID`,`People`.`DisplayName` AS `ChargeToName`,_latin1'Patron' AS `ChargeToType` from `People` where (`People`.`Inactive` = 0) union select concat(_latin1'Project',`Projects`.`ProjectID`) AS `ChargeToID`,`Projects`.`ProjectName` AS `ChargeToName`,_latin1'Project' AS `ChargeToType` from `Projects` where (`Projects`.`Inactive` = 0) union select concat(_latin1'Repository',`Locations`.`LocationID`) AS `ChargeToID`,`Locations`.`Location` AS `ChargeToName`,_latin1'Repository' AS `ChargeToType` from `Locations` where ((`Locations`.`Inactive` = 0) and (`Locations`.`IsRepository` = 1)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `CombinedRecords`
 --
 
-/*!50001 DROP TABLE `CombinedRecords`*/;
+/*!50001 DROP TABLE IF EXISTS `CombinedRecords`*/;
 /*!50001 DROP VIEW IF EXISTS `CombinedRecords`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`acorn`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `CombinedRecords` AS (select _latin1'Item' AS `RecordType`,`t`.`ItemID` AS `RecordID`,`i`.`IdentificationID` AS `IdentificationID`,`i`.`PurposeID` AS `PurposeID`,`i`.`HomeLocationID` AS `HomeLocationID`,`i`.`ChargeToID` AS `ChargeToID`,`i`.`Title` AS `Title`,`i`.`DepartmentID` AS `DepartmentID`,`i`.`GroupID` AS `GroupID`,`i`.`ProjectID` AS `ProjectID`,`i`.`Comments` AS `Comments`,`i`.`Inactive` AS `Inactive`,`i`.`EditCounter` AS `EditCounter`,`i`.`NonDigitalImagesExist` AS `NonDigitalImagesExist`,`i`.`IsBeingEdited` AS `IsBeingEdited`,`i`.`EditedByID` AS `EditedByID`,`i`.`CuratorID` AS `CuratorID`,`i`.`ApprovingCuratorID` AS `ApprovingCuratorID`,`t`.`FormatID` AS `FormatID`,`t`.`CoordinatorID` AS `CoordinatorID`,`t`.`IsNonCollectionMaterial` AS `IsNonCollectionMaterial`,`t`.`ExpectedDateOfReturn` AS `ExpectedDateOfReturn`,`t`.`InsuranceValue` AS `InsuranceValue`,`t`.`FundMemo` AS `FundMemo`,`t`.`AuthorArtist` AS `AuthorArtist`,`t`.`DateOfObject` AS `DateOfObject`,`t`.`CollectionName` AS `CollectionName`,`t`.`Storage` AS `Storage`,`i`.`ManuallyClosed` AS `ManuallyClosed`,`i`.`ManuallyClosedDate` AS `ManuallyClosedDate` from (`ItemIdentification` `i` join `Items` `t` on((`i`.`IdentificationID` = `t`.`IdentificationID`)))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1125,4 +1315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-04  8:17:11
+-- Dump completed on 2017-01-03 14:58:32

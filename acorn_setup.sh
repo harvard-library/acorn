@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# TME  10/06/16  Initial version
+# TME  01/04/17  Initial version
 
 #
 # Define functions and variables, grab any arguments and check usage
@@ -38,6 +38,7 @@ END
 appHomeDir=`pwd`
 mysqlAdminUser='root'
 mysqlCmd="mysql --user=$mysqlAdminUser "
+mysqlAcornUser="acorn"
 
 if [ $# -gt 0 ]
 then
@@ -67,20 +68,17 @@ read mailTo
 echo "Please enter the name of the MySQL database to use for ACORN"
 read databaseName
 
-echo "Please enter the name of the MySQL user account to use for ACORN"
-read mysqlAcornUser
-
-echo "Please enter the password that will be or is used for the ACORN MySQL user account"
-read mysqlAcornPw
-
 echo "Would you like the MySQL database $databaseName created for ACORN? (y or n)"
 read makeDatabase
+
+echo "Would you like the ACORN tables loaded into the MySQL $databaseName database? (any data in database will be lost)(y or n)"
+read loadTables
 
 echo "Would you like the MySQL user account $mysqlAcornUser created for ACORN? (y or n)"
 read makeUser
 
-echo "Would you like the ACORN tables loaded into the MySQL $mysqlAcornUser database? (any data in database will be lost)(y or n)"
-read loadTables
+echo "Please enter the password that will be or is used for the $mysqlAcornUser MySQL user account"
+read mysqlAcornPw
 
 cd $appHomeDir
 
