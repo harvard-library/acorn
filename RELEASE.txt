@@ -1,3 +1,9 @@
+For Release 3.0.0 (01-23-2017) TME
+----------------------------------------------------
+* Harvard specific code removed
+* DRS upload changed to file upload
+* Support for a file upload handler added
+
 For Release 2.14.0 (12-20-2016) TME
 ----------------------------------------------------
 * Code change to support Php 5.6
@@ -8,20 +14,20 @@ For Release 2.13.0 (04-25-2016) VC
 ----------------------------------------------------
 * Removed BB1 functionality
 
-For Release 2.12.7 (12-14-2015) TE
+For Release 2.12.7 (12-14-2015) TME
 ----------------------------------------------------
 * Remove/hide 'Treatments of Note' from the Report screen (Bug 4202)
 * Made the call number box, on the identification page, expandable (bug 4206)
 * Changing a call number is now supported (bug 4206)
 * Increased the size of the 'Word Done By' box and made it expandable (bug 4214)
 
-For Release 2.12.6 (12-02-2015) TE
+For Release 2.12.6 (12-02-2015) TME
 ----------------------------------------------------
 * Added "Room 018" as a choice under "Storage" On the Record Identification page (Bug 4190)
 * Now using bigger boxes and a white background for Record->Proposal->View Proposal Approval->Proposal Approval and Record->Report->View Report Summary (bug 4208)
 * On the record page; removed the small "My Records" shortcut box/feature on the left and increased the size of the tabbed screens (bug 4205)
 
-For Release 2.12.5 (09-02-2014) TE
+For Release 2.12.5 (09-02-2014) TME
 ----------------------------------------------------
 * OSW forms use full names, not initials; remove footnote with names;
   remove "Work Done By" at top. (bug 4185)
@@ -30,22 +36,52 @@ For Release 2.12.5 (09-02-2014) TE
   the mailTo. The curator is added to the cc list unless she/he is already the 
   mailTo. The "submitted by" email address is also on the cc list. (bug 4175)
 
-For Release 2.12.4 (04-08-2014) TE
+For Release 2.12.4 (04-08-2014) TME
+----------------------------------------------------
+* The 'Work Done By' now reports conservators in chronological order
+* The list conservators printed on reports is now deduped
+For Release 2.13.0 (04-25-2016) VC
+----------------------------------------------------
+* Removed BB1 functionality
+
+For Release 2.12.7 (12-14-2015) TME
+----------------------------------------------------
+* Remove/hide 'Treatments of Note' from the Report screen (Bug 4202)
+* Made the call number box, on the identification page, expandable (bug 4206)
+* Changing a call number is now supported (bug 4206)
+* Increased the size of the 'Word Done By' box and made it expandable (bug 4214)
+
+For Release 2.12.6 (12-02-2015) TME
+----------------------------------------------------
+* Added "Room 018" as a choice under "Storage" On the Record Identification page (Bug 4190)
+* Now using bigger boxes and a white background for Record->Proposal->View Proposal Approval->Proposal Approval and Record->Report->View Report Summary (bug 4208)
+* On the record page; removed the small "My Records" shortcut box/feature on the left and increased the size of the tabbed screens (bug 4205)
+
+For Release 2.12.5 (09-02-2014) TME
+----------------------------------------------------
+* OSW forms use full names, not initials; remove footnote with names;
+  remove "Work Done By" at top. (bug 4185)
+* For emailed reports the mailTo is set to the approving curator. If the 
+  approving curator's email address is not available, the curator is used as 
+  the mailTo. The curator is added to the cc list unless she/he is already the 
+  mailTo. The "submitted by" email address is also on the cc list. (bug 4175)
+
+For Release 2.12.4 (04-08-2014) TME
 ----------------------------------------------------
 * The 'Work Done By' now reports conservators in chronological order
 * The list conservators printed on reports is now deduped
 * A date must now be entered when adding a conservator and date in the 'Work Done By' box
 
-For Release 2.12.3 (02-27-2014) TE
+For Release 2.12.3 (02-27-2014) TME
 ----------------------------------------------------
 * Users are now able to remove an OSW work end date
 
-For Release 2.12.2 (02-18-2014) TE/VC
+For Release 2.12.2 (02-18-2014) TME/VC
 ----------------------------------------------------
 * Corrected typo resulting in bug 4156 (http://devbugz.hul.harvard.edu/bugzilla/show_bug.cgi?id=4156)
 * Added a fix so that images get cleared out of the temporary directory if the ACORN record number changes.
 
-For Release 2.12.1 (11-19-2013) VC/TE
+For Release 2.12.1 (11-19-2013) VC/TME
 ----------------------------------------------------
 * New Image Uploader in place.
 * Curators and approving curators are emailed when items are logged in,
