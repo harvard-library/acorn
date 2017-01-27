@@ -1,6 +1,20 @@
-ACORN (A Conservation Records Network) tracks the treatment cycle for items needing preservation.  The treatment cycle is logging in the item (bringing it to the place of treatment, identifying it, and logging the number of components), proposal (estimating what is needed to treat the item and how long it will take), treatment report (what was actually done, how long it took, and the resulting number of components), logging out the item (returning the item to its home location). ACORN also produces various reports.
+ACORN (A Conservation Records Network) is a database for preservation documentation to be used by conservators of artistic and historic materials.
 
-A working LAMP stack is required to run the ACORN application. Versions that ACORN has been used with thus far;
+There are four major tasks that ACORN can perform. They are;
+
+1- Registrarial/ tracking system of objects entering and leaving the conservation lab or other preservation spaces.
+
+2- Depository for treatment documentation- written and visual, embedded and linked. Data can be shared and accessed by conservation, registrarial, and curatorial units.
+
+3- Tracking system for preservation work and/or conservation activities off-site. This may include activities such as environmental monitoring, emergency response, quick assessments, quick repair or other treatment related activities that do not have a full proposal.
+
+4- Statistics queries- for example, amount of treatment hours by person, project, repository, statistics by work type.
+
+A built-in search engine makes information retrieval simple. As a web-based system, ACORN allows users to access the data at various locations and is a sustainable paperless system. All data is stored locally, either with the user or the user’s institution.
+
+ACORN runs on a LAMP stack, using Linux as the operating system, Apache as the web server that allows the PHP to run, and PHP which communicates with MySQL to get its data. 
+
+Versions that ACORN has been used with thus far;
 
 Linux
 Red Hat Enterprise Linux Server release 5.11, Amazon Linux version 2015.09, Amazon Linux AMI 2016.09
