@@ -1,4 +1,4 @@
-ACORN (A Conservation Records Network) tracks the treatment cycle for items needing preservation.  The treatment cycle is logging in the item (bringing it to the place of treatment, identifying it, and logging the number of components), proposal (estimating what is needed to treat the item and how long it will take), treatment report (what was actually done, how long it took, and the resulting number of components), logging out the item (returning the item to its home location). ACORN also produces various reports described later in this document.
+ACORN (A Conservation Records Network) tracks the treatment cycle for items needing preservation.  The treatment cycle is logging in the item (bringing it to the place of treatment, identifying it, and logging the number of components), proposal (estimating what is needed to treat the item and how long it will take), treatment report (what was actually done, how long it took, and the resulting number of components), logging out the item (returning the item to its home location). ACORN also produces various reports.
 
 A working LAMP stack is required to run the ACORN application. Versions that ACORN has been used with thus far;
 
@@ -14,7 +14,7 @@ MySQL
 PHP
 5.3.4, 5.5.36, 5.6.28
 
-The acorn_setup.sh script in this directory should be run from this directory to set-up ACORN. Run the script with it's -h option to get a bit more information.
+To set-up ACORN move into the acorn install directory and then run the acorn_setup.sh script. Running the script with it's -h option will give a bit more information.
 
 Once the ACORN application is up, login using the adminuser user account with the password of changeme. This password can be changed using the Edit->Password menu drop down within ACORN.
 
