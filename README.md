@@ -3,9 +3,7 @@ ACORN (A Conservation Records Network) tracks the treatment cycle for items need
 A working LAMP stack is required to run the ACORN application. Versions that ACORN has been used with thus far;
 
 Linux
-Red Hat Enterprise Linux Server release 5.11
-Amazon Linux version 2015.09
-Amazon Linux AMI 2016.09
+Red Hat Enterprise Linux Server release 5.11, Amazon Linux version 2015.09, Amazon Linux AMI 2016.09
 
 Apache (with ssl)
 2.2.31, 2.4.18, 2.4.23
