@@ -1,14 +1,13 @@
-ACORN (A Conservation Records Network) is a database for preservation documentation to be used by conservators of artistic and historic materials.
+## What is ACORN?
 
-There are four major tasks that ACORN can perform. They are;
+ACORN (A Conservation Records Network) is a workflow management system and database for preservation documentation to be used by conservators of artistic and historic materials. It has been in use by Harvard University conservators since 2009.
 
-1- Registrarial/ tracking system of objects entering and leaving the conservation lab or other preservation spaces.
+There are four major tasks that ACORN can perform. They are:
 
-2- Depository for treatment documentation- written and visual, embedded and linked. Data can be shared and accessed by conservation, registrarial, and curatorial units.
-
-3- Tracking system for preservation work and/or conservation activities off-site. This may include activities such as environmental monitoring, emergency response, quick assessments, quick repair or other treatment related activities that do not have a full proposal.
-
-4- Statistics queries- for example, amount of treatment hours by person, project, repository, statistics by work type.
+- **Registrarial tracking system of objects** -  entering and leaving the conservation lab or other preservation spaces.
+- **Depository for treatment documentation** - written and visual, embedded and linked. Data can be shared and accessed by conservation, registrarial, and curatorial units.
+- **Tracking system for preservation work and/or conservation activities off-site** - This may include activities such as environmental monitoring, emergency response, quick assessments, quick repair or other treatment related activities that do not have a full proposal.
+- **Statistics queries** - for example, amount of treatment hours by person, project, repository, statistics by work type.
 
 A built-in search engine makes information retrieval simple. As a web-based system, ACORN allows users to access the data at various locations and is a sustainable paperless system. All data is stored locally, either with the user or the user’s institution.
 
