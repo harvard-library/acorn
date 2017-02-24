@@ -9,7 +9,7 @@ RUN yum -y install git php56 mod24_ssl mysql-server php56-mysqlnd python python-
 ADD application /acorn/application
 ADD public /acorn/public
 ADD acorn_sessions /acorn/acorn_sessions
-ADD library /acorn/Library
+ADD library /acorn/library
 ADD logs /acorn/logs
 ADD test /acorn/test
 ADD .htaccess /acorn/.htaccess
