@@ -6,6 +6,15 @@ RUN yum -y install git php56 mod24_ssl mysql-server php56-mysqlnd python python-
   echo "NETWORKING=yes" >/etc/sysconfig/network && \
   service mysqld start && \
   mysqladmin -u root password 'docrootpw1'
+ADD application /acorn/application
+ADD public /acorn/public
+ADD acorn_sessions /acorn/acorn_sessions
+ADD library /acorn/Library
+ADD logs /acorn/logs
+ADD test /acorn/test
+ADD .htaccess /acorn/.htaccess
+ADD acorn_setup.sh /acorn/acorn_setup.sh
+ADD acorn_tables.sql /acorn/acorn_tables.sql
 ADD docker/supervisord.conf /etc/supervisord.conf
 ADD docker/acornhost.conf /etc/httpd/conf.d/vhost_acorn.conf
 ADD docker/config.php /acorn/public/config.php
