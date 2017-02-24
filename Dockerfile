@@ -6,21 +6,13 @@ RUN yum -y install git php56 mod24_ssl mysql-server php56-mysqlnd python python-
   echo "NETWORKING=yes" >/etc/sysconfig/network && \
   service mysqld start && \
   mysqladmin -u root password 'docrootpw1'
-RUN echo "[supervisord]" > /etc/supervisord.conf && \
-    echo "nodaemon=true" >> /etc/supervisord.conf && \
-    echo "" >> /etc/supervisord.conf && \
-    echo "[program:mysqld]" >> /etc/supervisord.conf && \
-    echo "command=/usr/bin/mysqld_safe" >> /etc/supervisord.conf && \
-    echo "" >> /etc/supervisord.conf && \
-    echo "[program:httpd]" >> /etc/supervisord.conf && \
-    echo "command=/usr/sbin/apachectl -D FOREGROUND" >> /etc/supervisord.conf
-RUN git clone https://github.com/captmiddy/acorn
-ADD acornhost.conf /etc/httpd/conf.d/vhost_acorn.conf
-ADD config.php /acorn/public/config.php
-ADD dockerenv.sh /acorn/dockerenv.sh
-ADD index_update.php /acorn/index_update.php
-ADD genssl.sh /acorn/genssl.sh
-ADD acornhostssl.conf /etc/httpd/conf.d/vhost_acorn_ssl.conf
+ADD docker/supervisord.conf /etc/supervisord.conf
+ADD docker/acornhost.conf /etc/httpd/conf.d/vhost_acorn.conf
+ADD docker/config.php /acorn/public/config.php
+ADD docker/dockerenv.sh /acorn/dockerenv.sh
+ADD docker/index_update.php /acorn/index_update.php
+ADD docker/genssl.sh /acorn/genssl.sh
+ADD docker/acornhostssl.conf /etc/httpd/conf.d/vhost_acorn_ssl.conf
 WORKDIR /acorn
 RUN service mysqld start && \
     chmod a+rw application && \
@@ -31,4 +23,5 @@ RUN service mysqld start && \
     sed -i 's/^require/#INSERTCHANGE\nrequire/' public/index.php && \
     sed -i '/#INSERTCHANGE/r index_update.php' public/index.php && \
     ./genssl.sh > keylog.txt 2>&1
+EXPOSE 8443 80
 CMD ["/usr/local/bin/supervisord", "--configuration=/etc/supervisord.conf"]
