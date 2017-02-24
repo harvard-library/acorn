@@ -23,9 +23,9 @@
 # Usage/description
 function usage {
 
-cat <<END
+  cat <<END
 
-Use this script to set-up a new ACORN instance. It will set the proper 
+Use this script to set-up a new ACORN instance. It will set the proper
 directory permissions and, if specified, set-up a MySQL user and database
 for ACORN. The user will be prompted for needed information. The $mysqlAdminUser
 MySQL password will be required if databases changes will be made.
@@ -35,52 +35,73 @@ END
     exit
 }
 
-appHomeDir=`pwd`
-mysqlAdminUser='root'
-mysqlCmd="mysql --user=$mysqlAdminUser "
-mysqlAcornUser="acorn"
+function promptuser {
+  # Prompt for and collect needed information
+  echo "Please enter an instance of prod, test or dev"
+  read ACORNINSTANCE
 
-if [ $# -gt 0 ]
+  if [ $ACORNINSTANCE != 'prod' -a $ACORNINSTANCE != 'test' -a $ACORNINSTANCE != 'dev' ]
+  then
+      echo "Instance of $ACORNINSTANCE is not supported"
+      exit
+  fi
+
+  echo "Please enter the base url for your instance of ACORN (do not include https:// or public/index.php)"
+  read ACORNURL
+
+  echo "Please enter an email address to use a recipient for any ACORN errors messages"
+  read ACORNMAILTO
+
+  echo "Please enter the name of the MySQL database to use for ACORN"
+  read ACORNDATABASENAME
+
+  echo "Would you like the MySQL database $databaseName created for ACORN? (y or n)"
+  read ACORNMAKEDB
+
+  echo "Would you like the ACORN tables loaded into the MySQL $databaseName database? (any data in database will be lost)(y or n)"
+  read ACORNLOADTABLES
+
+  echo "Would you like the MySQL user account $mysqlAcornUser created for ACORN? (y or n)"
+  read ACORNMAKEUSER
+
+  echo "Please enter the password that will be or is used for the $mysqlAcornUser MySQL user account"
+  read ACORNMYSQLPASS
+
+  if [ $ACORNMAKEUSER = 'y' -o $ACORNMAKEDB = 'y' -o $ACORNLOADTABLES = 'y' ]
 then
-    usage
-fi
 
+    echo "Please enter the password for your MySQL $mysqlAdminUser user account"
+    read MYSQLADMINPW
+  fi
+
+  export ACORNINSTANCE ACORNURL ACORNMAILTO ACORNDATABASENAME ACORNMAKEDB ACORNLOADTABLES ACORNMAKEUSER ACORNMYSQLPASS MYSQLADMINPW
+}
+
+APPHOMEDIR=`pwd`
+MYSQLADMINUSER='root'
+MYSQLCMD="mysql --user=$MYSQLADMINUSER"
+MYSQLACORNUSER="acorn"
+
+echo $1
+
+if [ $# -eq 0 ]
+then
+    promptuser
+elif [[ "$1" != "-s" ]]
+then
+  usage
+fi
 #
 # Main program
 #
 
-# Prompt for and collect needed information
-echo "Please enter an instance of prod, test or dev"
-read instance
-
-if [ $instance != 'prod' -a $instance != 'test' -a $instance != 'dev' ]
+if [ -z $ACORNINSTANCE ]
 then
-    echo "Instance of $instance is not supported"
-    exit
+  echo "INSTANCE NOT SET!"
+  usage
 fi
 
-echo "Please enter the base url for your instance of ACORN (do not include https:// or public/index.php)"
-read acornUrl
-
-echo "Please enter an email address to use a recipient for any ACORN errors messages"
-read mailTo
-
-echo "Please enter the name of the MySQL database to use for ACORN"
-read databaseName
-
-echo "Would you like the MySQL database $databaseName created for ACORN? (y or n)"
-read makeDatabase
-
-echo "Would you like the ACORN tables loaded into the MySQL $databaseName database? (any data in database will be lost)(y or n)"
-read loadTables
-
-echo "Would you like the MySQL user account $mysqlAcornUser created for ACORN? (y or n)"
-read makeUser
-
-echo "Please enter the password that will be or is used for the $mysqlAcornUser MySQL user account"
-read mysqlAcornPw
-
-cd $appHomeDir
+cd $APPHOMEDIR
 
 # Set directory permissions
 echo "Setting directory permissions"
@@ -92,55 +113,53 @@ chmod -R 777 public/userreports
 # Setting up the config files. Use sed, our variables and the config templates
 echo "Setting up the config files"
 cd application
-sed "s/<instance>/$instance/" bootstrap.php_template > bootstrap.php
+sed "s/<instance>/$ACORNINSTANCE/" bootstrap.php_template > bootstrap.php
 echo "application/bootstrap.php written"
-sed "s/<instance>/$instance/" clibootstrap.php_template > clibootstrap.php
+sed "s/<instance>/$ACORNINSTANCE/" clibootstrap.php_template > clibootstrap.php
 echo "application/clibootstrap.php written"
-sed -e "s/<instance>/$instance/" -e "s/<username>/$mysqlAcornUser/" -e "s/<password>/$mysqlAcornPw/" -e "s/<databasename>/$databaseName/" dbconfig.ini_template > dbconfig.ini
+sed -e "s/<instance>/$ACORNINSTANCE/" -e "s/<username>/$MYSQLACORNUSER/" -e "s/<password>/$ACORNMYSQLPASS/" -e "s/<databasename>/$ACORNDATABASENAME/" dbconfig.ini_template > dbconfig.ini
 echo "application/dbconfig.ini written"
-sed -e "s/<instance>/$instance/" -e "s/<username>/$mysqlAcornUser/" -e "s|<app_home_dir>|$appHomeDir|g" -e "s|<acorn_url>|$acornUrl|" -e "s/<mail_to>/$mailTo/" config.ini_template > config.ini
+sed -e "s/<instance>/$ACORNINSTANCE/" -e "s/<username>/$MYSQLACORNUSER/" -e "s|<app_home_dir>|$APPHOMEDIR|g" -e "s|<acorn_url>|$ACORNURL|" -e "s/<mail_to>/$ACORNMAILTO/" config.ini_template > config.ini
 echo "application/config.ini written"
 cd ../public/scripts
-sed "s|<acorn_url>|$acornUrl|" acorn.js_template > acorn.js
+sed "s|<acorn_url>|$ACORNURL|" acorn.js_template > acorn.js
 echo "public/scripts/acorn.js written"
 cd ../..
 
 # Create acorn user and databases is specified
-  if [ $makeUser = 'y' -o $makeDatabase = 'y' -o $loadTables = 'y' ]
+if [ $ACORNMAKEUSER = 'y' -o $ACORNMAKEDB = 'y' -o $ACORNLOADTABLES = 'y' ]
 then
 
-    echo "Please enter the password for your MySQL $mysqlAdminUser user account"
-    read mysqlAdminPw
-    mysqlCmd+="--password=$mysqlAdminPw"
+    MYSQLCMD+=" --password=$MYSQLADMINPW"
 
     mysqlAcornCmds=""
 
-    if [ $makeUser = y ]
+    if [ $ACORNMAKEUSER = y ]
     then
-        echo "Creating mysqlAcorn MySQL user account"
+        echo "Creating mysqlAcorn MySQL user account: $MYSQLACORNUSER"
         mysqlAcornCmds="create user '"
-        mysqlAcornCmds+="$mysqlAcornUser'@'localhost' identified by '"
-        mysqlAcornCmds+="$mysqlAcornPw';"
+        mysqlAcornCmds+="$MYSQLACORNUSER'@'localhost' identified by '"
+        mysqlAcornCmds+="$ACORNMYSQLPASS';"
     fi
 
-    if [ $makeDatabase = y ]
+    if [ $ACORNMAKEDB = y ]
     then
-        echo "Creating database $databaseName"
-        mysqlAcornCmds+="create database $databaseName;"
-        mysqlAcornCmds+="grant all on $databaseName.* to '"
-        mysqlAcornCmds+="$mysqlAcornUser'@'localhost';"
-   fi
+        echo "Creating database $ACORNDATABASENAME"
+        mysqlAcornCmds+="create database $ACORNDATABASENAME;"
+        mysqlAcornCmds+="grant all on $ACORNDATABASENAME.* to '"
+        mysqlAcornCmds+="$MYSQLACORNUSER'@'localhost';"
+    fi
 
     if [ -n "$mysqlAcornCmds" ]
     then
-$mysqlCmd <<COMMANDS
+        $MYSQLCMD <<COMMANDS
 $mysqlAcornCmds
 COMMANDS
     fi
-
-    if [ $loadTables = y ]
+    echo $MYSQLCMD
+    if [ $ACORNLOADTABLES = y ]
     then
-        echo "Loading database tables for $databaseName"
-        $mysqlCmd $databaseName < acorn_tables.sql
+        echo "Loading database tables for $ACORNDATABASENAME"
+        $MYSQLCMD $ACORNDATABASENAME < acorn_tables.sql
     fi
 fi
