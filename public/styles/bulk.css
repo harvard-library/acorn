@@ -30,10 +30,15 @@ padding-bottom: 0.25em;
 padding-left: 0.5em;}
 
 #bulklogincontent, #bulklogoutcontent {
+width: 98%;
+margin-left: 5px;
+margin-right: 5px;
+/* per Jira ticket HULSYSTEMS-6
 width: 87%;
 float: right;
 z-index: 1;
 margin-right: 5px;
+*/
 }
 
 #myrecordsarea {

@@ -174,17 +174,6 @@ function initCompletedHoursByTubContent()
 	YAHOO.util.Event.onContentReady("createreportbutton", onButtonReady);	
 }
 
-function initARLForWPCContent()
-{
-	function onButtonReady() {
-		//Makes the buttons YUI widgets for a nicer look.
-		var oNewReportButton = new YAHOO.widget.Button("createreportbutton");
-		oNewReportButton.on('click', createARLForWPCReport);
-	}
-
-	YAHOO.util.Event.onContentReady("createreportbutton", onButtonReady);	
-}
-
 function initARLForRepositoryContent()
 {
 	function onButtonReady() {
@@ -470,36 +459,6 @@ function createCompletedHoursByTubReport()
 	else
 	{
 		var myAjax = new Ajax.Request(baseUrl + "reports/completedtubhoursreport",
-    		{method: 'get', 
-			parameters: {begindateinput: startdt, enddateinput: enddt},
-			onSuccess: function(transport)
-			{
-				if (transport.responseJSON != null)
-				{
-					var val = JSON.parse(transport.responseText);
-					if (val.Filename != undefined)
-					{
-						//Open the report.
-						var filename = val.Filename.trim();
-						window.open(baseUrl + 'userreports/pdfreports/' + filename);
-					}
-				}
-			}
-    		});
-	}
-}
-
-function createARLForWPCReport()
-{
-	var startdt = document.getElementById('begindateinput').value;
-	var enddt = document.getElementById('enddateinput').value;
-	if (startdt == "" || enddt == "")
-	{
-		window.location = baseUrl + 'reports/arlforwpcreport/begindateinput/' + startdt + '/enddateinput/' + enddt + '/';
-	}
-	else
-	{
-		var myAjax = new Ajax.Request(baseUrl + "reports/arlforwpcreport",
     		{method: 'get', 
 			parameters: {begindateinput: startdt, enddateinput: enddt},
 			onSuccess: function(transport)

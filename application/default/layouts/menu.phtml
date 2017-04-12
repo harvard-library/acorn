@@ -124,7 +124,6 @@ $homeurl = $config->getACORNUrl();
 							<li class="yuimenuitem" id="arlforrepositorymenuitem"><a class="yuimenuitemlabel" href="<?php echo $this->baseUrl;?>/reports/arlforrepository">ARL for Repository</a></li>
 			   				<?php if ($accesslevel == PeopleDAO::ACCESS_LEVEL_ADMIN || $accesslevel == PeopleDAO::ACCESS_LEVEL_REGULAR)
 	                   		{
-	                   			echo '<li class="yuimenuitem" id="arlforwpcmenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/arlforwpc">ARL for WPC</a></li>';
 	                   			echo '<li class="yuimenuitem" id="completedhoursbytubmenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedtubhours">All Completed Hours By TUB</a></li>';
 			   					echo '<li class="yuimenuitem" id="completedworkbytubmenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedtubwork">All Completed Work By TUB</a></li>';
 			   					echo '<li class="yuimenuitem" id="completedbypersonactivitymenuitem"><a class="yuimenuitemlabel" href="' . $this->baseUrl . '/reports/completedperson">Completed Work for a Person</a></li>';

@@ -592,55 +592,7 @@ class ReportsController extends Zend_Controller_Action
 		}	
     }
     
-	/*
-     * Data Entry form for this report.
-     */
-    public function arlforwpcAction()
-    {
-    	$form = $this->getReportParameterForm();
-    	$this->view->form = $form;
-    }
-    
-	/*
-     * Generate the report.
-     */
-    public function arlforwpcreportAction()
-    {
-    	//Don't display a new view
-		$this->_helper->viewRenderer->setNoRender();
-		
-		$form = $this->getReportParameterForm();
-		$formData = $this->getRequest()->getParams();
-		
-		if (!isset($formData['enddateinput']))
-		{
-			$formData['enddateinput'] = NULL;
-		}
-	
-    	if ($form->isValidPartial($formData))
-    	{
-    		//Don't use the default layout since this isn't a view call
-			$this->_helper->layout->disableLayout();
-    		$values = $form->getValues();
-    		$dateRange = new DateRange();
-    		$dateRange->setStartDate($values['begindateinput']);
-    		$dateRange->setEndDate($values['enddateinput']);
-    		
-    		$report = new ARLStatisticsReport($dateRange);
-    		$filename = $report->drawReport();
-    		$retval = Zend_Json::encode(array('Filename' => $filename));
-			
-			//Make sure JS knows it is in JSON format.
-			$this->getResponse()->setHeader('Content-Type', 'application/json')
-							->setBody($retval);
-    	}
-    	else
-		{
-			$this->displayReportErrors($form, $formData, ACORNConstants::MESSAGE_INVALID_FORM, 'arlforwpc');
-		}	
-    }
-    
-	/*
+    /*
      * Data Entry form for this report.
      */
     public function arlforrepositoryAction()
@@ -649,7 +601,7 @@ class ReportsController extends Zend_Controller_Action
     	$this->view->form = $form;
     }
     
-	/*
+    /*
      * Generate the report.
      */
     public function arlforrepositoryreportAction()
@@ -685,9 +637,9 @@ class ReportsController extends Zend_Controller_Action
 							->setBody($retval);
     	}
     	else
-		{
-			$this->displayReportErrors($form, $formData, ACORNConstants::MESSAGE_INVALID_FORM, 'arlforwpc');
-		}	
+	{
+                $this->displayReportErrors($form, $formData, ACORNConstants::MESSAGE_INVALID_FORM, 'arlforwpc');
+	}	
     }
     
     /*
