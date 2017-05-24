@@ -857,6 +857,8 @@ class CombinedRecordsDAO extends Zend_Db_Table
     		array());
     	$select->joinLeft(array('O' => 'OSW'), 'CombinedRecords.IdentificationID = O.IdentificationID',
     		array());
+    	$select->joinLeft(array('A' => 'AuditTrail'), 'CombinedRecords.IdentificationID = A.PKID',
+    		array());
     	$select->joinLeft('WorkAssignedTo', 'CombinedRecords.RecordID = WorkAssignedTo.ItemID AND CombinedRecords.RecordType = \'Item\'',
     		array());
     	if ($accesslevel == PeopleDAO::ACCESS_LEVEL_REPOSITORY_ADMIN)
@@ -869,7 +871,7 @@ class CombinedRecordsDAO extends Zend_Db_Table
     		$today = date(ACORNConstants::$DATABASE_DATE_FORMAT);
     		//Current records include those that have never been logged out and that are not currently closed
     		$where = 'LogoutID IS NULL AND CombinedRecords.ManuallyClosed = 0 ';
-    		$where .= ' AND (CoordinatorID=' . $personid . ' OR WorkAssignedTo.PersonID=' . $personid . ' OR CombinedRecords.CuratorID=' . $personid;
+    		$where .= ' AND (CoordinatorID=' . $personid . ' OR WorkAssignedTo.PersonID=' . $personid . ' OR CombinedRecords.CuratorID=' . $personid . ' OR A.PersonID =' . $personid;
     		$where .= ' OR (SELECT COUNT(*) FROM ItemConservators WHERE PersonID = ' . $personid . ' AND ReportID = R.ReportID) > 0)';
     	}
     	$where .= ' AND O.WorkEndDate IS NULL';

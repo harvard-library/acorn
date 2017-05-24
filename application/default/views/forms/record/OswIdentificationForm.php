@@ -238,6 +238,31 @@
  				$this->getElement('callnumberhidden')->addError(current($messages));
  			}
  		}
+                
+                // Make sure a date is set for our 'Work Done by' entries
+                $report = $item->getFunctions()->getReport();
+                $conservators = $report->getReportConservators();
+                
+                if (count($conservators) == 0)
+                {
+                        $isvalid = FALSE;
+                        $this->getElement('workdonebyhidden')->addError('Please enter at least one Work Done By.');
+                }
+                else
+                {
+                        foreach ($conservators as $conservator)
+                        {
+                                $dateCompleted = $conservator->getDateCompleted();
+                    
+                                if (is_null($dateCompleted))
+                                {
+                                        $isvalid = FALSE;
+                                        $this->getElement('workdonebyhidden')->addError('Please enter the date that work was done on.');
+                                        break;
+                                }
+                        }
+                }
+                
  		return $isvalid;
  	}
  	
