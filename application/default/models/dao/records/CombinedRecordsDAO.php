@@ -876,7 +876,7 @@ class CombinedRecordsDAO extends Zend_Db_Table
     	}
     	$where .= ' AND O.WorkEndDate IS NULL';
     	$select->where($where);
-    	$select->order('RecordID');
+    	$select->order(array('RecordType DESC', 'RecordID ASC'));
     	$select->distinct();
     	Logger::log($select->__toString());
     	$rows = $this->fetchAll($select);
