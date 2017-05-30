@@ -168,7 +168,11 @@ function initRepository()
 		document.getElementById("identificationbuttons").style.display = "none";
 	}
 	document.getElementById("editprojectbutton").style.display = "none";
-	document.getElementById("filebuttons").style.display = "none";
+
+        if (accesslevel == 'Admin' || accesslevel == 'Regular')
+	{
+            document.getElementById("filebuttons").style.display = "none";
+        }
 }
 
 var workstartChooser = null;
