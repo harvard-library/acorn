@@ -94,15 +94,11 @@ class OnSiteWork extends Record
     {
     	if (is_null($this->workTypes))
     	{
-    		$this->workTypes = WorkTypeDAO::getWorkTypeDAO()->getWorkTypes($this->getOSWID());
-    		if ($updateNamespace)
-    		{
-    			$this->updateNamespaceRecord();
-    		}
-    	}
-    	elseif (is_null($this->workTypes)) 
-    	{
-    		$this->workTypes = array();
+            $this->workTypes = WorkTypeDAO::getWorkTypeDAO()->getWorkTypes($this->getOSWID());
+            if ($updateNamespace)
+            {
+    		$this->updateNamespaceRecord();
+            }
     	}
     	return $this->workTypes;
     }
@@ -116,7 +112,19 @@ class OnSiteWork extends Record
     	$this->workTypes = $workTypes;
     }
     
-	/*
+    /**
+     * Only one work type should be save (will change to scalar processing when time permits)
+     * @access public
+     * @param  a single workType object
+     */
+    public function setWorkType($workType)
+    {        
+    	$workTypes[$workType->getPrimaryKey()] = $workType;
+    	$this->workTypes = $workTypes;
+	$this->updateNamespaceRecord();
+    }
+    
+    /*
      * Returns the array of work types that are in this item's work types
      * and are not in the array of compare work types
      * @param array - worktypes to compare
@@ -128,20 +136,15 @@ class OnSiteWork extends Record
     }
 
     /**
+     * Don't allow more than 1 work type to be added (bug 4210 & 1080)
      * @access public
      * @param  WorkType workType
      */
     public function addWorkType(WorkType $workType)
-    {
-    	$worktypes = $this->getWorkTypes();
-    	
-		// Don't allow more than 1 work type to be added (bug 4210)
-    	if (count($worktypes) == 0) 
-    	{
-	    	$worktypes[$workType->getPrimaryKey()] = $workType;
-    		$this->setWorkTypes($worktypes);
-    		$this->updateNamespaceRecord();
-    	}
+    {	
+    	$worktype[$workType->getPrimaryKey()] = $workType;
+	$this->setWorkType($worktype);
+	$this->updateNamespaceRecord();
     }
 
     /**

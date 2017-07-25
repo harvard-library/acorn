@@ -582,22 +582,22 @@ class RecordincludesController extends Zend_Controller_Action
 								->setBody($retval);
     }
     
-	public function addworktypeAction()
+    public function addworktypeAction()
     {
     	//Don't display a new view
-		$this->_helper->viewRenderer->setNoRender();
-		//Don't use the default layout since this isn't a view call
-		$this->_helper->layout->disableLayout();
+	$this->_helper->viewRenderer->setNoRender();
+	//Don't use the default layout since this isn't a view call
+	$this->_helper->layout->disableLayout();
 		
-		//Determine the work type
-		$worktypeid = $this->getRequest()->getParam("worktypeid");
+	//Determine the work type
+	$worktypeid = $this->getRequest()->getParam("worktypeid");
     	
-		$item = RecordNamespace::getCurrentOSW();
+	$item = RecordNamespace::getCurrentOSW();
     	
     	if (isset($worktypeid) && isset($item) && !is_null($item))
     	{
-    		$worktype = WorkTypeDAO::getWorkTypeDAO()->getWorkType($worktypeid);
-    		$item->addWorkType($worktype);
+            $worktype = WorkTypeDAO::getWorkTypeDAO()->getWorkType($worktypeid);
+            $item->setWorkType($worktype);
     	}
     }
     
