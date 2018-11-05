@@ -29,11 +29,11 @@ emailAddress=adm@localhost
 "
 
 # Generate the server private key
-openssl genrsa -des3 -out acorn.key -passout env:PASSPHRASE 2048
+/usr/bin/openssl genrsa -des3 -out acorn.key -passout env:PASSPHRASE 2048
 fail_if_error $?
 
 # Generate the CSR
-openssl req \
+/usr/bin/openssl req \
     -new \
     -batch \
     -subj "$(echo -n "$subj" | tr "\n" "/")" \
@@ -45,10 +45,10 @@ cp acorn.key acorn.key.org
 fail_if_error $?
 
 # Strip the password so we don't have to type it every time we restart Apache
-openssl rsa -in acorn.key.org -out acorn.key -passin env:PASSPHRASE
+/usr/bin/openssl rsa -in acorn.key.org -out acorn.key -passin env:PASSPHRASE
 fail_if_error $?
 
 # Generate the cert (good for 10 years)
-openssl x509 -req -days 3650 -in acorn.csr -signkey acorn.key -out acorn.crt
+/usr/bin/openssl x509 -req -days 3650 -in acorn.csr -signkey acorn.key -out acorn.crt
 fail_if_error $?
 exit 0

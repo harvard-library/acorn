@@ -1,0 +1,33 @@
+version: '2.1'
+services:
+  acorndb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 'docrootpw1'
+    volumes:
+      - ./database:/var/lib/mysql/data
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: mysql --protocol=socket -hlocalhost -uroot -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1'
+  acorn:
+    image: acorn:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      ACORNINSTANCE: 'dev'
+      ACORNURL: 'localhost:8443'
+      ACORNMAILTO: 'acornadm@localhost.local'
+      ACORNDATABASENAME: 'acorndb1'
+      ACORNMAKEDB: 'y'
+      ACORNMAKEUSER: 'y'
+      ACORNLOADTABLES: 'y'
+      ACORNMYSQLPASS: 'acorndbpass1'
+      MYSQLADMINPW: 'docrootpw1'
+      MYSQLDBHOST: 'acorndb'
+    ports:
+      - "8443:8443"
+    depends_on:
+      acorndb:
+        condition: service_healthy

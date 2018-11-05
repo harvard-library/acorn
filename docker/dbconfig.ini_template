@@ -1,0 +1,6 @@
+[<instance>]
+db.adapter = PDO_MYSQL
+db.params.host = <hostname>
+db.params.username = <username>
+db.params.password = <password>
+db.params.dbname = <databasename>

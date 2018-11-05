@@ -81,6 +81,13 @@ APPHOMEDIR=`pwd`
 MYSQLADMINUSER='root'
 MYSQLCMD="mysql --user=$MYSQLADMINUSER"
 MYSQLACORNUSER="acorn"
+# If a hostname was not specified in the environment variables
+# Set it to be localhost.
+if [ -z $MYSQLDBHOST ]
+then
+  echo "Host not set, setting to localhost"
+  export MYSQLDBHOST='localhost'
+fi
 
 echo $1
 
@@ -101,6 +108,15 @@ then
   usage
 fi
 
+# Set the MYSQL Host to local if not set.
+if [ -z ${MYSQLDBHOST+x} ]
+then
+  echo "Using Localhost for Database"
+else
+  echo "Using $MYSQLDBHOST as Database Host"
+  MYSQLCMD+=" --host=$MYSQLDBHOST"
+fi
+
 cd $APPHOMEDIR
 
 # Set directory permissions
@@ -117,7 +133,7 @@ sed "s/<instance>/$ACORNINSTANCE/" bootstrap.php_template > bootstrap.php
 echo "application/bootstrap.php written"
 sed "s/<instance>/$ACORNINSTANCE/" clibootstrap.php_template > clibootstrap.php
 echo "application/clibootstrap.php written"
-sed -e "s/<instance>/$ACORNINSTANCE/" -e "s/<username>/$MYSQLACORNUSER/" -e "s/<password>/$ACORNMYSQLPASS/" -e "s/<databasename>/$ACORNDATABASENAME/" dbconfig.ini_template > dbconfig.ini
+sed -e "s/<instance>/$ACORNINSTANCE/" -e "s/<username>/$MYSQLACORNUSER/" -e "s/<password>/$ACORNMYSQLPASS/" -e "s/<databasename>/$ACORNDATABASENAME/" -e "s/<hostname>/$MYSQLDBHOST/" dbconfig.ini_template > dbconfig.ini
 echo "application/dbconfig.ini written"
 sed -e "s/<instance>/$ACORNINSTANCE/" -e "s/<username>/$MYSQLACORNUSER/" -e "s|<app_home_dir>|$APPHOMEDIR|g" -e "s|<acorn_url>|$ACORNURL|" -e "s/<mail_to>/$ACORNMAILTO/" config.ini_template > config.ini
 echo "application/config.ini written"
@@ -140,6 +156,8 @@ then
         mysqlAcornCmds="create user '"
         mysqlAcornCmds+="$MYSQLACORNUSER'@'localhost' identified by '"
         mysqlAcornCmds+="$ACORNMYSQLPASS';"
+        mysqlAcornCmds+="$MYSQLACORNUSER'@'%' identified by '"
+        mysqlAcornCmds+="$ACORNMYSQLPASS';"
     fi
 
     if [ $ACORNMAKEDB = y ]
@@ -148,8 +166,10 @@ then
         mysqlAcornCmds+="create database $ACORNDATABASENAME;"
         mysqlAcornCmds+="grant all on $ACORNDATABASENAME.* to '"
         mysqlAcornCmds+="$MYSQLACORNUSER'@'localhost';"
+        mysqlAcornCmds+="grant all on $ACORNDATABASENAME.* to '"
+        mysqlAcornCmds+="$MYSQLACORNUSER'@'%';"
     fi
-
+echo $mysqlAcornCmds >> initializeDB.txt
     if [ -n "$mysqlAcornCmds" ]
     then
         $MYSQLCMD <<COMMANDS
@@ -163,3 +183,4 @@ COMMANDS
         $MYSQLCMD $ACORNDATABASENAME < acorn_tables.sql
     fi
 fi
+touch /acorn/INITIALIZED
