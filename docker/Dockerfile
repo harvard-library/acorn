@@ -11,7 +11,7 @@ ADD test /acorn/test
 ADD .htaccess /acorn/.htaccess
 ADD docker/dbconfig.ini_template /acorn/application/dbconfig.ini_template
 ADD docker/acorn_setup.sh /acorn/acorn_setup.sh
-ADD docker/acorn_tables.sql /acorn/acorn_tables.sql
+ADD acorn_tables.sql /acorn/acorn_tables.sql
 ADD docker/supervisord.conf /etc/supervisord.conf
 ADD docker/acornhost.conf /etc/httpd/conf.d/vhost_acorn.conf
 ADD docker/config.php /acorn/public/config.php
