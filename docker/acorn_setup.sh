@@ -153,11 +153,13 @@ then
     if [ $ACORNMAKEUSER = y ]
     then
         echo "Creating mysqlAcorn MySQL user account: $MYSQLACORNUSER"
-        mysqlAcornCmds="create user '"
+        mysqlAcornCmds+="create user '"
         mysqlAcornCmds+="$MYSQLACORNUSER'@'localhost' identified by '"
         mysqlAcornCmds+="$ACORNMYSQLPASS';"
+        mysqlAcornCmds+="create user '"
         mysqlAcornCmds+="$MYSQLACORNUSER'@'%' identified by '"
         mysqlAcornCmds+="$ACORNMYSQLPASS';"
+        echo $mysqlAcornCmds
     fi
 
     if [ $ACORNMAKEDB = y ]
@@ -169,7 +171,8 @@ then
         mysqlAcornCmds+="grant all on $ACORNDATABASENAME.* to '"
         mysqlAcornCmds+="$MYSQLACORNUSER'@'%';"
     fi
-echo $mysqlAcornCmds >> initializeDB.txt
+    echo $MYSQLCMD >> initializeDB.txt
+    echo $mysqlAcornCmds >> initializeDB.txt
     if [ -n "$mysqlAcornCmds" ]
     then
         $MYSQLCMD <<COMMANDS
