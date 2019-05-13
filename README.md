@@ -1,3 +1,7 @@
+## Please Note: 
+ACORN is currently under a reimplementation effort to migrate the existing solution from PHP to an Angular/Node.js solution.  Harvard is committed to release the new version once we have completed the migration.  The new version will come with working Docker images that should make startup easier and will support Passport authentication modules so you should be able to plug in better autentication.  We are no longer maintaining this PHP code base due to age of the system and the difficulty to migrate from a Zend platform to a newer platform like Laravel.  
+
+
 ## What is ACORN?
 
 ACORN (A Conservation Records Network) is a workflow management system and database for preservation documentation to be used by conservators of artistic and historic materials. It has been in use by Harvard University conservators since 2009.
